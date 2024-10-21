@@ -1,0 +1,83 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.12">
+  <POU Name="Main" Id="{b2f2a346-2aab-4873-ae80-3f4daff09e02}" SpecialFunc="None">
+    <Declaration><![CDATA[PROGRAM Main
+VAR
+ 	stm	: UINT := 10;
+  stIrrLine : ST_LineReference;
+END_VAR
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[G.AxisLine1Front(); 
+G.AxisMaster();
+CASE stm OF 
+  10:
+    stIrrLine.nThis := 0;
+    stIrrLine.nFixedID := 1;
+    G.AxisLine1Front.Init(stIrrLine := stIrrLine, stAxisREF_P := ADR(G.stAxes.Line1Front), stAxisMaster_P := ADR(G.stAxes.Master));
+    G.AxisMaster.Init(stIrrLine := stIrrLine, stAxisREF_P := ADR(G.stAxes.Master), stAxisMaster_P := ADR(G.stAxes.Master));
+    stm := 50;
+
+  50:
+    IF NOT G.AxisMaster.IsBusy THEN
+      G.AxisMaster.RequPowerOn();
+      stm := 60;
+    END_IF
+  60:
+    IF G.AxisMaster.IsDone THEN
+      stm := 70;
+    END_IF
+  70:
+    IF NOT G.AxisMaster.IsError THEN
+      stm := 100;
+    ELSE
+      stm := 0;
+    END_IF
+
+  100:
+    IF NOT G.AxisLine1Front.IsBusy THEN
+      G.AxisLine1Front.RequPowerOn();
+      stm := 120;
+    END_IF
+  120:
+    IF G.AxisLine1Front.IsDone THEN
+      stm := 130;
+    END_IF
+  130:
+    IF NOT G.AxisLine1Front.IsError THEN
+      stm := 140;
+    ELSE
+      stm := 0;
+    END_IF
+    
+  140:
+    IF NOT G.AxisLine1Front.IsBusy THEN
+      G.AxisLine1Front.RequGearInDyn();
+      stm := 150;
+    END_IF
+  150:
+    IF G.AxisLine1Front.IsDone THEN
+      stm := 160;
+    END_IF
+  160:
+    IF NOT G.AxisLine1Front.IsError THEN
+      stm := 170; 
+    ELSE
+      stm := 0;
+    END_IF
+    
+  170:
+    IF NOT G.AxisMaster.IsBusy THEN
+      G.AxisMaster.RequJogAxisMaster();
+      stm := 180;
+    END_IF
+  
+  180:
+    G.AxisMaster.JogExec(bExecIn := TRUE, bExecJogFWIn := TRUE, bExecJogBWIn := FALSE);
+    stm := 180;
+  
+  0:; //park 
+END_CASE]]></ST>
+    </Implementation>
+  </POU>
+</TcPlcObject>

@@ -1,0 +1,27 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.12">
+  <GVL Name="G" Id="{eef4e233-9823-4e3c-834f-ad07c940bdd3}">
+    <Declaration><![CDATA[{attribute 'qualified_only'}
+VAR_GLOBAL
+  _stSystemStatus_AR      : ST_SystemStatus_AR;
+  stSystemStatus_ARR      : REFERENCE TO ST_SystemStatus_AR := _stSystemStatus_AR;
+  
+  (*
+  {attribute 'TcNcAxis' := '.Line1Front                       := CGSMini_Robot01AxisLine1Front;
+                          .Line1Back                        := CGSMini_Robot01AxisLine1Back;
+                          .Line2Front                       := CGSMini_Robot01AxisLine2Front;
+                          .Line2Back                        := CGSMini_Robot01AxisLine2Back;'}
+  stAxes : ST_Robot_Axes;
+  *)
+  {attribute 'TcNcAxis' := '.Line1Front                     := Sim_Robot01AxisLine1Front;
+                          .Line1Back                        := Sim_Robot01AxisLine1Back;
+                          .Line2Front                       := Sim_Robot01AxisLine2Front;
+                          .Line2Back                        := Sim_Robot01AxisLine2Back;
+                          .Master                           := Sim_Robot01AxisMaster'}
+  stAxes : ST_Robot_Axes;
+  
+  AxisLine1Front  : CL_Axle;
+  AxisMaster      : CL_Axle;
+END_VAR]]></Declaration>
+  </GVL>
+</TcPlcObject>

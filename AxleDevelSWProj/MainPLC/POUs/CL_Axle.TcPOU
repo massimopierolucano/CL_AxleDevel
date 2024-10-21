@@ -1,0 +1,742 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.12">
+  <POU Name="CL_Axle" Id="{86271131-74c3-440e-8c21-b97ff935d7af}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION_BLOCK CL_Axle EXTENDS CL_CGSSystemBase
+VAR
+  bInit                 : BOOL := FALSE;
+  _stFBAxle             : ST_Axle;
+  stAxisJog_P           : POINTER TO AXIS_REF;
+  
+  //private properties 
+  _nStep              : E_StepMC;
+  _nStepMain            : E_RequAxle := E_RequAxle.Idle;
+  
+  _nRequAxle            : E_RequAxle;
+  _nPreviousRequ        : E_RequAxle;
+  
+  _bIsDone			        : BOOL := FALSE;	
+  _bIsBusy			        : BOOL := FALSE;	
+  _bIsPowered			      : BOOL := FALSE;
+	_bError			          : BOOL := FALSE;
+	_nErrorId		          : UDINT := 0;
+  
+  _bPowerOn             : BOOL := FALSE;
+  _bGearOut             : BOOL := FALSE;
+  _bGearInDyn           : BOOL := FALSE;
+  _bJogFW               : BOOL := FALSE;
+  _bJogBW               : BOOL := FALSE;
+  
+  _bExecPreviousRequ    : BOOL := FALSE;
+  
+	_bEnableMove          : BOOL := TRUE;   // Enable the moving of axis
+	_lrAxisOverride	      : LREAL:= 100;    // Override of the axis velocity
+  
+  _bExecJog             : BOOL := FALSE;
+  _bExecJogFWIn         : BOOL := FALSE;
+  _bExecJogBWIn         : BOOL := FALSE;
+  _bJogCmdAborted       : BOOL := FALSE;
+  _bAxisMovedbyJog      : BOOL := FALSE;
+
+  _lrJogVelocity        : LREAL;
+  
+  _bGearInCmdAborted    : BOOL := FALSE;
+  _lrMotorGearRatio     : LREAL;
+  _lrAcceleration       : LREAL;
+  
+  //counters
+  _uiRetryPowerOnCnt_C  : UINT := 5;  //5 PowerOn retry
+  _uiRetryPowerOnCnt1   : UINT := _uiRetryPowerOnCnt_C;  //_uiRetryPowerOnCnt_C PowerOn retry
+  _uiRetryPowerOnCnt2   : UINT := _uiRetryPowerOnCnt_C;  //_uiRetryPowerOnCnt_C PowerOn retry
+  
+  //timeout MC request
+  _bRequTimeout         : BOOL;
+  WaitNextState         : CL_WaitTimer; 
+  
+  _nJogMode             : E_JogMode;
+END_VAR
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[IF bInit THEN
+  THIS^.RunObj();  
+  THIS^.Run();
+END_IF
+]]></ST>
+    </Implementation>
+    <Method Name="Init" Id="{2947aad6-89af-4507-aa27-ffb6102c3e52}">
+      <Declaration><![CDATA[METHOD PUBLIC Init : BOOL
+VAR_INPUT
+  stIrrLine       : ST_LineReference;
+  stAxisREF_P	    : POINTER TO AXIS_REF;
+  stAxisMaster_P  : POINTER TO AXIS_REF;
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[Init := false;
+IF stAxisREF_P <> 0 ANd stAxisMaster_P <> 0 AND NOT bInit THEN
+  MotorAxis := stAxisREF_P;
+  MasterAxis := stAxisMaster_P;
+  stAxisJog_P := MotorAxis;
+  
+  //if the listed parameters are equal 0.0 -> the standard parameter from the axis configuration in the System Manager is used
+  _lrJogVelocity := 0.3;//m/s
+  _nJogMode := MC_JOGMODE_STANDARD_SLOW;//MC_JOGMODE_STANDARD_FAST;  MC_JOGMODE_CONTINUOUS
+  _stFBAxle.fbMoveJog(Axis := MotorAxis^, Position := 0.0, Velocity := _lrJogVelocity, Acceleration := 0.0, Deceleration := 0.0, Jerk := 0.0);
+  
+  bInit := SUPER^.InitSystemBase( IrrLine := stIrrLine, stSystemStatus_ARR := G.stSystemStatus_ARR);
+  bInit := bInit AND InitDefect();
+  Init := bInit;
+END_IF]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="InitDefect" Id="{69a74c5b-a8c1-48ec-ad03-8339b041f124}">
+      <Declaration><![CDATA[METHOD PROTECTED InitDefect : BOOL
+VAR_INPUT
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[InitDefect := true;]]></ST>
+      </Implementation>
+    </Method>
+    <Property Name="IsBusy" Id="{d7c98a25-7356-4fb0-9e7a-bc4c705a71dc}">
+      <Declaration><![CDATA[PROPERTY IsBusy : bool]]></Declaration>
+      <Get Name="Get" Id="{3519b6e6-03c4-40c0-b8b6-e3c5bb068ea2}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[IsBusy := _bIsBusy;]]></ST>
+        </Implementation>
+      </Get>
+    </Property>
+    <Property Name="IsDone" Id="{96e61b31-d3fa-4cf1-8dd7-92126c3c6bef}">
+      <Declaration><![CDATA[PROPERTY IsDone : bool]]></Declaration>
+      <Get Name="Get" Id="{8696b162-3a47-4260-a328-d7d66fd33898}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[IsDone := _bIsDone;]]></ST>
+        </Implementation>
+      </Get>
+    </Property>
+    <Property Name="IsDoneNoError" Id="{510816a2-92f4-4604-af12-952b2c4f733d}">
+      <Declaration><![CDATA[PROPERTY IsDoneNoError : bool]]></Declaration>
+      <Get Name="Get" Id="{c0a8db65-a116-4f65-9876-e8505e01d9fb}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[IsDoneNoError := _bIsDone and not _bError;]]></ST>
+        </Implementation>
+      </Get>
+    </Property>
+    <Property Name="IsError" Id="{34627583-c30e-46ca-ba92-abc88abb3bd8}">
+      <Declaration><![CDATA[PROPERTY PUBLIC IsError : Bool]]></Declaration>
+      <Get Name="Get" Id="{df66aa41-4533-4511-bda2-aaba69b95d48}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[IsError := _bError;]]></ST>
+        </Implementation>
+      </Get>
+    </Property>
+    <Method Name="JogExec" Id="{8592c973-c006-444d-93c6-86f4e3952831}">
+      <Declaration><![CDATA[METHOD PUBLIC JogExec : BOOL
+VAR_INPUT
+  bExecIn : BOOL := FALSE;
+  bExecJogFWIn : BOOL := FALSE;
+  bExecJogBWIn : BOOL := FALSE;
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[_bExecJog := bExecIn; 
+//bExecJogFWIn and bExecJogBWIn cannot be both true but they can be both false
+if bExecJogFWIn <> bExecJogBWIn then
+  _bExecJogFWIn := bExecJogFWIn;
+  _bExecJogBWIn := bExecJogBWIn;
+else
+  _bExecJogFWIn := _bExecJogBWIn := FALSE;
+END_IF
+]]></ST>
+      </Implementation>
+    </Method>
+    <Property Name="MasterAxis" Id="{dfc3ca9b-bc80-4bee-9187-2c084d2fd418}">
+      <Declaration><![CDATA[PROPERTY PRIVATE MasterAxis : pointer to AXIS_REF]]></Declaration>
+      <Get Name="Get" Id="{921486a3-1862-4e62-a072-5424e16a0fd5}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[MasterAxis := _stFBAxle.stMasterAxis_P;]]></ST>
+        </Implementation>
+      </Get>
+      <Set Name="Set" Id="{ec3f7ef5-e9a5-4c95-8d2d-951051afcadc}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[_stFBAxle.stMasterAxis_P := MasterAxis;]]></ST>
+        </Implementation>
+      </Set>
+    </Property>
+    <Property Name="MotorAxis" Id="{5c1f2e03-0133-49a2-af49-916a1cefb76a}">
+      <Declaration><![CDATA[PROPERTY PRIVATE MotorAxis : pointer to AXIS_REF]]></Declaration>
+      <Get Name="Get" Id="{31d3822b-a3ca-41ca-9867-756c4647a168}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[MotorAxis := _stFBAxle.stAxisRef_P;]]></ST>
+        </Implementation>
+      </Get>
+      <Set Name="Set" Id="{8345480a-772c-4399-957e-619396563144}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[_stFBAxle.stAxisRef_P := MotorAxis;]]></ST>
+        </Implementation>
+      </Set>
+    </Property>
+    <Property Name="nErrorID" Id="{8d3317ee-d2ef-482d-a9d2-1120de114392}">
+      <Declaration><![CDATA[PROPERTY PUBLIC nErrorID : UDINT]]></Declaration>
+      <Get Name="Get" Id="{4c8c98c1-57ac-4c73-be1f-aad427892288}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[nErrorID := _nErrorID;]]></ST>
+        </Implementation>
+      </Get>
+    </Property>
+    <Method Name="OnEntryRequ" Id="{230d5f2c-93b6-4eb8-bd24-5b6b55e6476e}">
+      <Declaration><![CDATA[METHOD PRIVATE OnEntryRequ
+VAR_INPUT
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[_nStep := E_StepMC.Init;
+_nErrorId	:= 0;
+
+_bIsBusy := TRUE;
+_bIsDone := false;
+_bError := false;
+
+_bRequTimeout := false;
+_bGearInCmdAborted := FALSE;
+_bJogCmdAborted := false;
+_bJogFW := _bJogBW := _bExecJogFWIn := _bExecJogBWIn := false;
+_bAxisMovedbyJog := false;
+_bExecJog := false;
+//_bExecJogFWIn := FALSE;
+//_bExecJogBWIn := FALSE;]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="OnExitRequError" Id="{d015decd-a857-4c36-a77e-6afbb638a30b}">
+      <Declaration><![CDATA[METHOD PRIVATE OnExitRequError
+VAR_INPUT
+  ErrorIDIn : UDINT;
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[_bIsDone	:= TRUE;
+_bIsBusy	:= FALSE;
+_bError := true;
+_nErrorId := ErrorIDIn;
+_nStepMain := E_RequAxle.Error;
+_bExecPreviousRequ := FALSE;
+_bPowerOn := false;
+_bIsPowered := false;
+]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="OnExitRequOk" Id="{a0389a39-6280-4762-8dbf-2b24b6c17de9}">
+      <Declaration><![CDATA[METHOD PRIVATE OnExitRequOk
+VAR_INPUT
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[_bIsDone	:= TRUE;
+_bIsBusy	:= FALSE;
+_bError := false;
+_nErrorId	:= 0;
+_nStepMain := E_RequAxle.Idle;
+IF _bExecPreviousRequ THEN
+  _nRequAxle := _nPreviousRequ;
+  _bExecPreviousRequ := FALSE;
+END_IF
+]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="OnExitRequRetry" Id="{35ef2c45-9e1b-41f8-89f3-49d969d38279}">
+      <Declaration><![CDATA[METHOD PRIVATE OnExitRequRetry
+VAR_INPUT
+  ErrorIDIn : UDINT;
+  RequRetry  : E_RequAxle;
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[_bIsDone	:= FALSE;
+_bIsBusy	:= TRUE;
+_bError := true;
+_nErrorId := ErrorIDIn;
+_nStepMain := E_RequAxle.Idle;
+_nRequAxle := RequRetry;
+_bExecPreviousRequ := TRUE;
+_bIsPowered := false;
+]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="RequGearInDyn" Id="{903517ee-9ade-42de-abc9-5c6fcd098db3}">
+      <Declaration><![CDATA[{attribute 'TcRpcEnable'}
+METHOD RequGearInDyn : bool
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[RequGearInDyn := bInit and _bIsPowered AND NOT _bError and not _bIsBusy;
+IF RequGearInDyn THEN
+	_nRequAxle := E_RequAxle.GearInDyn;
+else
+  _nRequAxle := E_RequAxle.NoRequ;
+END_IF]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="RequGearOut" Id="{60abab3f-91df-4b45-93f2-9e732c64f765}">
+      <Declaration><![CDATA[{attribute 'TcRpcEnable'}
+METHOD RequGearOut : bool
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[RequGearOut := bInit and _bIsPowered AND NOT _bError and not _bIsBusy;
+IF RequGearOut THEN
+	_nRequAxle := E_RequAxle.GearOut;
+else
+  _nRequAxle := E_RequAxle.NoRequ;
+END_IF]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="RequJogAxisMaster" Id="{7c24f518-fbdc-4e8f-95c9-e66859ad42bc}">
+      <Declaration><![CDATA[{attribute 'TcRpcEnable'}
+METHOD RequJogAxisMaster : bool
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[RequJogAxisMaster := bInit and _bIsPowered AND NOT _bError and not _bIsBusy;
+IF RequJogAxisMaster THEN
+  stAxisJog_P := MasterAxis;//change the pointer to the Jog axis ref in order to use the master axis
+	_nRequAxle := E_RequAxle.Jog;
+else
+  _nRequAxle := E_RequAxle.NoRequ;
+END_IF]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="RequJogAxisMotor" Id="{85c2f71d-4215-4e1e-b9e2-dae88d863f58}">
+      <Declaration><![CDATA[{attribute 'TcRpcEnable'}
+METHOD RequJogAxisMotor : bool
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[RequJogAxisMotor := bInit and _bIsPowered AND NOT _bError and not _bIsBusy;
+IF RequJogAxisMotor THEN
+  stAxisJog_P := MotorAxis;//change the pointer to the Jog axis ref in order to use the motor axis
+	_nRequAxle := E_RequAxle.Jog;
+else
+  _nRequAxle := E_RequAxle.NoRequ;
+END_IF]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="RequPowerOFF" Id="{d948d7ed-314b-49f1-b56a-12ed03f0cdb3}">
+      <Declaration><![CDATA[{attribute 'TcRpcEnable'}
+METHOD RequPowerOFF : BOOL
+
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[RequPowerOFF := bInit and _bIsPowered AND NOT _bError and not _bIsBusy;
+IF RequPowerOFF THEN
+	_nRequAxle := E_RequAxle.PowerOff;
+else
+  _nRequAxle := E_RequAxle.NoRequ;
+END_IF]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="RequPowerON" Id="{dc2d922e-ed56-44a2-b5f2-59d0d0a6f03d}">
+      <Declaration><![CDATA[{attribute 'TcRpcEnable'}
+METHOD RequPowerON : bool
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[RequPowerON := bInit and NOT _bIsPowered AND NOT _bError and not _bIsBusy;
+IF RequPowerON THEN
+	_nRequAxle := E_RequAxle.PowerOn;
+else
+  _nRequAxle := E_RequAxle.NoRequ;
+END_IF]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="RequReset" Id="{abbde50c-809d-4a9a-81e4-a38006b3b251}">
+      <Declaration><![CDATA[{attribute 'TcRpcEnable'}
+METHOD public RequReset : bool
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[RequReset := bInit;//no conditions: this request is always executed -> removed bInit and NOT _bError and not _bIsBusy
+IF bInit THEN
+	_nRequAxle	:= E_RequAxle.Reset;
+END_IF]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="RequResetAndPrevious" Id="{806b90d6-d512-4e95-9992-33d3c953fe31}">
+      <Declaration><![CDATA[METHOD PRIVATE RequResetAndPrevious : BOOL
+
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[RequResetAndPrevious := bInit;//no conditions: this request is always executed -> removed bInit and NOT _bError and not _bIsBusy
+IF bInit THEN
+	_nRequAxle	:= E_RequAxle.Reset;
+  _bExecPreviousRequ := TRUE;
+END_IF]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="Run" Id="{5ea0ba84-4411-4ae2-b784-f4b1dd20fb56}">
+      <Declaration><![CDATA[METHOD PRIVATE Run
+
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[_stFBAxle.fbPower(Axis:= MotorAxis^, Enable_Positive:= _bPowerOn, Enable_Negative:= _bPowerOn, Enable := _bPowerOn, Override:= _lrAxisOverride); 
+_stFBAxle.fbGearInDyn(Master := MasterAxis^, Slave:= MotorAxis^, Enable := _bGearInDyn, GearRatio := _lrMotorGearRatio, Acceleration := _lrAcceleration);
+_stFBAxle.fbGearOut(Slave:= MotorAxis^, Execute := _bGearOut);
+_stFBAxle.fbMoveJog(Axis := stAxisJog_P^, JogForward := _bJogFW, JogBackwards := _bJogBW, Mode := _nJogMode, Velocity := _lrJogVelocity);
+WaitNextState();
+
+CASE _nStepMain OF
+  E_RequAxle.Idle:
+    IF _nRequAxle <> E_RequAxle.NoRequ THEN
+      IF NOT _bExecPreviousRequ THEN
+        _nPreviousRequ := _nRequAxle;
+      END_IF
+      _nStepMain := _nRequAxle;
+      _nRequAxle := E_RequAxle.NoRequ;
+      OnEntryRequ();
+    end_if
+  E_RequAxle.PowerOn : StmPowerOn_Off(bPowerOnIn := TRUE);
+  E_RequAxle.PowerOff : StmPowerOn_Off(bPowerOnIn := FALSE);
+  E_RequAxle.Jog : StmJog();
+  E_RequAxle.GearInDyn : StmGearInDyn();
+  E_RequAxle.GearOut : StmGearOut();
+  E_RequAxle.Reset : StmReset();
+  E_RequAxle.Error : StmError();
+  else;     
+END_CASE
+]]></ST>
+      </Implementation>
+    </Method>
+    <Action Name="RunObj" Id="{ce7bd1c1-0b43-4bec-a2d7-d1495e600cc6}">
+      <Implementation>
+        <ST><![CDATA[	(*
+  fbPower						        : MC_Power;//Axis function - Power
+	fbReset						        : MC_Reset;//Axis function - Reset
+	fbSetPosition					    : MC_SetPosition;//Axis function - Set Position
+	fbStop							      : MC_Stop;//stop
+	fbHalt							      : MC_Halt;//Halt
+	fbHome							      : MC_Home;//Home
+	fbJog							        : MC_Jog;//Jog
+  fbReadStatus              : MC_ReadStatus;
+  
+	fbMoveAbsolute1				    : MC_MoveAbsolute;//	MC_MoveAbsolute1
+  fbMoveAbsoluteWheelCheck  : MC_MoveAbsolute;// Add CustomAutomation 07.03.2023: Check du diamètre des roues 
+  fbMoveAbsoluteCorrection  : MC_MoveAbsolute;// Add CustomAutomation 07.03.2023: Correction fin de parcours
+ 	fbMoveRelative					  : MC_MoveRelative;//Move Relative
+	fbMoveVelocity					  : MC_MoveVelocity;//Move Velocity
+	fbReadAxisError				    : MC_ReadAxisError;//Status and parameter - Read Axis Error
+	fbReadActualPosition			: MC_ReadActualPosition;//Status and parameter - Read Actual Position
+	fbReadActualVelocity			: MC_ReadActualVelocity;//Status and parameter - Read Actual Velocity
+	fbGearInDyn					      : MC_GearInDyn;//Axis coupling - GearInDyn
+	fbGearOut						      : MC_GearOut;//Axis coupling - GearOut
+	fbPosCorrectionLimiter    : MC_PositionCorrectionLimiter;//Special extensions - Position Correction Limiter
+*)
+
+//_stFBAxle.fbPower(Axis:=MotorAxle^, Override:= _lrAxisOverride);
+//_stFBAxle.fbStop(Axis:=MotorAxle^);
+//_stFBAxle.fbReset(Axis:=MotorAxle^);
+ 
+ //timers
+// fbTimeOutReset(IN := _nStep = E_StepAxle.ResetTimeout);
+ 
+(*
+ _stFBAxle.fbHome(Axis:=MotorAxle^, bCalibrationCam:=_udCalibrationSensor_P^.19,
+		    Options := stHomingOption, Position := lrnOffsetExtractorHoming);
+        
+        
+fbMoveAbso(Axis:= _AxisREF_P^);
+fbReadStatus(Axis:= _AxisREF_P^,Enable := TRUE);	// Ok, actually done in the first lines.
+fbMoveJog(Axis := _AxisREF_P^,JogForward := stJogControl.bMoveFW, JogBackwards := stJogControl.bMoveBW);
+
+
+fbTimeRetryHomming(IN := nStep = E_StepAxis.AbortHoming);
+fbTimeAbortHoming(IN := nStep = E_StepAxis.RetryHoming);
+fbTimeOutReset(IN := nStep = E_StepAxis.InitReset);
+fbTrigErrorMotor(CLK := _AxisREF_P^.NcToPlc.ErrorCode <> 0);
+*)]]></ST>
+      </Implementation>
+    </Action>
+    <Method Name="StmError" Id="{87aea61f-b034-476e-8424-5557144e0f3e}">
+      <Declaration><![CDATA[METHOD PRIVATE StmError
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[_stFBAxle.fbPower.Enable := FALSE;
+_stFBAxle.fbPower.Enable_Positive	:= FALSE;
+_stFBAxle.fbPower.Enable_Negative	:= FALSE;
+//fbHome.Execute			:= FALSE;
+//fbHomeInv.Execute			:= FALSE;
+_nStepMain := E_RequAxle.Idle;]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="StmGearInDyn" Id="{9a3ea223-c254-4297-9010-6a65a69a26e6}">
+      <Declaration><![CDATA[METHOD PRIVATE StmGearInDyn
+
+
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[CASE _nStep OF 
+E_StepMC.Init :
+  _bGearInDyn	:= TRUE;//until enable = true -> As long as "Enable" is TRUE, the gear factor can be changed cyclically
+  _bGearOut := false;
+  _lrMotorGearRatio := 2.0;
+  _lrAcceleration := 0.0;// If the value is 0, the standard acceleration from the axis configuration in the System Manager is used
+  WaitNextState.Start(C.tTimeOutAxisMC_C);
+  _nStep := E_StepMC.Busy;
+
+E_StepMC.Busy :
+  IF _stFBAxle.fbGearInDyn.CommandAborted THEN
+    _nStep := E_StepMC.CmdAborted;
+  END_IF
+  IF WaitNextState.End THEN
+    _nStep := E_StepMC.Timeout;
+  ELSIF not _stFBAxle.fbGearInDyn.Busy THEN //Active == Busy
+    _nStep := E_StepMC.End;
+  END_IF
+  
+E_StepMC.End:
+  IF not _stFBAxle.fbGearInDyn.Error THEN  
+    OnExitRequOk();
+  ELSE
+    _bRequTimeout := false;
+    OnExitRequError(_stFBAxle.fbGearInDyn.ErrorID);
+  END_IF
+
+E_StepMC.CmdAborted:
+  _bGearInCmdAborted := true;
+  OnExitRequOk();
+  //OnExitRequError(_stFBAxle.fbGearInDyn.ErrorID);
+  
+E_StepMC.Timeout:
+  _bRequTimeout := true;
+  OnExitRequError(_stFBAxle.fbGearInDyn.ErrorID);   
+end_case]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="StmGearOut" Id="{7fc9b694-1dc7-49ad-acb4-c03aed63ee35}">
+      <Declaration><![CDATA[METHOD PRIVATE StmGearOut
+
+
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[CASE _nStep OF 
+E_StepMC.Init :
+  _bGearInDyn	:= false;
+  _bGearOut := TRUE;
+  WaitNextState.Start(C.tTimeOutAxisMC_C);
+  _nStep := E_StepMC.Busy;
+
+E_StepMC.Busy :
+  IF WaitNextState.End THEN
+    _nStep := E_StepMC.Timeout;
+  ELSIF NOT _stFBAxle.fbGearOut.Busy THEN
+    WaitNextState.Start(C.tTimeOutAxisMC_C);
+    _nStep := E_StepMC.Done;
+  END_IF
+
+E_StepMC.Done :
+  IF WaitNextState.End THEN
+     _nStep := E_StepMC.Timeout;
+  ELSIF _stFBAxle.fbGearOut.Done THEN
+    _nStep := E_StepMC.End;
+  END_IF
+  
+E_StepMC.End:
+  IF not _stFBAxle.fbGearOut.Error THEN  
+    _bGearOut := TRUE;
+    OnExitRequOk();
+  ELSE
+    _bGearOut := TRUE;
+    _bRequTimeout := false;
+    OnExitRequError(_stFBAxle.fbGearOut.ErrorID);
+  END_IF
+
+E_StepMC.Timeout:
+    _stFBAxle.fbGearOut.Execute := FALSE;
+    _bRequTimeout := true;
+    OnExitRequError(_stFBAxle.fbGearOut.ErrorID);  
+end_case]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="StmJog" Id="{328921f4-fe55-4ae8-8f95-7c67258651dc}">
+      <Declaration><![CDATA[METHOD PRIVATE StmJog
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[CASE _nStep OF 
+  E_StepMC.Init:
+    _bJogFW := _bExecJogFWIn;
+    _bJogBW := _bExecJogBWIn;
+    _nStep := E_StepMC.Busy;
+   
+  E_StepMC.Busy ://step by default set by OnEntryRequ method
+    if _bExecJog then
+      _bAxisMovedbyJog := _stFBAxle.fbMoveJog.Active;    
+      IF _stFBAxle.fbMoveJog.CommandAborted THEN
+        _nStep := E_StepMC.CmdAborted;
+      ELSIF _stFBAxle.fbMoveJog.Error THEN 
+        _nStep := E_StepMC.End;//or JogInitEnd ?
+      ELSIF not _stFBAxle.fbMoveJog.Busy THEN
+        _nStep := E_StepMC.Init;
+      END_IF     
+    else
+      _nStep := E_StepMC.JogInitEnd;
+    end_if
+
+  E_StepMC.JogInitEnd:
+    _bJogFW := FALSE;
+    _bJogBW := FALSE;
+    _nStep := E_StepMC.JogBusyEnd;
+  
+  E_StepMC.JogBusyEnd:
+    IF NOT _stFBAxle.fbMoveJog.Busy THEN
+      _nStep := E_StepMC.End;
+    END_IF     
+      
+  E_StepMC.CmdAborted:
+    _bAxisMovedbyJog := false;
+    _bJogCmdAborted := true;
+    _bExecJog := false; 
+    OnExitRequOk();
+                          
+  E_StepMC.End:
+    _bJogFW := FALSE;
+    _bJogBW := FALSE;
+    _bAxisMovedbyJog := FALSE;
+    _bJogCmdAborted := false;
+    _bExecJog := false; 
+    IF not _stFBAxle.fbMoveJog.Error THEN  
+      OnExitRequOk();
+    ELSE
+      OnExitRequError(_stFBAxle.fbMoveJog.ErrorID);
+    end_if
+                       
+end_case
+]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="StmPowerOn_Off" Id="{af9b62a9-996e-4f71-ad22-22899f2dc5e1}">
+      <Declaration><![CDATA[METHOD PRIVATE StmPowerOn_Off
+VAR_INPUT
+  bPowerOnIn : BOOL;
+END_VAR
+VAR
+  b : BOOL;
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[CASE _nStep OF   
+  E_StepMC.Init:
+    _bPowerOn := bPowerOnIn; //turn power on or off
+    _nStep := E_StepMC.PowerOnCheckStatusError;
+  
+  E_StepMC.PowerOnCheckStatusError:
+    b := MotorAxis^.Status.Error;
+    //b := TRUE;
+    IF NOT b THEN //really at the level of NC Status Error flag
+     _nStep := E_StepMC.PowerOnCheckStatus;
+     _uiRetryPowerOnCnt1 := _uiRetryPowerOnCnt_C;
+    ELSE
+      IF _uiRetryPowerOnCnt1 = 0 THEN
+        OnExitRequError(_stFBAxle.fbPower.ErrorID);//after _uiRetryPowerOnCnt still impossible to PowerOn
+        _uiRetryPowerOnCnt1 := _uiRetryPowerOnCnt_C;
+       ELSE
+        OnExitRequRetry(ErrorIDIn := MotorAxis^.Status.ErrorID, RequRetry := E_RequAxle.Reset);
+        _uiRetryPowerOnCnt1 := _uiRetryPowerOnCnt1 - 1;
+  			END_IF
+ 		END_IF
+  
+  E_StepMC.PowerOnCheckStatus:
+    b := _stFBAxle.fbPower.Status;
+    {IF defined (MiniRobotSim)}
+    b := TRUE;
+    {END_IF}
+    IF b THEN
+      b := _stFBAxle.fbPower.Error;
+      IF b THEN 
+        _nStep := E_StepMC.PowerOnRetryError;
+      ELSE
+        _bPowerOn := bPowerOnIn;
+        _bIsPowered := bPowerOnIn;
+        OnExitRequOk();
+      END_IF
+        
+    END_IF
+
+  E_StepMC.PowerOnRetryError:
+    b := _stFBAxle.fbPower.Error;
+    IF _uiRetryPowerOnCnt2 = 0 THEN
+      OnExitRequError(_stFBAxle.fbPower.ErrorID);//after _uiRetryPowerOnCnt still impossible to PowerOn
+      _uiRetryPowerOnCnt2 := _uiRetryPowerOnCnt_C;
+     ELSE
+      OnExitRequRetry(ErrorIDIn := _stFBAxle.fbPower.ErrorID, RequRetry := E_RequAxle.Reset);
+      _uiRetryPowerOnCnt2 := _uiRetryPowerOnCnt2 - 1;
+    END_IF    
+END_CASE]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="StmReset" Id="{752c42b5-45d9-41b7-a20c-71af002eb088}">
+      <Declaration><![CDATA[METHOD PRIVATE StmReset
+
+
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[_stFBAxle.fbReset(Axis:= MotorAxis^);
+WaitNextState();
+
+CASE _nStep OF 
+E_StepMC.Init :
+  _stFBAxle.fbReset.Execute	:= TRUE;
+  WaitNextState.Start(C.tTimeOutAxisMC_C);
+  _nStep := E_StepMC.Busy;
+
+E_StepMC.Busy :
+  IF WaitNextState.End THEN
+    _nStep := E_StepMC.Timeout;
+  ELSIF _stFBAxle.fbReset.Busy THEN
+    WaitNextState.Start(C.tTimeOutAxisMC_C);
+    _nStep := E_StepMC.Done;
+  END_IF
+
+E_StepMC.Done :
+  IF WaitNextState.End THEN
+     _nStep := E_StepMC.Timeout;
+  ELSIF _stFBAxle.fbReset.Done THEN
+    _nStep := E_StepMC.End;
+  END_IF
+  
+E_StepMC.End:
+  IF not _stFBAxle.fbReset.Error THEN  
+    _stFBAxle.fbReset.Execute := FALSE;
+    OnExitRequOk();
+  ELSE
+    _stFBAxle.fbReset.Execute := FALSE;
+    _bRequTimeout := false;
+    OnExitRequError(_stFBAxle.fbReset.ErrorID);
+  END_IF
+
+E_StepMC.Timeout:
+    _stFBAxle.fbReset.Execute := FALSE;
+    _bRequTimeout := true;
+    OnExitRequError(_stFBAxle.fbReset.ErrorID);  
+end_case]]></ST>
+      </Implementation>
+    </Method>
+  </POU>
+</TcPlcObject>

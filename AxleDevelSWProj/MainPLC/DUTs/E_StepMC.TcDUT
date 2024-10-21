@@ -1,0 +1,47 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.12">
+  <DUT Name="E_StepMC" Id="{9d1461ca-9455-4ec7-9499-14ba825dea07}">
+    <Declaration><![CDATA[{attribute 'qualified_only'}
+{attribute 'strict'}
+TYPE E_StepMC :
+(
+  Init := 1,
+  Timeout := 2,
+  Busy := 3,
+  Done := 4,
+  CmdAborted := 5,
+  
+	//STEPS ABSOLUTE
+ 	MoveAbs		    := 11,
+	EndMoveAbs    := 12,
+  
+  //STEPS PowerOn
+  //PowerOnInit   := 20,
+  PowerOnCheckStatusError := 21,
+  PowerOnCheckStatus := 22,
+  PowerOnRetryError := 23,
+  
+  //Jog
+  JogInitEnd := 30,
+  JogBusyEnd := 31,
+  
+	//STEPS STOP
+ 	Stopping		  := 51,
+  EndStopping   := 52,
+	  
+	//STEPS HOMING
+  InitHoming    := 60,
+	Homing			  := 61,
+  EndHoming     := 62,
+  InitAbortHoming := 63,
+  AbortHoming   := 64,
+  InitRetryHoming := 65,
+  RetryHoming     := 66,
+	   
+  End := 254,
+  NoStep := 255
+);
+END_TYPE
+]]></Declaration>
+  </DUT>
+</TcPlcObject>

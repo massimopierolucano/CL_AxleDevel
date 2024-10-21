@@ -1,0 +1,137 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.12">
+  <POU Name="CL_CGSSystemBase" Id="{649a3c98-cef9-49ef-abcc-66e50a4447d0}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION_BLOCK CL_CGSSystemBase EXTENDS CL_MasterRootClass
+VAR
+  //INTERNAL VAR
+  _stSystemStatus_ARR   : ST_SystemStatus_ARR;
+  bInitSysBase          : BOOL := FALSE;
+END_VAR]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[//State machine history
+IF bInitSysBase THEN 
+  //Manage Mode machine
+  IF _stSystemStatus_ARR[MRIrrLine].nRequestModeMachine <> nModeMachine AND _stSystemStatus_ARR[MRIrrLine].nStateMachine = E_StateMachine.cStopped THEN
+    _stSystemStatus_ARR[MRIrrLine].nModeMachine := _stSystemStatus_ARR[MRIrrLine].nRequestModeMachine;
+  END_IF  
+END_IF
+
+]]></ST>
+    </Implementation>
+    <Method Name="InitSystemBase" Id="{dc707108-b7f1-4495-812f-276911c5d8f9}">
+      <Declaration><![CDATA[METHOD PUBLIC InitSystemBase : BOOL
+VAR_INPUT
+  //nIrrLine             : UINT := 0;
+  //nIrrLineFixedID      : UINT := 0;
+  IrrLine              : ST_LineReference;
+  stSystemStatus_ARR   : ST_SystemStatus_ARR;
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[InitSystemBase := FALSE;
+IF __ISVALIDREF(stSystemStatus_ARR) AND NOT bInitSysBase 
+   AND IrrLine.nThis >= 0 AND IrrLine.nThis <= C.uiNumIrrLinesForHMI_C
+   AND IrrLine.nFixedID >= 0 AND IrrLine.nThis <= C.uiNumIrrLinesInGreenhouse_C THEN
+    _stSystemStatus_ARR REF= stSystemStatus_ARR;
+    MRLineRef := IrrLine;
+    InitSystemBase := bInitSysBase := TRUE;
+END_IF
+]]></ST>
+      </Implementation>
+    </Method>
+    <Property Name="nModeMachine" Id="{6ccbbe11-206f-4ece-886c-b3c198b618bd}">
+      <Declaration><![CDATA[PROPERTY PUBLIC nModeMachine : E_ModeMachine]]></Declaration>
+      <Get Name="Get" Id="{e5d8187a-c430-43e9-aea1-e8db6ec3bf3e}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[IF bInitSysBase THEN 
+  nModeMachine := _stSystemStatus_ARR[MRIrrLine].nModeMachine;
+ELSE
+  nModeMachine := E_ModeMachine.Startup;
+END_IF]]></ST>
+        </Implementation>
+      </Get>
+      <Set Name="Set" Id="{274c2497-a6f8-4743-82d8-aaeef5ae1292}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[IF bInitSysBase THEN 
+  _stSystemStatus_ARR[MRIrrLine].nModeMachine := nModeMachine;
+ELSE
+  _stSystemStatus_ARR[MRIrrLine].nModeMachine := E_ModeMachine.Startup;
+END_IF]]></ST>
+        </Implementation>
+      </Set>
+    </Property>
+    <Property Name="nReqModeMachine" Id="{7dc10879-510f-4ea6-b155-6b3b01fd4ecb}">
+      <Declaration><![CDATA[PROPERTY PUBLIC nReqModeMachine : E_ModeMachine]]></Declaration>
+      <Get Name="Get" Id="{d0b08a63-2027-4daf-9fa0-a6556310478c}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[IF bInitSysBase THEN 
+  nReqModeMachine := _stSystemStatus_ARR[MRIrrLine].nRequestModeMachine;
+ELSE
+  nReqModeMachine := E_ModeMachine.Startup;
+END_IF]]></ST>
+        </Implementation>
+      </Get>
+      <Set Name="Set" Id="{be73520c-eec3-4e60-bf9b-d9cbbb89c345}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[IF bInitSysBase THEN 
+  _stSystemStatus_ARR[MRIrrLine].nRequestModeMachine := nReqModeMachine;
+ELSE
+ _stSystemStatus_ARR[MRIrrLine].nRequestModeMachine := E_ModeMachine.Startup;
+END_IF]]></ST>
+        </Implementation>
+      </Set>
+    </Property>
+    <Property Name="nStateMachine" Id="{b22ca0d4-44a4-40c1-a42d-9361fd4d5108}">
+      <Declaration><![CDATA[PROPERTY PUBLIC nStateMachine : E_StateMachine]]></Declaration>
+      <Get Name="Get" Id="{5ff9b98b-39b3-4b78-a3b5-7b9e8ea604ac}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[IF bInitSysBase THEN 
+  nStateMachine := _stSystemStatus_ARR[MRIrrLine].nStateMachine;
+ELSE
+  nStateMachine := E_StateMachine.cIdle;
+END_IF]]></ST>
+        </Implementation>
+      </Get>
+      <Set Name="Set" Id="{a4bd60e8-afdc-4af0-a573-39811e224709}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[IF bInitSysBase THEN 
+  _stSystemStatus_ARR[MRIrrLine].nStateMachine := nStateMachine;
+ELSE
+  _stSystemStatus_ARR[MRIrrLine].nStateMachine := E_StateMachine.cIdle;;
+END_IF]]></ST>
+        </Implementation>
+      </Set>
+    </Property>
+    <Method Name="ReqModeMachine" Id="{a96c1e55-f3b4-4370-a009-07d0ab47c4fc}">
+      <Declaration><![CDATA[METHOD PUBLIC ReqModeMachine : BOOL
+VAR_INPUT
+  nModeMachine   : E_ModeMachine;;
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[IF bInitSysBase THEN 
+  _stSystemStatus_ARR[MRIrrLine].nRequestModeMachine := nModeMachine;
+END_IF
+]]></ST>
+      </Implementation>
+    </Method>
+  </POU>
+</TcPlcObject>
