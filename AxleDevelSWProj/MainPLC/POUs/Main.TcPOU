@@ -5,6 +5,7 @@
 VAR
  	stm	: UINT := 10;
   stIrrLine : ST_LineReference;
+  bFW, bBW : BOOL;
 END_VAR
 ]]></Declaration>
     <Implementation>
@@ -73,7 +74,9 @@ CASE stm OF
     END_IF
   
   180:
-    G.AxisMaster.JogExec(bExecIn := TRUE, bExecJogFWIn := TRUE, bExecJogBWIn := FALSE);
+    bFW := FALSE;
+    bBW := FALSE;
+    G.AxisMaster.JogExec(bExecIn := TRUE, bExecJogFWIn := bFW, bExecJogBWIn := bBW);
     stm := 180;
   
   0:; //park 

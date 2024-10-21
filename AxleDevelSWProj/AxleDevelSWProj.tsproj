@@ -1053,7 +1053,7 @@ External Setpoint Generation:
 						<Defines>debugNoHWIO,debugSim</Defines>
 					</Variant>
 				</ProjectVariant>
-				<Instance Id="#x08502000" TcSmClass="TComPlcObjDef" KeepUnrestoredLinks="2" TmcPath="MainPLC\MainPLC.tmc" TmcHash="{8AFE2A86-A3C7-D0DC-4312-466C45EBBE02}">
+				<Instance Id="#x08502000" TcSmClass="TComPlcObjDef" KeepUnrestoredLinks="2" TmcPath="MainPLC\MainPLC.tmc" TmcHash="{CAB78451-032D-EBA2-F2F4-AE438A9BAFE8}">
 					<Name>MainPLC Instance</Name>
 					<CLSID ClassFactory="TcPlc30">{08500001-0000-0000-F000-000000000064}</CLSID>
 					<Vars VarGrpType="1">

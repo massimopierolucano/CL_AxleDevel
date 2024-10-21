@@ -187,7 +187,7 @@ END_VAR
 END_VAR
 ]]></Declaration>
         <Implementation>
-          <ST><![CDATA[MotorAxis := _stFBAxle.stAxisRef_P;]]></ST>
+          <ST><![CDATA[MotorAxis := _stFBAxle.stMotorAxis_P;]]></ST>
         </Implementation>
       </Get>
       <Set Name="Set" Id="{8345480a-772c-4399-957e-619396563144}">
@@ -195,7 +195,7 @@ END_VAR
 END_VAR
 ]]></Declaration>
         <Implementation>
-          <ST><![CDATA[_stFBAxle.stAxisRef_P := MotorAxis;]]></ST>
+          <ST><![CDATA[_stFBAxle.stMotorAxis_P := MotorAxis;]]></ST>
         </Implementation>
       </Set>
     </Property>
@@ -293,7 +293,9 @@ _bIsPowered := false;
 METHOD RequGearInDyn : bool
 ]]></Declaration>
       <Implementation>
-        <ST><![CDATA[RequGearInDyn := bInit and _bIsPowered AND NOT _bError and not _bIsBusy;
+        <ST><![CDATA[RequGearInDyn := bInit AND _bIsPowered AND NOT _bError AND NOT _bIsBusy AND MotorAxis <> MasterAxis;
+//MotorAxis <> MasterAxis GearInDyn only on real axis not master axis
+//MotorAxis 0 MasterAxis GearInDyn only for virtual master axis
 IF RequGearInDyn THEN
 	_nRequAxle := E_RequAxle.GearInDyn;
 else
@@ -306,7 +308,9 @@ END_IF]]></ST>
 METHOD RequGearOut : bool
 ]]></Declaration>
       <Implementation>
-        <ST><![CDATA[RequGearOut := bInit and _bIsPowered AND NOT _bError and not _bIsBusy;
+        <ST><![CDATA[RequGearOut := bInit AND _bIsPowered AND NOT _bError AND NOT _bIsBusy AND MotorAxis <> MasterAxis;
+//MotorAxis <> MasterAxis GearInDyn only on real axis not master axis
+//MotorAxis 0 MasterAxis GearInDyn only for virtual master axis
 IF RequGearOut THEN
 	_nRequAxle := E_RequAxle.GearOut;
 else
@@ -425,7 +429,9 @@ END_CASE
 ]]></ST>
       </Implementation>
     </Method>
-    <Action Name="RunObj" Id="{ce7bd1c1-0b43-4bec-a2d7-d1495e600cc6}">
+    <Method Name="RunObj" Id="{effdf679-c8e9-4b8a-be02-83c601485a94}">
+      <Declaration><![CDATA[METHOD PRIVATE RunObj
+]]></Declaration>
       <Implementation>
         <ST><![CDATA[	(*
   fbPower						        : MC_Power;//Axis function - Power
@@ -450,22 +456,12 @@ END_CASE
 	fbPosCorrectionLimiter    : MC_PositionCorrectionLimiter;//Special extensions - Position Correction Limiter
 *)
 
-//_stFBAxle.fbPower(Axis:=MotorAxle^, Override:= _lrAxisOverride);
-//_stFBAxle.fbStop(Axis:=MotorAxle^);
-//_stFBAxle.fbReset(Axis:=MotorAxle^);
- 
- //timers
-// fbTimeOutReset(IN := _nStep = E_StepAxle.ResetTimeout);
- 
 (*
  _stFBAxle.fbHome(Axis:=MotorAxle^, bCalibrationCam:=_udCalibrationSensor_P^.19,
 		    Options := stHomingOption, Position := lrnOffsetExtractorHoming);
-        
-        
+      
 fbMoveAbso(Axis:= _AxisREF_P^);
 fbReadStatus(Axis:= _AxisREF_P^,Enable := TRUE);	// Ok, actually done in the first lines.
-fbMoveJog(Axis := _AxisREF_P^,JogForward := stJogControl.bMoveFW, JogBackwards := stJogControl.bMoveBW);
-
 
 fbTimeRetryHomming(IN := nStep = E_StepAxis.AbortHoming);
 fbTimeAbortHoming(IN := nStep = E_StepAxis.RetryHoming);
@@ -473,7 +469,7 @@ fbTimeOutReset(IN := nStep = E_StepAxis.InitReset);
 fbTrigErrorMotor(CLK := _AxisREF_P^.NcToPlc.ErrorCode <> 0);
 *)]]></ST>
       </Implementation>
-    </Action>
+    </Method>
     <Method Name="StmError" Id="{87aea61f-b034-476e-8424-5557144e0f3e}">
       <Declaration><![CDATA[METHOD PRIVATE StmError
 ]]></Declaration>

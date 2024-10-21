@@ -4,7 +4,7 @@
     <Declaration><![CDATA[//Add Library Tc2_MC2
 TYPE ST_Axle:
 STRUCT
-	stAxisRef_P						    : POINTER TO AXIS_REF;//axis reference linked to I/O
+	stMotorAxis_P						  : POINTER TO AXIS_REF;//axis reference linked to I/O
   stMasterAxis_P            : POINTER TO AXIS_REF;//master axis
 	fbPower						        : MC_Power;//Axis function - Power
 	fbReset						        : MC_Reset;//Axis function - Reset
