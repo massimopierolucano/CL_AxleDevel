@@ -12,7 +12,7 @@ VAR_GLOBAL
                           .Line2Front                       := CGSMini_Robot01AxisLine2Front;
                           .Line2Back                        := CGSMini_Robot01AxisLine2Back;
                           .Master                           := CGSMini_Robot01AxisMaster'}
-  stAxes2 : ST_Robot_Axes;
+  stAX : ST_Robot_Axes;
   
   (*
   {attribute 'TcNcAxis' := '.Line1Front                     := Sim_Robot01AxisLine1Front;
@@ -23,6 +23,9 @@ VAR_GLOBAL
   stAxes : ST_Robot_Axes;*)
   
   AxisLine1Front  : CL_Axle;
+  AxisLine2Front  : CL_Axle;
+  AxisLine1Back  : CL_Axle;
+  AxisLine2Back  : CL_Axle;
   AxisMaster      : CL_Axle;
 END_VAR]]></Declaration>
   </GVL>

@@ -11,7 +11,7 @@ VAR
   _stAxisJog_R           : REFERENCE TO AXIS_REF;
   
   //private properties 
-  _nStep              : E_StepMC;
+  _nStep                : E_StepMC;
   _nStepMain            : E_RequAxle := E_RequAxle.Idle;
   
   _nRequAxle            : E_RequAxle;
@@ -21,6 +21,7 @@ VAR
   _bIsBusy			        : BOOL := FALSE;	
   _bIsPowered			      : BOOL := FALSE;
 	_bError			          : BOOL := FALSE;
+  _bIsAxisMaster			  : BOOL := FALSE;
 	_nErrorId		          : UDINT := 0;
  
   _bMCBusy			        : BOOL;
@@ -35,6 +36,8 @@ VAR
   _bJogBW               : BOOL := FALSE;
   
   _bExecPreviousRequ    : BOOL := FALSE;
+  
+  //_bErrMsgShow          : BOOL := true;
   
 	_bEnableMove          : BOOL := TRUE;   // Enable the moving of axis
 	_lrAxisOverride	      : LREAL:= 100.0;    // Override of the axis velocity
@@ -52,10 +55,9 @@ VAR
   _lrAcceleration       : LREAL;
   
   //counters
-  _uiRetryPowerOnCnt_C  : UINT := 5;  //5 PowerOn retry
-  _uiRetryPowerOnCnt1   : UINT := _uiRetryPowerOnCnt_C;  //_uiRetryPowerOnCnt_C PowerOn retry
-  _uiRetryPowerOnCnt2   : UINT := _uiRetryPowerOnCnt_C;  //_uiRetryPowerOnCnt_C PowerOn retry
-  
+  _uiRetryPowerOnCnt_C  : UINT := C.uiRetryPowerOnCnt_C;  //PowerOn retry
+  _uiRetryPowerOnCnt    : UINT := _uiRetryPowerOnCnt_C;  //_uiRetryPowerOnCnt_C PowerOn retry
+   
   //timeout MC request
   _bRequTimeout         : BOOL;
   WaitNextState         : CL_WaitTimer; 
@@ -94,15 +96,17 @@ END_IF
       <Declaration><![CDATA[METHOD PUBLIC Init : BOOL
 VAR_INPUT
   stIrrLine       : ST_LineReference;
-  stAxisMotor_R	  : REFERENCE TO AXIS_REF;
-  stAxisMaster_R  : REFERENCE TO AXIS_REF;
+  stAxisMotor_R	  : POINTER TO AXIS_REF;
+  stAxisMaster_R  : POINTER TO AXIS_REF;
 END_VAR
 ]]></Declaration>
       <Implementation>
         <ST><![CDATA[Init := false;
-IF __ISVALIDREF(stAxisMotor_R) AND __ISVALIDREF(stAxisMaster_R) AND NOT bInit THEN
-  _stMotorAxis_R REF= stAxisMotor_R;
-  _stMasterAxis_R REF= stAxisMaster_R;
+//IF __ISVALIDREF(stAxisMotor_R) AND __ISVALIDREF(stAxisMaster_R) AND NOT bInit THEN
+IF stAxisMotor_R <> 0 AND stAxisMaster_R <> 0 AND NOT bInit THEN
+  _bIsAxisMaster := stAxisMotor_R = stAxisMaster_R;
+  _stMotorAxis_R REF= stAxisMotor_R^;
+  _stMasterAxis_R REF= stAxisMaster_R^;
   _stAxisJog_R REF= _stMotorAxis_R;
   
   //if the listed parameters are equal 0.0 -> the standard parameter from the axis configuration in the System Manager is used
@@ -207,20 +211,18 @@ END_VAR
 ]]></Declaration>
       <Implementation>
         <ST><![CDATA[_nStep := E_StepMC.Init;
-_nErrorId	:= 0;
 
 _bIsBusy := TRUE;
 _bIsDone := false;
-_bError := false;
+_bError := FALSE;
+_nErrorId	:= 0;
 
 _bRequTimeout := false;
 _bGearInCmdAborted := FALSE;
 _bJogCmdAborted := false;
 _bJogFW := _bJogBW := _bExecJogFWIn := _bExecJogBWIn := false;
 _bAxisMovedbyJog := false;
-_bExecJog := false;
-//_bExecJogFWIn := FALSE;
-//_bExecJogBWIn := FALSE;]]></ST>
+_bExecJog := false;]]></ST>
       </Implementation>
     </Method>
     <Method Name="OnExitRequError" Id="{d015decd-a857-4c36-a77e-6afbb638a30b}">
@@ -251,10 +253,7 @@ _bIsBusy	:= FALSE;
 _bError := false;
 _nErrorId	:= 0;
 _nStepMain := E_RequAxle.Idle;
-IF _bExecPreviousRequ THEN
-  _nRequAxle := _nPreviousRequ;
-  _bExecPreviousRequ := FALSE;
-END_IF
+//_nRequAxle := E_RequAxle.NoRequ;//not necessary set inside method Run
 ]]></ST>
       </Implementation>
     </Method>
@@ -262,7 +261,7 @@ END_IF
       <Declaration><![CDATA[METHOD PRIVATE OnExitRequRetry
 VAR_INPUT
   ErrorIDIn : UDINT;
-  RequRetry  : E_RequAxle;
+  RequRetryIn  : E_RequAxle;
 END_VAR
 ]]></Declaration>
       <Implementation>
@@ -271,7 +270,7 @@ _bIsBusy	:= TRUE;
 _bError := true;
 _nErrorId := ErrorIDIn;
 _nStepMain := E_RequAxle.Idle;
-_nRequAxle := RequRetry;
+_nRequAxle := RequRetryIn;
 _bExecPreviousRequ := TRUE;
 _bIsPowered := false;
 ]]></ST>
@@ -280,12 +279,9 @@ _bIsPowered := false;
     <Method Name="RequGearInDyn" Id="{903517ee-9ade-42de-abc9-5c6fcd098db3}">
       <Declaration><![CDATA[{attribute 'TcRpcEnable'}
 METHOD RequGearInDyn : bool
-VAR
-  bDifferentAxis : BOOL;
-END_VAR]]></Declaration>
+]]></Declaration>
       <Implementation>
-        <ST><![CDATA[bDifferentAxis := (_stMotorAxis_R.DriveAddress.NcAxisId <> _stMasterAxis_R.DriveAddress.NcAxisId);
-RequGearInDyn := bInit AND _bIsPowered AND NOT _bError AND NOT _bIsBusy AND bDifferentAxis;
+        <ST><![CDATA[RequGearInDyn := bInit AND _bIsPowered AND NOT _bError AND NOT _bIsBusy AND NOT _bIsAxisMaster;
 //_stMotorAxis_R <> _stMasterAxis_R GearInDyn only on real axis not master axis
 //_stMotorAxis_R 0 _stMasterAxis_R GearInDyn only for virtual master axis
 IF RequGearInDyn THEN
@@ -298,12 +294,9 @@ END_IF]]></ST>
     <Method Name="RequGearOut" Id="{60abab3f-91df-4b45-93f2-9e732c64f765}">
       <Declaration><![CDATA[{attribute 'TcRpcEnable'}
 METHOD RequGearOut : bool
-VAR
-  bDifferentAxis : BOOL;
-END_VAR]]></Declaration>
+]]></Declaration>
       <Implementation>
-        <ST><![CDATA[bDifferentAxis := (_stMotorAxis_R.DriveAddress.NcAxisId <> _stMasterAxis_R.DriveAddress.NcAxisId);
-RequGearOut := bInit AND _bIsPowered AND NOT _bError AND NOT _bIsBusy AND bDifferentAxis;
+        <ST><![CDATA[RequGearOut := bInit AND _bIsPowered AND NOT _bError AND NOT _bIsBusy  AND NOT _bIsAxisMaster;
 //_stMotorAxis_R <> _stMasterAxis_R GearInDyn only on real axis not master axis
 //_stMotorAxis_R 0 _stMasterAxis_R GearInDyn only for virtual master axis
 IF RequGearOut THEN
@@ -318,7 +311,7 @@ END_IF]]></ST>
 METHOD RequJogAxisMaster : bool
 ]]></Declaration>
       <Implementation>
-        <ST><![CDATA[RequJogAxisMaster := bInit and _bIsPowered AND NOT _bError and not _bIsBusy;
+        <ST><![CDATA[RequJogAxisMaster := bInit AND _bIsPowered AND NOT _bError AND NOT _bIsBusy AND _bIsAxisMaster;
 IF RequJogAxisMaster THEN
   _stAxisJog_R := _stMasterAxis_R;//change the pointer to the Jog axis ref in order to use the master axis
 	_nRequAxle := E_RequAxle.Jog;
@@ -332,7 +325,7 @@ END_IF]]></ST>
 METHOD RequJogAxisMotor : bool
 ]]></Declaration>
       <Implementation>
-        <ST><![CDATA[RequJogAxisMotor := bInit and _bIsPowered AND NOT _bError and not _bIsBusy;
+        <ST><![CDATA[RequJogAxisMotor := bInit and _bIsPowered AND NOT _bError and not _bIsBusy AND NOT _bIsAxisMaster;
 IF RequJogAxisMotor THEN
   _stAxisJog_R := _stMotorAxis_R;//change the pointer to the Jog axis ref in order to use the motor axis
 	_nRequAxle := E_RequAxle.Jog;
@@ -464,11 +457,13 @@ fbTrigErrorMotor(CLK := _AxisREF_P^.NcToPlc.ErrorCode <> 0);
       <Declaration><![CDATA[METHOD PRIVATE StmError
 ]]></Declaration>
       <Implementation>
-        <ST><![CDATA[_stFBAxle.fbPower.Enable := FALSE;
-_stFBAxle.fbPower.Enable_Positive	:= FALSE;
-_stFBAxle.fbPower.Enable_Negative	:= FALSE;
+        <ST><![CDATA[//_stFBAxle.fbPower.Enable := FALSE;
+//_stFBAxle.fbPower.Enable_Positive	:= FALSE;
+//_stFBAxle.fbPower.Enable_Negative	:= FALSE;
 //fbHome.Execute			:= FALSE;
 //fbHomeInv.Execute			:= FALSE;
+//_nStepMain := E_RequAxle.Idle;
+ADSLOGSTR(ADSLOG_MSGTYPE_LOG, 'CL_Axis error loop','');
 _nStepMain := E_RequAxle.Idle;]]></ST>
       </Implementation>
     </Method>
@@ -636,46 +631,55 @@ END_VAR
     b := _stMotorAxis_R.Status.Error;
     //b := TRUE;
     IF NOT b THEN //really at the level of NC Status Error flag
-     _nStep := E_StepMC.PowerOnCheckStatus;
-     _uiRetryPowerOnCnt1 := _uiRetryPowerOnCnt_C;
+     _nStep := E_StepMC.Busy;
+     IF _bIsAxisMaster THEN 
+       WaitNextState.Start(C.tTimeOutAxisMasterMC_C);
+     ELSE
+       WaitNextState.Start(C.tTimeOutAxisMC_C);
+		 END_IF    
+     //_uiRetryPowerOnCnt := _uiRetryPowerOnCnt_C; 
     ELSE
-      _bPowerOn := FALSE;
-      IF _uiRetryPowerOnCnt1 = 0 THEN
-        OnExitRequError(_stFBAxle.fbPower.ErrorID);//after _uiRetryPowerOnCnt still impossible to PowerOn
-        _uiRetryPowerOnCnt1 := _uiRetryPowerOnCnt_C;
-       ELSE
-        OnExitRequRetry(ErrorIDIn := _stMotorAxis_R.Status.ErrorID, RequRetry := E_RequAxle.Reset);
-        _uiRetryPowerOnCnt1 := _uiRetryPowerOnCnt1 - 1;
-  			END_IF
+      _nStep := E_StepMC.PowerOnRetryError;
  		END_IF
   
+  E_StepMC.Busy:
+    IF _stFBAxle.fbPower.Busy THEN
+      _nStep := E_StepMC.PowerOnCheckStatus;
+		END_IF
+    
   E_StepMC.PowerOnCheckStatus:
     b := _stFBAxle.fbPower.Status;
     {IF defined (MiniRobotSim)}
     b := TRUE;
     {END_IF}
     IF b THEN
-     b := _stFBAxle.fbPower.Error;
+      b := _stFBAxle.fbPower.Error;
       IF b THEN 
         _nStep := E_StepMC.PowerOnRetryError;
-      ELSE
+      ELSE       
         _bIsPowered := bPowerOnIn;
         OnExitRequOk();
+        _uiRetryPowerOnCnt := _uiRetryPowerOnCnt_C;
+        _bExecPreviousRequ := FALSE;
       END_IF
-        
+    ELSE 
+      IF WaitNextState.End THEN    
+        _nStep := E_StepMC.PowerOnRetryError;
+      END_IF
     END_IF
 
   E_StepMC.PowerOnRetryError:
-    b := _stFBAxle.fbPower.Error;
-    _bPowerOn := FALSE;
-    IF _uiRetryPowerOnCnt2 = 0 THEN
+    //_bPowerOn := FALSE;
+    IF _uiRetryPowerOnCnt = 0 THEN
       OnExitRequError(_stFBAxle.fbPower.ErrorID);//after _uiRetryPowerOnCnt still impossible to PowerOn
-      _uiRetryPowerOnCnt2 := _uiRetryPowerOnCnt_C;
+      _uiRetryPowerOnCnt := _uiRetryPowerOnCnt_C;
+      _bExecPreviousRequ := FALSE;
      ELSE
-      OnExitRequRetry(ErrorIDIn := _stFBAxle.fbPower.ErrorID, RequRetry := E_RequAxle.Reset);
-      _uiRetryPowerOnCnt2 := _uiRetryPowerOnCnt2 - 1;
+      OnExitRequRetry(ErrorIDIn := _stFBAxle.fbPower.ErrorID, RequRetryIn := E_RequAxle.Reset);
+      _uiRetryPowerOnCnt := _uiRetryPowerOnCnt - 1;
     END_IF    
-END_CASE]]></ST>
+END_CASE
+Case01Hysto(_nStep);]]></ST>
       </Implementation>
     </Method>
     <Method Name="StmReset" Id="{752c42b5-45d9-41b7-a20c-71af002eb088}">
@@ -710,7 +714,12 @@ E_StepMC.Done :
 E_StepMC.End:
   IF not _stFBAxle.fbReset.Error THEN  
     _stFBAxle.fbReset.Execute := FALSE;
-    OnExitRequOk();
+    IF _bExecPreviousRequ THEN
+      _nRequAxle := _nPreviousRequ;
+      _nStepMain := E_RequAxle.Idle;
+    ELSE
+      OnExitRequOk();
+    END_IF
   ELSE
     _stFBAxle.fbReset.Execute := FALSE;
     _bRequTimeout := false;
