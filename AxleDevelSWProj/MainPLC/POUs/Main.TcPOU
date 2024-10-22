@@ -3,7 +3,7 @@
   <POU Name="Main" Id="{b2f2a346-2aab-4873-ae80-3f4daff09e02}" SpecialFunc="None">
     <Declaration><![CDATA[PROGRAM Main
 VAR
- 	stm	: UINT := 1;//10;
+ 	stm	: UINT := 10;//10;
   stIrrLine : ST_LineReference;
   bMCRun, bFW, bBW,bPower,bReset,bResetDone,bError,bBusy,bPowerStatus : BOOL := FALSE;
   errId : UDINT;
@@ -38,7 +38,7 @@ fbPower(
 	Error=>bError, 
 	ErrorID=>errId);*)
 ELSE
-  bPower := G.AxisLine1Front._bPowerOn;
+  (*bPower := G.AxisLine1Front._bPowerOn2;
   fbPower(
 	Axis:= G.stAxes.Line1Front, 
 	Enable:= bPower, 
@@ -48,7 +48,7 @@ ELSE
   Status=>bPowerStatus,
 	Busy=>bBusy , 
 	Error=>bError, 
-	ErrorID=> errId);
+	ErrorID=> errId);*);
 END_IF
  
 CASE stm OF 
@@ -114,6 +114,7 @@ CASE stm OF
   130:
     IF NOT G.AxisLine1Front.IsError THEN
       stm := 140;
+      stm := 0;
     ELSE
       stm := 0;
     END_IF
@@ -149,5 +150,16 @@ CASE stm OF
   0:; //park 
 END_CASE]]></ST>
     </Implementation>
+    <Property Name="Power2" Id="{da079295-6793-49f0-889a-32d3cd475690}">
+      <Declaration><![CDATA[PROPERTY PUBLIC Power2 : BOOL]]></Declaration>
+      <Set Name="Set" Id="{5cc35ed1-97dd-4c9d-9c8d-23c096505c48}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[bPower := Power2;]]></ST>
+        </Implementation>
+      </Set>
+    </Property>
   </POU>
 </TcPlcObject>

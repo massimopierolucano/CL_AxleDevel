@@ -41,13 +41,20 @@
 				<DriveModuleType>6</DriveModuleType>
 				<TcLink>
 					<TcPrjPath>..\AxleDevelSWProj\AxleDevelSWProj.tsproj</TcPrjPath>
-					<IoItemPathName>TIID^CGSMini_IRSMainPLCSafe^CGSMini_RobotAllMainCab-EL1200^CGSMini_Robot01MainCabEtherCATBusEK1122^Term 37 (AX8620-0000-0105)^Drive 39 (AX8206-0200-0104)</IoItemPathName>
+					<IoItemPathName>TIID^CGSMini_IRSMainPLCSafe^CGSMini_RobotAllMainCab-EL1200^CGSMini_Robot01MainCabEtherCATBusEK1122^CGSMini_Robot01OnboardAxisPwrSupply-AX8620^CGSMini_Robot01OnboardAxisDriverLine1-AX8206</IoItemPathName>
 					<ItemId>39</ItemId>
 					<ObjectId>#x03020027</ObjectId>
 				</TcLink>
 				<OrderCode>AX8206-0x00-0000</OrderCode>
-				<Name>Drive 39 (AX8206-0200-0104)</Name>
+				<Name>CGSMini_Robot01OnboardAxisDriverLine1-AX8206</Name>
+				<FirmwareVersion>01.04 b0005 (5.5.2023) </FirmwareVersion>
+				<CatalogNo>AX8206-0200-0000</CatalogNo>
+				<HardwareVersion>2.0 (31.5.2023)</HardwareVersion>
+				<SerialNr>580 152</SerialNr>
+				<BIC>1P148831SBTN00084gvp1KAX8206-0200-0000              Q1    51S000580152</BIC>
 				<ProductRevision>AX8206-0200-0104</ProductRevision>
+				<SafetyDeviceName>AX8911 2 Axis (0012-8206)</SafetyDeviceName>
+				<SafetySoftwareVersion>03 (V01.13)</SafetySoftwareVersion>
 				<WatchLog UpdateIntervalInMs="500">
 					<WatchLogItem>
 						<WatchLogParaCoE Index="4120" SubIndex="2"/>
@@ -85,9 +92,33 @@
 					<Channel ChnId="0">
 						<TcLink>
 							<TcPrjPath>..\AxleDevelSWProj\AxleDevelSWProj.tsproj</TcPrjPath>
-							<IoItemPathName>TIID^CGSMini_IRSMainPLCSafe^CGSMini_RobotAllMainCab-EL1200^CGSMini_Robot01MainCabEtherCATBusEK1122^Term 37 (AX8620-0000-0105)^Drive 39 (AX8206-0200-0104)</IoItemPathName>
+							<IoItemPathName>TIID^CGSMini_IRSMainPLCSafe^CGSMini_RobotAllMainCab-EL1200^CGSMini_Robot01MainCabEtherCATBusEK1122^CGSMini_Robot01OnboardAxisPwrSupply-AX8620^CGSMini_Robot01OnboardAxisDriverLine1-AX8206</IoItemPathName>
+							<NcItemPathName AxisType="1">TINC^NC-Task 1 SAF^Axes^CGSMini_Robot01AxisLine1Back</NcItemPathName>
 						</TcLink>
 						<SelectedModifyOptPDOsMode>0</SelectedModifyOptPDOsMode>
+						<Modulo>
+							<Name>ControllerModuloType</Name>
+							<Parameter>
+								<PropertyName>Modulo_IsOn</PropertyName>
+								<Value>0</Value>
+							</Parameter>
+							<Parameter>
+								<PropertyName>Modulo_DataStorage</PropertyName>
+								<Value>0</Value>
+							</Parameter>
+							<Parameter>
+								<PropertyName>Modulo_Value</PropertyName>
+								<Value>4294967296</Value>
+							</Parameter>
+							<Parameter>
+								<PropertyName>Modulo_MinPositionRange</PropertyName>
+								<Value>-2147483648</Value>
+							</Parameter>
+							<Parameter>
+								<PropertyName>Modulo_MaxPositionRange</PropertyName>
+								<Value>2147483647</Value>
+							</Parameter>
+						</Modulo>
 						<Block Id="0">
 							<Motor IsManualInput="false" IsManualMFiInput="false" DataSource="2">
 								<DatabaseType>
@@ -607,11 +638,11 @@
 								</Parameter>
 								<Parameter>
 									<PropertyName>MaxApplicationTorqueForce</PropertyName>
-									<Value>2.74</Value>
+									<Value>6.85</Value>
 								</Parameter>
 								<Parameter>
 									<PropertyName>MaxApplicationSpeed</PropertyName>
-									<Value>1047.1975511966</Value>
+									<Value>994.83767</Value>
 								</Parameter>
 							</Load>
 							<Controller/>
@@ -642,9 +673,33 @@
 					<Channel ChnId="1">
 						<TcLink>
 							<TcPrjPath>..\AxleDevelSWProj\AxleDevelSWProj.tsproj</TcPrjPath>
-							<IoItemPathName>TIID^CGSMini_IRSMainPLCSafe^CGSMini_RobotAllMainCab-EL1200^CGSMini_Robot01MainCabEtherCATBusEK1122^Term 37 (AX8620-0000-0105)^Drive 39 (AX8206-0200-0104)</IoItemPathName>
+							<IoItemPathName>TIID^CGSMini_IRSMainPLCSafe^CGSMini_RobotAllMainCab-EL1200^CGSMini_Robot01MainCabEtherCATBusEK1122^CGSMini_Robot01OnboardAxisPwrSupply-AX8620^CGSMini_Robot01OnboardAxisDriverLine1-AX8206</IoItemPathName>
+							<NcItemPathName AxisType="1">TINC^NC-Task 1 SAF^Axes^CGSMini_Robot01AxisLine1Front</NcItemPathName>
 						</TcLink>
 						<SelectedModifyOptPDOsMode>0</SelectedModifyOptPDOsMode>
+						<Modulo>
+							<Name>ControllerModuloType</Name>
+							<Parameter>
+								<PropertyName>Modulo_IsOn</PropertyName>
+								<Value>0</Value>
+							</Parameter>
+							<Parameter>
+								<PropertyName>Modulo_DataStorage</PropertyName>
+								<Value>0</Value>
+							</Parameter>
+							<Parameter>
+								<PropertyName>Modulo_Value</PropertyName>
+								<Value>4294967296</Value>
+							</Parameter>
+							<Parameter>
+								<PropertyName>Modulo_MinPositionRange</PropertyName>
+								<Value>-2147483648</Value>
+							</Parameter>
+							<Parameter>
+								<PropertyName>Modulo_MaxPositionRange</PropertyName>
+								<Value>2147483647</Value>
+							</Parameter>
+						</Modulo>
 						<Block Id="0">
 							<Motor IsManualInput="false" IsManualMFiInput="false" DataSource="2">
 								<DatabaseType>
@@ -1164,11 +1219,11 @@
 								</Parameter>
 								<Parameter>
 									<PropertyName>MaxApplicationTorqueForce</PropertyName>
-									<Value>2.74</Value>
+									<Value>6.85</Value>
 								</Parameter>
 								<Parameter>
 									<PropertyName>MaxApplicationSpeed</PropertyName>
-									<Value>1047.1975511966</Value>
+									<Value>994.83767</Value>
 								</Parameter>
 							</Load>
 							<Controller/>
@@ -1399,6 +1454,8 @@
 			<MBoxUserCmdData>02000300090000004900000000000000000000000000000000000000000000002008340201000000004368204220417869734d61696e20706172616d657465727320656e636f64657220706f6c6172697479202f205072696d61727920656e636f6465722061637475616c2076616c75657300</MBoxUserCmdData>
 			<MBoxUserCmdData>020003000a0000002b000000000000000000000000000000000000000000000020022c02020000006b034465766963654d61696e20506172616d6574657273202f204d6178204443206c696e6b20766f6c7461676500</MBoxUserCmdData>
 			<MBoxUserCmdData>020003000a00000042000000000000000000000000000000000000000000000020032c0102000000f9034465766963654d61696e20506f77657220737570706c7920436f6e6e656374696f6e202f20506f77657220737570706c79204574686572434154204164647265737300</MBoxUserCmdData>
+			<MBoxUserCmdData>020003000c00000045000000000000000000000000000000000000000000000020c03001040000000000f0414368204120506f734374726c20706172616d6574657273206d61707061626c65202f20506f736974696f6e20636f6e74726f6c2070726f706f7274696f6e616c206761696e00</MBoxUserCmdData>
+			<MBoxUserCmdData>020003000c00000045000000000000000000000000000000000000000000000020c03401040000000000f0414368204220506f734374726c20706172616d6574657273206d61707061626c65202f20506f736974696f6e20636f6e74726f6c2070726f706f7274696f6e616c206761696e00</MBoxUserCmdData>
 			<MBoxUserCmdData>020003000c0000000b0000000000000000000000000000000000000000000000201d2c020400000068ff935953746172747570206b657900</MBoxUserCmdData>
 			<Pdo Name="DeviceMain Inputs" Index="#x1a00" Flags="#x0280"/>
 			<Pdo Name="DeviceMain Dynamic Inputs" Index="#x1ae0" Flags="#x0280" SyncUnit="1"/>

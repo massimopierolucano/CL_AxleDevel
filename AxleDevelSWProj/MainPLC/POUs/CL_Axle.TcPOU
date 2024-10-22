@@ -4,6 +4,8 @@
     <Declaration><![CDATA[FUNCTION_BLOCK CL_Axle EXTENDS CL_CGSSystemBase
 VAR
   bInit                 : BOOL := FALSE;
+  _stMotorAxis_R			  : REFERENCE TO AXIS_REF;//axis reference linked to I/O
+  _stMasterAxis_R       : REFERENCE TO AXIS_REF;//master axis
   _stFBAxle             : ST_Axle;
   //fbPower : MC_Power;
   stAxisJog_R           : REFERENCE TO AXIS_REF;
@@ -27,7 +29,7 @@ VAR
   _bMCStatus : BOOL;
 
  
-  _bPowerOn             : BOOL := FALSE;
+  _bPowerOn2             : BOOL := FALSE;
   _bGearOut             : BOOL := FALSE;
   _bGearInDyn           : BOOL := FALSE;
   _bJogFW               : BOOL := FALSE;
@@ -64,17 +66,17 @@ END_VAR
 ]]></Declaration>
     <Implementation>
       <ST><![CDATA[IF bInit THEN
-  (*fbPower(
-	Axis:= G.stAxes.Line1Front, 
-	Enable:= _bPowerOn, 
-	Enable_Positive:= TRUE, 
-	Enable_Negative:= true, 
-	Override:= 100.0, 
-  Status=>_bMCStatus ,
-	Busy=>_bMCBusy , 
-	Error=>_bMCError, 
-	ErrorID=> _MCerrId);*)
-  THIS^.RunObj();  
+  _stFBAxle.fbPower(
+      Axis:= G.stAxes.Line1Front, 
+      Enable:= _bPowerOn2, 
+      Enable_Positive:= _bPowerOn2, 
+      Enable_Negative:= _bPowerOn2, 
+      Override:= 100.0, 
+      Status=>_bMCStatus ,
+      Busy=>_bMCBusy , 
+      Error=>_bMCError, 
+      ErrorID=> _MCerrId);
+    
   THIS^.Run();
 END_IF
 ]]></ST>
@@ -186,7 +188,7 @@ END_IF
 END_VAR
 ]]></Declaration>
         <Implementation>
-          <ST><![CDATA[MasterAxis REF= _stFBAxle.stMasterAxis_R;]]></ST>
+          <ST><![CDATA[MasterAxis REF= _stMasterAxis_R;]]></ST>
         </Implementation>
       </Get>
       <Set Name="Set" Id="{ec3f7ef5-e9a5-4c95-8d2d-951051afcadc}">
@@ -194,7 +196,7 @@ END_VAR
 END_VAR
 ]]></Declaration>
         <Implementation>
-          <ST><![CDATA[_stFBAxle.stMasterAxis_R REF= MasterAxis;]]></ST>
+          <ST><![CDATA[_stMasterAxis_R REF= MasterAxis;]]></ST>
         </Implementation>
       </Set>
     </Property>
@@ -205,7 +207,7 @@ END_VAR
 END_VAR
 ]]></Declaration>
         <Implementation>
-          <ST><![CDATA[MotorAxis REF= _stFBAxle.stMotorAxis_R;]]></ST>
+          <ST><![CDATA[MotorAxis REF= _stMotorAxis_R;]]></ST>
         </Implementation>
       </Get>
       <Set Name="Set" Id="{8345480a-772c-4399-957e-619396563144}">
@@ -213,7 +215,7 @@ END_VAR
 END_VAR
 ]]></Declaration>
         <Implementation>
-          <ST><![CDATA[_stFBAxle.stMotorAxis_R REF= MotorAxis;]]></ST>
+          <ST><![CDATA[_stMotorAxis_R REF= MotorAxis;]]></ST>
         </Implementation>
       </Set>
     </Property>
@@ -264,7 +266,7 @@ _bError := true;
 _nErrorId := ErrorIDIn;
 _nStepMain := E_RequAxle.Error;
 _bExecPreviousRequ := FALSE;
-_bPowerOn := false;
+//_bPowerOn := false;
 _bIsPowered := false;
 ]]></ST>
       </Implementation>
@@ -427,6 +429,16 @@ END_IF]]></ST>
       <Implementation>
         <ST><![CDATA[//_stFBAxle.fbPower(Axis:= MotorAxis, Enable_Positive:= _bPowerOn, Enable_Negative:= _bPowerOn, Enable := _bPowerOn, Override:= _lrAxisOverride); 
 
+(*fbPower(
+	Axis:= G.stAxes.Line1Front, 
+	Enable:= _bPowerOn2, 
+	Enable_Positive:= _bPowerOn2, 
+	Enable_Negative:= _bPowerOn2, 
+	Override:= 100.0, 
+  Status=>_bMCStatus ,
+	Busy=>_bMCBusy , 
+	Error=>_bMCError, 
+	ErrorID=> _MCerrId);*)
 
 (*_stFBAxle.fbReset(
 	Axis:= G.stAxes.Line1Front, 
@@ -680,7 +692,8 @@ END_VAR
       <Implementation>
         <ST><![CDATA[CASE _nStep OF   
   E_StepMC.Init:
-    _bPowerOn := bPowerOnIn; //turn power on or off
+    _bPowerOn2 := bPowerOnIn;
+    //Main.Power := bPowerOnIn; //turn power on or off
     _nStep := E_StepMC.PowerOnCheckStatusError;
   
   E_StepMC.PowerOnCheckStatusError:
@@ -701,18 +714,20 @@ END_VAR
  		END_IF
   
   E_StepMC.PowerOnCheckStatus:
-    //b := _stFBAxle.fbPower.Status;
-    b := Main.fbPower.Status;
+    b := _stFBAxle.fbPower.Status;
+    //b := Main.fbPower.Status;
+    //b := fbPower.Status;
     {IF defined (MiniRobotSim)}
     b := TRUE;
     {END_IF}
     IF b THEN
-     //b := _stFBAxle.fbPower.Error;
-     b := Main.fbPower.Error;
+     b := _stFBAxle.fbPower.Error;
+     //b := Main.fbPower.Error;
+     //b := fbPower.Error;
       IF b THEN 
         _nStep := E_StepMC.PowerOnRetryError;
       ELSE
-        _bPowerOn := bPowerOnIn;
+        //_bPowerOn := bPowerOnIn;
         _bIsPowered := bPowerOnIn;
         OnExitRequOk();
       END_IF

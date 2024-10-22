@@ -71,6 +71,29 @@
             <NcItemPathName AxisType="1">TINC^NC-Task 1 SAF^Axes^CGSMini_Robot01AxisLine1Back</NcItemPathName>
           </TcLink>
           <SelectedModifyOptPDOsMode>0</SelectedModifyOptPDOsMode>
+          <Modulo>
+            <Name>ControllerModuloType</Name>
+            <Parameter>
+              <PropertyName>Modulo_IsOn</PropertyName>
+              <Value>0</Value>
+            </Parameter>
+            <Parameter>
+              <PropertyName>Modulo_DataStorage</PropertyName>
+              <Value>0</Value>
+            </Parameter>
+            <Parameter>
+              <PropertyName>Modulo_Value</PropertyName>
+              <Value>4294967296</Value>
+            </Parameter>
+            <Parameter>
+              <PropertyName>Modulo_MinPositionRange</PropertyName>
+              <Value>-2147483648</Value>
+            </Parameter>
+            <Parameter>
+              <PropertyName>Modulo_MaxPositionRange</PropertyName>
+              <Value>2147483647</Value>
+            </Parameter>
+          </Modulo>
           <Block Id="0">
             <Motor IsManualInput="false" IsManualMFiInput="false" DataSource="2">
               <DatabaseType>
@@ -629,6 +652,29 @@
             <NcItemPathName AxisType="1">TINC^NC-Task 1 SAF^Axes^CGSMini_Robot01AxisLine1Front</NcItemPathName>
           </TcLink>
           <SelectedModifyOptPDOsMode>0</SelectedModifyOptPDOsMode>
+          <Modulo>
+            <Name>ControllerModuloType</Name>
+            <Parameter>
+              <PropertyName>Modulo_IsOn</PropertyName>
+              <Value>0</Value>
+            </Parameter>
+            <Parameter>
+              <PropertyName>Modulo_DataStorage</PropertyName>
+              <Value>0</Value>
+            </Parameter>
+            <Parameter>
+              <PropertyName>Modulo_Value</PropertyName>
+              <Value>4294967296</Value>
+            </Parameter>
+            <Parameter>
+              <PropertyName>Modulo_MinPositionRange</PropertyName>
+              <Value>-2147483648</Value>
+            </Parameter>
+            <Parameter>
+              <PropertyName>Modulo_MaxPositionRange</PropertyName>
+              <Value>2147483647</Value>
+            </Parameter>
+          </Modulo>
           <Block Id="0">
             <Motor IsManualInput="false" IsManualMFiInput="false" DataSource="2">
               <DatabaseType>
@@ -3721,6 +3767,24 @@
             </InitCmd>
             <InitCmd>
               <Transition>PS</Transition>
+              <Comment><![CDATA[Ch A PosCtrl parameters mappable / Position control proportional gain]]></Comment>
+              <Timeout>0</Timeout>
+              <Ccs>1</Ccs>
+              <Index>12480</Index>
+              <SubIndex>1</SubIndex>
+              <Data>0000a041</Data>
+            </InitCmd>
+            <InitCmd>
+              <Transition>PS</Transition>
+              <Comment><![CDATA[Ch B PosCtrl parameters mappable / Position control proportional gain]]></Comment>
+              <Timeout>0</Timeout>
+              <Ccs>1</Ccs>
+              <Index>13504</Index>
+              <SubIndex>1</SubIndex>
+              <Data>0000a041</Data>
+            </InitCmd>
+            <InitCmd>
+              <Transition>PS</Transition>
               <Comment><![CDATA[Startup key]]></Comment>
               <Timeout>0</Timeout>
               <Ccs>1</Ccs>
@@ -4036,7 +4100,7 @@
           <Cmd>5</Cmd>
           <Adp>1019</Adp>
           <Ado>2464</Ado>
-          <Data>24f40000dc143c00</Data>
+          <Data>24f400005c901d00</Data>
           <Cnt>1</Cnt>
           <Retries>3</Retries>
         </InitCmd>
@@ -4494,7 +4558,7 @@
         <TimeLoopControlOnly>false</TimeLoopControlOnly>
         <ReferenceClock>false</ReferenceClock>
         <CycleTime0>62500</CycleTime0>
-        <CycleTime1>3937500</CycleTime1>
+        <CycleTime1>1937500</CycleTime1>
         <ShiftTime>0</ShiftTime>
         <OpMode Selected="true">
           <Name>DcSync62500</Name>

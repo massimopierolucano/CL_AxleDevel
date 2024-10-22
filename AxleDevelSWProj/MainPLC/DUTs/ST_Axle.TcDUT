@@ -4,8 +4,6 @@
     <Declaration><![CDATA[//Add Library Tc2_MC2
 TYPE ST_Axle:
 STRUCT
-	stMotorAxis_R						  : REFERENCE TO AXIS_REF;//axis reference linked to I/O
-  stMasterAxis_R            : REFERENCE TO AXIS_REF;//master axis
 	fbPower						        : MC_Power;//Axis function - Power
 	fbReset						        : MC_Reset;//Axis function - Reset
 	fbSetPosition					    : MC_SetPosition;//Axis function - Set Position
