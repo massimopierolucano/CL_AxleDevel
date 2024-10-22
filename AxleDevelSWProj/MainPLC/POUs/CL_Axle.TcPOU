@@ -464,6 +464,7 @@ fbTrigErrorMotor(CLK := _AxisREF_P^.NcToPlc.ErrorCode <> 0);
 //fbHomeInv.Execute			:= FALSE;
 //_nStepMain := E_RequAxle.Idle;
 ADSLOGSTR(ADSLOG_MSGTYPE_LOG, 'CL_Axis error loop','');
+ADSLOGSTR(ADSLOG_MSGTYPE_MSGBOX, 'CL_Axis error loop','');
 _nStepMain := E_RequAxle.Idle;]]></ST>
       </Implementation>
     </Method>
