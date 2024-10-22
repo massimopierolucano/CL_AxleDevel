@@ -20,7 +20,7 @@ END_VAR
 
 IF bMCRun THEN
 fbPower(
-	Axis:= G.stAxes.Line1Front, 
+	Axis:= G.stAxes2.Line1Front, 
 	Enable:= bPower, 
 	Enable_Positive:= bPower, 
 	Enable_Negative:= bPower, 
@@ -57,7 +57,7 @@ CASE stm OF
     bMCRun := TRUE;
 		stm := 2;
 	2:
-		IF G.stAxes.Line1Front.Status.Error THEN //really at the level of NC
+		IF G.stAxes2.Line1Front.Status.Error THEN //really at the level of NC
 			stm := 3;
 		ELSE
 			stm := 5;
@@ -73,7 +73,6 @@ CASE stm OF
 	5:
     bPowerStatus := fbPower.Status;
 		IF bPowerStatus THEN
-			//bHome := TRUE;
 			stm := 6;
 		END_IF
   6:
@@ -82,8 +81,8 @@ CASE stm OF
   10:
     stIrrLine.nThis := 0;
     stIrrLine.nFixedID := 1;
-    G.AxisLine1Front.Init(stIrrLine := stIrrLine, stAxisMotor_R := G.stAxes.Line1Front, stAxisMaster_R := G.stAxes.Master);
-    G.AxisMaster.Init(stIrrLine := stIrrLine, stAxisMotor_R := G.stAxes.Master, stAxisMaster_R := G.stAxes.Master);
+    G.AxisLine1Front.Init(stIrrLine := stIrrLine, stAxisMotor_R := G.stAxes2.Line1Front, stAxisMaster_R := G.stAxes2.Master);
+    G.AxisMaster.Init(stIrrLine := stIrrLine, stAxisMotor_R := G.stAxes2.Master, stAxisMaster_R := G.stAxes2.Master);
     stm := 100;//50;
 
   50:
@@ -150,16 +149,5 @@ CASE stm OF
   0:; //park 
 END_CASE]]></ST>
     </Implementation>
-    <Property Name="Power2" Id="{da079295-6793-49f0-889a-32d3cd475690}">
-      <Declaration><![CDATA[PROPERTY PUBLIC Power2 : BOOL]]></Declaration>
-      <Set Name="Set" Id="{5cc35ed1-97dd-4c9d-9c8d-23c096505c48}">
-        <Declaration><![CDATA[VAR
-END_VAR
-]]></Declaration>
-        <Implementation>
-          <ST><![CDATA[bPower := Power2;]]></ST>
-        </Implementation>
-      </Set>
-    </Property>
   </POU>
 </TcPlcObject>

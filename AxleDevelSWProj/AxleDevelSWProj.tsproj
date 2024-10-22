@@ -1053,52 +1053,52 @@ External Setpoint Generation:
 						<Defines>debugNoHWIO,debugSim</Defines>
 					</Variant>
 				</ProjectVariant>
-				<Instance Id="#x08502000" TcSmClass="TComPlcObjDef" KeepUnrestoredLinks="2" TmcPath="MainPLC\MainPLC.tmc" TmcHash="{E02C3860-6F42-0730-317E-043AEA492DCC}">
+				<Instance Id="#x08502000" TcSmClass="TComPlcObjDef" KeepUnrestoredLinks="2" TmcPath="MainPLC\MainPLC.tmc" TmcHash="{41F35112-E9F3-A7DD-FB18-5F3BC3DEC41E}">
 					<Name>MainPLC Instance</Name>
 					<CLSID ClassFactory="TcPlc30">{08500001-0000-0000-F000-000000000064}</CLSID>
 					<Vars VarGrpType="1">
 						<Name>PlcTask Inputs</Name>
 						<Var>
-							<Name>G.stAxes.Line1Front.NcToPlc</Name>
+							<Name>G.stAxes2.Line1Front.NcToPlc</Name>
 							<Type GUID="{25521FAA-EA5F-4C7F-8864-BBCCDACD2E98}" Namespace="MC">NCTOPLC_AXIS_REF</Type>
 						</Var>
 						<Var>
-							<Name>G.stAxes.Line1Back.NcToPlc</Name>
+							<Name>G.stAxes2.Line1Back.NcToPlc</Name>
 							<Type GUID="{25521FAA-EA5F-4C7F-8864-BBCCDACD2E98}" Namespace="MC">NCTOPLC_AXIS_REF</Type>
 						</Var>
 						<Var>
-							<Name>G.stAxes.Line2Front.NcToPlc</Name>
+							<Name>G.stAxes2.Line2Front.NcToPlc</Name>
 							<Type GUID="{25521FAA-EA5F-4C7F-8864-BBCCDACD2E98}" Namespace="MC">NCTOPLC_AXIS_REF</Type>
 						</Var>
 						<Var>
-							<Name>G.stAxes.Line2Back.NcToPlc</Name>
+							<Name>G.stAxes2.Line2Back.NcToPlc</Name>
 							<Type GUID="{25521FAA-EA5F-4C7F-8864-BBCCDACD2E98}" Namespace="MC">NCTOPLC_AXIS_REF</Type>
 						</Var>
 						<Var>
-							<Name>G.stAxes.Master.NcToPlc</Name>
+							<Name>G.stAxes2.Master.NcToPlc</Name>
 							<Type GUID="{25521FAA-EA5F-4C7F-8864-BBCCDACD2E98}" Namespace="MC">NCTOPLC_AXIS_REF</Type>
 						</Var>
 					</Vars>
 					<Vars VarGrpType="2" AreaNo="1">
 						<Name>PlcTask Outputs</Name>
 						<Var>
-							<Name>G.stAxes.Line1Front.PlcToNc</Name>
+							<Name>G.stAxes2.Line1Front.PlcToNc</Name>
 							<Type GUID="{96B75FEB-2D84-43BE-A3EC-D9A681F27D52}" Namespace="MC">PLCTONC_AXIS_REF</Type>
 						</Var>
 						<Var>
-							<Name>G.stAxes.Line1Back.PlcToNc</Name>
+							<Name>G.stAxes2.Line1Back.PlcToNc</Name>
 							<Type GUID="{96B75FEB-2D84-43BE-A3EC-D9A681F27D52}" Namespace="MC">PLCTONC_AXIS_REF</Type>
 						</Var>
 						<Var>
-							<Name>G.stAxes.Line2Front.PlcToNc</Name>
+							<Name>G.stAxes2.Line2Front.PlcToNc</Name>
 							<Type GUID="{96B75FEB-2D84-43BE-A3EC-D9A681F27D52}" Namespace="MC">PLCTONC_AXIS_REF</Type>
 						</Var>
 						<Var>
-							<Name>G.stAxes.Line2Back.PlcToNc</Name>
+							<Name>G.stAxes2.Line2Back.PlcToNc</Name>
 							<Type GUID="{96B75FEB-2D84-43BE-A3EC-D9A681F27D52}" Namespace="MC">PLCTONC_AXIS_REF</Type>
 						</Var>
 						<Var>
-							<Name>G.stAxes.Master.PlcToNc</Name>
+							<Name>G.stAxes2.Master.PlcToNc</Name>
 							<Type GUID="{96B75FEB-2D84-43BE-A3EC-D9A681F27D52}" Namespace="MC">PLCTONC_AXIS_REF</Type>
 						</Var>
 					</Vars>
@@ -1152,24 +1152,24 @@ External Setpoint Generation:
 		<MappingInfo Identifier="{03040010-0010-0304-1000-040310000403}" Id="#x02030010" Watchdog="04000000040000000400000004000000"/>
 		<OwnerA Name="TIPC^MainPLC^MainPLC Instance">
 			<OwnerB Name="TINC^NC-Task 1 SAF^Axes^CGSMini_Robot01AxisLine1Back">
-				<Link VarA="PlcTask Inputs^G.stAxes.Line1Back.NcToPlc" VarB="Outputs^ToPlc" AutoLink="true"/>
-				<Link VarA="PlcTask Outputs^G.stAxes.Line1Back.PlcToNc" VarB="Inputs^FromPlc" AutoLink="true"/>
+				<Link VarA="PlcTask Inputs^G.stAxes2.Line1Back.NcToPlc" VarB="Outputs^ToPlc" AutoLink="true"/>
+				<Link VarA="PlcTask Outputs^G.stAxes2.Line1Back.PlcToNc" VarB="Inputs^FromPlc" AutoLink="true"/>
 			</OwnerB>
 			<OwnerB Name="TINC^NC-Task 1 SAF^Axes^CGSMini_Robot01AxisLine1Front">
-				<Link VarA="PlcTask Inputs^G.stAxes.Line1Front.NcToPlc" VarB="Outputs^ToPlc" AutoLink="true"/>
-				<Link VarA="PlcTask Outputs^G.stAxes.Line1Front.PlcToNc" VarB="Inputs^FromPlc" AutoLink="true"/>
+				<Link VarA="PlcTask Inputs^G.stAxes2.Line1Front.NcToPlc" VarB="Outputs^ToPlc" AutoLink="true"/>
+				<Link VarA="PlcTask Outputs^G.stAxes2.Line1Front.PlcToNc" VarB="Inputs^FromPlc" AutoLink="true"/>
 			</OwnerB>
 			<OwnerB Name="TINC^NC-Task 1 SAF^Axes^CGSMini_Robot01AxisLine2Back">
-				<Link VarA="PlcTask Inputs^G.stAxes.Line2Back.NcToPlc" VarB="Outputs^ToPlc" AutoLink="true"/>
-				<Link VarA="PlcTask Outputs^G.stAxes.Line2Back.PlcToNc" VarB="Inputs^FromPlc" AutoLink="true"/>
+				<Link VarA="PlcTask Inputs^G.stAxes2.Line2Back.NcToPlc" VarB="Outputs^ToPlc" AutoLink="true"/>
+				<Link VarA="PlcTask Outputs^G.stAxes2.Line2Back.PlcToNc" VarB="Inputs^FromPlc" AutoLink="true"/>
 			</OwnerB>
 			<OwnerB Name="TINC^NC-Task 1 SAF^Axes^CGSMini_Robot01AxisLine2Front">
-				<Link VarA="PlcTask Inputs^G.stAxes.Line2Front.NcToPlc" VarB="Outputs^ToPlc" AutoLink="true"/>
-				<Link VarA="PlcTask Outputs^G.stAxes.Line2Front.PlcToNc" VarB="Inputs^FromPlc" AutoLink="true"/>
+				<Link VarA="PlcTask Inputs^G.stAxes2.Line2Front.NcToPlc" VarB="Outputs^ToPlc" AutoLink="true"/>
+				<Link VarA="PlcTask Outputs^G.stAxes2.Line2Front.PlcToNc" VarB="Inputs^FromPlc" AutoLink="true"/>
 			</OwnerB>
 			<OwnerB Name="TINC^NC-Task 1 SAF^Axes^CGSMini_Robot01AxisMaster">
-				<Link VarA="PlcTask Inputs^G.stAxes.Master.NcToPlc" VarB="Outputs^ToPlc" AutoLink="true"/>
-				<Link VarA="PlcTask Outputs^G.stAxes.Master.PlcToNc" VarB="Inputs^FromPlc" AutoLink="true"/>
+				<Link VarA="PlcTask Inputs^G.stAxes2.Master.NcToPlc" VarB="Outputs^ToPlc" AutoLink="true"/>
+				<Link VarA="PlcTask Outputs^G.stAxes2.Master.PlcToNc" VarB="Inputs^FromPlc" AutoLink="true"/>
 			</OwnerB>
 		</OwnerA>
 	</Mappings>
