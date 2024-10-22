@@ -14,9 +14,7 @@ END_VAR
 ]]></Declaration>
     <Implementation>
       <ST><![CDATA[G.AxisLine1Front(); 
-//G.AxisMaster();
-
-//fbPower(Axis:= G.stAxes.Line1Front , Enable_Positive:= bPower, Enable_Negative:= bPower, Enable := bPower, Override:= 100.0); 
+G.AxisMaster();
 
 IF bMCRun THEN
 fbPower(
@@ -30,25 +28,13 @@ fbPower(
 	Error=>bError, 
 	ErrorID=> errId);
 
-(*fbReset(
-	Axis:= G.stAxes.Line1Front, 
+fbReset(
+	Axis:= G.stAxes2.Line1Front, 
 	Execute:= bReset, 
 	Done=> bResetDone,
 	Busy=> bBusy, 
 	Error=>bError, 
-	ErrorID=>errId);*)
-ELSE
-  (*bPower := G.AxisLine1Front._bPowerOn2;
-  fbPower(
-	Axis:= G.stAxes.Line1Front, 
-	Enable:= bPower, 
-	Enable_Positive:= bPower, 
-	Enable_Negative:= bPower, 
-	Override:= 100.0, 
-  Status=>bPowerStatus,
-	Busy=>bBusy , 
-	Error=>bError, 
-	ErrorID=> errId);*);
+	ErrorID=>errId);
 END_IF
  
 CASE stm OF 

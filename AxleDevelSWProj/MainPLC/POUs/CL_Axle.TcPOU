@@ -28,7 +28,7 @@ VAR
 	_MCerrId			        : UDINT;
   _bMCStatus            : BOOL;
 
-  _bPowerOn2            : BOOL := FALSE;
+  _bPowerOn            : BOOL := FALSE;
   _bGearOut             : BOOL := FALSE;
   _bGearInDyn           : BOOL := FALSE;
   _bJogFW               : BOOL := FALSE;
@@ -67,9 +67,9 @@ END_VAR
       <ST><![CDATA[IF bInit THEN
   _stFBAxle.fbPower(
       Axis:= _stMotorAxis_R, 
-      Enable:= _bPowerOn2, 
-      Enable_Positive:= _bPowerOn2, 
-      Enable_Negative:= _bPowerOn2, 
+      Enable:= _bPowerOn, 
+      Enable_Positive:= _bPowerOn, 
+      Enable_Negative:= _bPowerOn, 
       Override:= _lrAxisOverride, 
       Status=>_bMCStatus ,
       Busy=>_bMCBusy , 
@@ -629,7 +629,7 @@ END_VAR
       <Implementation>
         <ST><![CDATA[CASE _nStep OF   
   E_StepMC.Init:
-    _bPowerOn2 := bPowerOnIn;
+    _bPowerOn := bPowerOnIn;
     _nStep := E_StepMC.PowerOnCheckStatusError;
   
   E_StepMC.PowerOnCheckStatusError:
@@ -639,7 +639,7 @@ END_VAR
      _nStep := E_StepMC.PowerOnCheckStatus;
      _uiRetryPowerOnCnt1 := _uiRetryPowerOnCnt_C;
     ELSE
-      _bPowerOn2 := FALSE;
+      _bPowerOn := FALSE;
       IF _uiRetryPowerOnCnt1 = 0 THEN
         OnExitRequError(_stFBAxle.fbPower.ErrorID);//after _uiRetryPowerOnCnt still impossible to PowerOn
         _uiRetryPowerOnCnt1 := _uiRetryPowerOnCnt_C;
@@ -667,7 +667,7 @@ END_VAR
 
   E_StepMC.PowerOnRetryError:
     b := _stFBAxle.fbPower.Error;
-    _bPowerOn2 := FALSE;
+    _bPowerOn := FALSE;
     IF _uiRetryPowerOnCnt2 = 0 THEN
       OnExitRequError(_stFBAxle.fbPower.ErrorID);//after _uiRetryPowerOnCnt still impossible to PowerOn
       _uiRetryPowerOnCnt2 := _uiRetryPowerOnCnt_C;
