@@ -5,7 +5,8 @@
 VAR
   bInit                 : BOOL := FALSE;
   _stFBAxle             : ST_Axle;
-  stAxisJog_P           : POINTER TO AXIS_REF;
+  //fbPower : MC_Power;
+  stAxisJog_R           : REFERENCE TO AXIS_REF;
   
   //private properties 
   _nStep              : E_StepMC;
@@ -19,7 +20,13 @@ VAR
   _bIsPowered			      : BOOL := FALSE;
 	_bError			          : BOOL := FALSE;
 	_nErrorId		          : UDINT := 0;
-  
+ 
+  _bMCBusy			          : BOOL;
+  _bMCError			          : BOOL;
+	_MCerrId			          : UDINT;
+  _bMCStatus : BOOL;
+
+ 
   _bPowerOn             : BOOL := FALSE;
   _bGearOut             : BOOL := FALSE;
   _bGearInDyn           : BOOL := FALSE;
@@ -57,6 +64,16 @@ END_VAR
 ]]></Declaration>
     <Implementation>
       <ST><![CDATA[IF bInit THEN
+  (*fbPower(
+	Axis:= G.stAxes.Line1Front, 
+	Enable:= _bPowerOn, 
+	Enable_Positive:= TRUE, 
+	Enable_Negative:= true, 
+	Override:= 100.0, 
+  Status=>_bMCStatus ,
+	Busy=>_bMCBusy , 
+	Error=>_bMCError, 
+	ErrorID=> _MCerrId);*)
   THIS^.RunObj();  
   THIS^.Run();
 END_IF
@@ -66,21 +83,22 @@ END_IF
       <Declaration><![CDATA[METHOD PUBLIC Init : BOOL
 VAR_INPUT
   stIrrLine       : ST_LineReference;
-  stAxisREF_P	    : POINTER TO AXIS_REF;
-  stAxisMaster_P  : POINTER TO AXIS_REF;
+  stAxisMotor_R	  : REFERENCE TO AXIS_REF;
+  stAxisMaster_R  : REFERENCE TO AXIS_REF;
 END_VAR
 ]]></Declaration>
       <Implementation>
         <ST><![CDATA[Init := false;
-IF stAxisREF_P <> 0 ANd stAxisMaster_P <> 0 AND NOT bInit THEN
-  MotorAxis := stAxisREF_P;
-  MasterAxis := stAxisMaster_P;
-  stAxisJog_P := MotorAxis;
+IF __ISVALIDREF(stAxisMotor_R) AND __ISVALIDREF(stAxisMaster_R) AND NOT bInit THEN
+  //MotorAxis REF= stAxisMotor_R;
+  //MasterAxis REF= stAxisMaster_R;
+  
+  //stAxisJog_R REF= MotorAxis;
   
   //if the listed parameters are equal 0.0 -> the standard parameter from the axis configuration in the System Manager is used
   _lrJogVelocity := 0.3;//m/s
   _nJogMode := MC_JOGMODE_STANDARD_SLOW;//MC_JOGMODE_STANDARD_FAST;  MC_JOGMODE_CONTINUOUS
-  _stFBAxle.fbMoveJog(Axis := MotorAxis^, Position := 0.0, Velocity := _lrJogVelocity, Acceleration := 0.0, Deceleration := 0.0, Jerk := 0.0);
+  _stFBAxle.fbMoveJog(Axis := MotorAxis, Position := 0.0, Velocity := _lrJogVelocity, Acceleration := 0.0, Deceleration := 0.0, Jerk := 0.0);
   
   bInit := SUPER^.InitSystemBase( IrrLine := stIrrLine, stSystemStatus_ARR := G.stSystemStatus_ARR);
   bInit := bInit AND InitDefect();
@@ -162,13 +180,13 @@ END_IF
       </Implementation>
     </Method>
     <Property Name="MasterAxis" Id="{dfc3ca9b-bc80-4bee-9187-2c084d2fd418}">
-      <Declaration><![CDATA[PROPERTY PRIVATE MasterAxis : pointer to AXIS_REF]]></Declaration>
+      <Declaration><![CDATA[PROPERTY PRIVATE MasterAxis : reference to AXIS_REF]]></Declaration>
       <Get Name="Get" Id="{921486a3-1862-4e62-a072-5424e16a0fd5}">
         <Declaration><![CDATA[VAR
 END_VAR
 ]]></Declaration>
         <Implementation>
-          <ST><![CDATA[MasterAxis := _stFBAxle.stMasterAxis_P;]]></ST>
+          <ST><![CDATA[MasterAxis REF= _stFBAxle.stMasterAxis_R;]]></ST>
         </Implementation>
       </Get>
       <Set Name="Set" Id="{ec3f7ef5-e9a5-4c95-8d2d-951051afcadc}">
@@ -176,18 +194,18 @@ END_VAR
 END_VAR
 ]]></Declaration>
         <Implementation>
-          <ST><![CDATA[_stFBAxle.stMasterAxis_P := MasterAxis;]]></ST>
+          <ST><![CDATA[_stFBAxle.stMasterAxis_R REF= MasterAxis;]]></ST>
         </Implementation>
       </Set>
     </Property>
     <Property Name="MotorAxis" Id="{5c1f2e03-0133-49a2-af49-916a1cefb76a}">
-      <Declaration><![CDATA[PROPERTY PRIVATE MotorAxis : pointer to AXIS_REF]]></Declaration>
+      <Declaration><![CDATA[PROPERTY PRIVATE MotorAxis : reference to AXIS_REF]]></Declaration>
       <Get Name="Get" Id="{31d3822b-a3ca-41ca-9867-756c4647a168}">
         <Declaration><![CDATA[VAR
 END_VAR
 ]]></Declaration>
         <Implementation>
-          <ST><![CDATA[MotorAxis := _stFBAxle.stMotorAxis_P;]]></ST>
+          <ST><![CDATA[MotorAxis REF= _stFBAxle.stMotorAxis_R;]]></ST>
         </Implementation>
       </Get>
       <Set Name="Set" Id="{8345480a-772c-4399-957e-619396563144}">
@@ -195,7 +213,7 @@ END_VAR
 END_VAR
 ]]></Declaration>
         <Implementation>
-          <ST><![CDATA[_stFBAxle.stMotorAxis_P := MotorAxis;]]></ST>
+          <ST><![CDATA[_stFBAxle.stMotorAxis_R REF= MotorAxis;]]></ST>
         </Implementation>
       </Set>
     </Property>
@@ -291,9 +309,12 @@ _bIsPowered := false;
     <Method Name="RequGearInDyn" Id="{903517ee-9ade-42de-abc9-5c6fcd098db3}">
       <Declaration><![CDATA[{attribute 'TcRpcEnable'}
 METHOD RequGearInDyn : bool
-]]></Declaration>
+VAR
+  bDifferentAxis : BOOL;
+END_VAR]]></Declaration>
       <Implementation>
-        <ST><![CDATA[RequGearInDyn := bInit AND _bIsPowered AND NOT _bError AND NOT _bIsBusy AND MotorAxis <> MasterAxis;
+        <ST><![CDATA[bDifferentAxis := (MotorAxis.DriveAddress.NcAxisId <> MasterAxis.DriveAddress.NcAxisId);
+RequGearInDyn := bInit AND _bIsPowered AND NOT _bError AND NOT _bIsBusy AND bDifferentAxis;
 //MotorAxis <> MasterAxis GearInDyn only on real axis not master axis
 //MotorAxis 0 MasterAxis GearInDyn only for virtual master axis
 IF RequGearInDyn THEN
@@ -306,9 +327,12 @@ END_IF]]></ST>
     <Method Name="RequGearOut" Id="{60abab3f-91df-4b45-93f2-9e732c64f765}">
       <Declaration><![CDATA[{attribute 'TcRpcEnable'}
 METHOD RequGearOut : bool
-]]></Declaration>
+VAR
+  bDifferentAxis : BOOL;
+END_VAR]]></Declaration>
       <Implementation>
-        <ST><![CDATA[RequGearOut := bInit AND _bIsPowered AND NOT _bError AND NOT _bIsBusy AND MotorAxis <> MasterAxis;
+        <ST><![CDATA[bDifferentAxis := (MotorAxis.DriveAddress.NcAxisId <> MasterAxis.DriveAddress.NcAxisId);
+RequGearOut := bInit AND _bIsPowered AND NOT _bError AND NOT _bIsBusy AND bDifferentAxis;
 //MotorAxis <> MasterAxis GearInDyn only on real axis not master axis
 //MotorAxis 0 MasterAxis GearInDyn only for virtual master axis
 IF RequGearOut THEN
@@ -325,7 +349,7 @@ METHOD RequJogAxisMaster : bool
       <Implementation>
         <ST><![CDATA[RequJogAxisMaster := bInit and _bIsPowered AND NOT _bError and not _bIsBusy;
 IF RequJogAxisMaster THEN
-  stAxisJog_P := MasterAxis;//change the pointer to the Jog axis ref in order to use the master axis
+  stAxisJog_R := MasterAxis;//change the pointer to the Jog axis ref in order to use the master axis
 	_nRequAxle := E_RequAxle.Jog;
 else
   _nRequAxle := E_RequAxle.NoRequ;
@@ -339,7 +363,7 @@ METHOD RequJogAxisMotor : bool
       <Implementation>
         <ST><![CDATA[RequJogAxisMotor := bInit and _bIsPowered AND NOT _bError and not _bIsBusy;
 IF RequJogAxisMotor THEN
-  stAxisJog_P := MotorAxis;//change the pointer to the Jog axis ref in order to use the motor axis
+  stAxisJog_R := MotorAxis;//change the pointer to the Jog axis ref in order to use the motor axis
 	_nRequAxle := E_RequAxle.Jog;
 else
   _nRequAxle := E_RequAxle.NoRequ;
@@ -401,10 +425,27 @@ END_IF]]></ST>
 
 ]]></Declaration>
       <Implementation>
-        <ST><![CDATA[_stFBAxle.fbPower(Axis:= MotorAxis^, Enable_Positive:= _bPowerOn, Enable_Negative:= _bPowerOn, Enable := _bPowerOn, Override:= _lrAxisOverride); 
-_stFBAxle.fbGearInDyn(Master := MasterAxis^, Slave:= MotorAxis^, Enable := _bGearInDyn, GearRatio := _lrMotorGearRatio, Acceleration := _lrAcceleration);
-_stFBAxle.fbGearOut(Slave:= MotorAxis^, Execute := _bGearOut);
-_stFBAxle.fbMoveJog(Axis := stAxisJog_P^, JogForward := _bJogFW, JogBackwards := _bJogBW, Mode := _nJogMode, Velocity := _lrJogVelocity);
+        <ST><![CDATA[//_stFBAxle.fbPower(Axis:= MotorAxis, Enable_Positive:= _bPowerOn, Enable_Negative:= _bPowerOn, Enable := _bPowerOn, Override:= _lrAxisOverride); 
+
+
+(*_stFBAxle.fbReset(
+	Axis:= G.stAxes.Line1Front, 
+	Busy=>_bMCBusy , 
+	Error=>_bMCError, 
+	ErrorID=> _MCerrId);*)
+  
+ (*_stFBAxle.fbReset(
+	Axis:= G.stAxes.Line1Front, 
+	Execute:= bReset, 
+	Done=> bResetDone,
+	Busy=>_bMCBusy , 
+	Error=>_bMCError, 
+	ErrorID=> _MCerrId);*)
+
+//_stFBAxle.fbGearInDyn(Master := MasterAxis, Slave:= MotorAxis, Enable := _bGearInDyn, GearRatio := _lrMotorGearRatio, Acceleration := _lrAcceleration);
+//_stFBAxle.fbGearOut(Slave:= MotorAxis, Execute := _bGearOut);
+//_stFBAxle.fbMoveJog(Axis := stAxisJog_R, JogForward := _bJogFW, JogBackwards := _bJogBW, Mode := _nJogMode, Velocity := _lrJogVelocity);
+//_stFBAxle.fbReset(Axis:= MotorAxis);
 WaitNextState();
 
 CASE _nStepMain OF
@@ -643,7 +684,8 @@ END_VAR
     _nStep := E_StepMC.PowerOnCheckStatusError;
   
   E_StepMC.PowerOnCheckStatusError:
-    b := MotorAxis^.Status.Error;
+    //b := MotorAxis.Status.Error;
+    b := G.stAxes.Line1Front.Status.Error;
     //b := TRUE;
     IF NOT b THEN //really at the level of NC Status Error flag
      _nStep := E_StepMC.PowerOnCheckStatus;
@@ -653,18 +695,20 @@ END_VAR
         OnExitRequError(_stFBAxle.fbPower.ErrorID);//after _uiRetryPowerOnCnt still impossible to PowerOn
         _uiRetryPowerOnCnt1 := _uiRetryPowerOnCnt_C;
        ELSE
-        OnExitRequRetry(ErrorIDIn := MotorAxis^.Status.ErrorID, RequRetry := E_RequAxle.Reset);
+        OnExitRequRetry(ErrorIDIn := MotorAxis.Status.ErrorID, RequRetry := E_RequAxle.Reset);
         _uiRetryPowerOnCnt1 := _uiRetryPowerOnCnt1 - 1;
   			END_IF
  		END_IF
   
   E_StepMC.PowerOnCheckStatus:
-    b := _stFBAxle.fbPower.Status;
+    //b := _stFBAxle.fbPower.Status;
+    b := Main.fbPower.Status;
     {IF defined (MiniRobotSim)}
     b := TRUE;
     {END_IF}
     IF b THEN
-      b := _stFBAxle.fbPower.Error;
+     //b := _stFBAxle.fbPower.Error;
+     b := Main.fbPower.Error;
       IF b THEN 
         _nStep := E_StepMC.PowerOnRetryError;
       ELSE
@@ -693,8 +737,7 @@ END_CASE]]></ST>
 
 ]]></Declaration>
       <Implementation>
-        <ST><![CDATA[_stFBAxle.fbReset(Axis:= MotorAxis^);
-WaitNextState();
+        <ST><![CDATA[
 
 CASE _nStep OF 
 E_StepMC.Init :

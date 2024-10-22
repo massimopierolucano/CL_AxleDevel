@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
-<TcSmItem xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://www.beckhoff.com/schemas/2012/07/TcSmProject" TcSmVersion="1.0" TcVersion="3.1.4024.47" ClassName="CFlbTermDef" SubType="9099" TcProjectVariant="CGSMiniRobot">
-	<Box Id="34" BoxType="9099">
+<TcSmItem xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://www.beckhoff.com/schemas/2012/07/TcSmProject" TcSmVersion="1.0" TcVersion="3.1.4024.47" ClassName="CFlbTermDef" SubType="9099" TcProjectVariant="MiniRobot">
+	<Box Id="15" BoxType="9099">
 		<Name>__FILENAME__</Name>
 		<ImageId>114</ImageId>
 		<EtherCAT SlaveType="2" PdiType="#x0006" StateMBoxPolling="true" CycleMBoxPollingTime="0" CoeType="23" EoeType="1" VendorId="#x01000056" ProductCode="#x00005800" RevisionNo="#x00000002" SerialNo="#x0165d228" InfoDataAddr="true" PortPhys="17" MaxSlotCount="256" MaxSlotGroupCount="1" SlotPdoIncrement="1" SlotIndexIncrement="16" Type="DL100" Desc="DL100">

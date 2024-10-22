@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
-<TcSmItem xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://www.beckhoff.com/schemas/2012/07/TcSmProject" TcSmVersion="1.0" TcVersion="3.1.4024.47" ClassName="CDevEtherCATDef" SubType="111" TcProjectVariant="MiniRobotSim">
-	<Device Id="2" Disabled="true" DevType="111" DevFlags="#x0003" AmsPort="28674" AmsNetId="192.168.1.5.3.1" RemoteName="CGSMini_IRSMainPLCSafe" InfoImageId="6">
+<TcSmItem xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://www.beckhoff.com/schemas/2012/07/TcSmProject" TcSmVersion="1.0" TcVersion="3.1.4024.47" ClassName="CDevEtherCATDef" SubType="111" TcProjectVariant="MiniRobot">
+	<Device Id="1" DevType="111" DevFlags="#x0003" AmsPort="28673" AmsNetId="5.93.147.0.2.1" RemoteName="CGSMini_IRSMainPLCSafe" InfoImageId="2">
 		<Name>__FILENAME__</Name>
 		<ProjectVariant PvUseDisable="true">
 			<Variant>
@@ -40,12 +40,22 @@
 				</Identification>
 			</Ccat>
 		</AddressInfo>
-		<Image Id="4" AddrType="9" ImageType="3">
+		<Image Id="1" AddrType="9" ImageType="3">
 			<Name>Image</Name>
 		</Image>
-		<Box File="CGSMini_RobotAllMainCab-EL1200.xti" Id="22">
+		<Box File="CGSMini_RobotAllMainCab-EL1200.xti" Id="2">
 			<EtherCAT PortABoxInfo="#x00ffffff"/>
 		</Box>
 		<EtherCAT DcSyncMode="3" EnableVirtualSwitch="true" MaxSwitchPorts="2" MaxSwitchFrames="120"/>
 	</Device>
+	<Mappings>
+		<OwnerA>
+			<OwnerB Name="TIID^CGSMini_IRSMainPLCSafe">
+				<Link VarA="CGSMini_RobotAllMainCab-EL1200^CGSMini_Robot01MainCabEtherCATBusEK1122^CGSMini_Robot01OnboardAxisPwrSupply-AX8620^Drive 38 (AX8206-0200-0104)^Device^DeviceMain Outputs^Power supply controlword" VarB="CGSMini_RobotAllMainCab-EL1200^CGSMini_Robot01MainCabEtherCATBusEK1122^CGSMini_Robot01OnboardAxisPwrSupply-AX8620^PSM Controlword for axis^Controlword for axis"/>
+				<Link VarA="CGSMini_RobotAllMainCab-EL1200^CGSMini_Robot01MainCabEtherCATBusEK1122^CGSMini_Robot01OnboardAxisPwrSupply-AX8620^Drive 39 (AX8206-0200-0104)^Device^DeviceMain Outputs^Power supply controlword" VarB="CGSMini_RobotAllMainCab-EL1200^CGSMini_Robot01MainCabEtherCATBusEK1122^CGSMini_Robot01OnboardAxisPwrSupply-AX8620^PSM Controlword for axis^Controlword for axis"/>
+				<Link VarA="CGSMini_RobotAllMainCab-EL1200^CGSMini_Robot01MainCabEtherCATBusEK1122^CGSMini_Robot01OnboardAxisPwrSupply-AX8620^PSM Controlword for axis^Controlword for axis" VarB="CGSMini_RobotAllMainCab-EL1200^CGSMini_Robot01MainCabEtherCATBusEK1122^CGSMini_Robot01OnboardAxisPwrSupply-AX8620^Drive 38 (AX8206-0200-0104)^Device^DeviceMain Outputs^Power supply controlword"/>
+				<Link VarA="CGSMini_RobotAllMainCab-EL1200^CGSMini_Robot01MainCabEtherCATBusEK1122^CGSMini_Robot01OnboardAxisPwrSupply-AX8620^PSM Controlword for axis^Controlword for axis" VarB="CGSMini_RobotAllMainCab-EL1200^CGSMini_Robot01MainCabEtherCATBusEK1122^CGSMini_Robot01OnboardAxisPwrSupply-AX8620^Drive 39 (AX8206-0200-0104)^Device^DeviceMain Outputs^Power supply controlword"/>
+			</OwnerB>
+		</OwnerA>
+	</Mappings>
 </TcSmItem>

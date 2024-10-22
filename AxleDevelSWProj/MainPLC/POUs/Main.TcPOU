@@ -3,21 +3,88 @@
   <POU Name="Main" Id="{b2f2a346-2aab-4873-ae80-3f4daff09e02}" SpecialFunc="None">
     <Declaration><![CDATA[PROGRAM Main
 VAR
- 	stm	: UINT := 10;
+ 	stm	: UINT := 1;//10;
   stIrrLine : ST_LineReference;
-  bFW, bBW : BOOL;
+  bMCRun, bFW, bBW,bPower,bReset,bResetDone,bError,bBusy,bPowerStatus : BOOL := FALSE;
+  errId : UDINT;
+  
+  fbPower : MC_Power;
+  fbReset : MC_Reset;
 END_VAR
 ]]></Declaration>
     <Implementation>
       <ST><![CDATA[G.AxisLine1Front(); 
-G.AxisMaster();
+//G.AxisMaster();
+
+//fbPower(Axis:= G.stAxes.Line1Front , Enable_Positive:= bPower, Enable_Negative:= bPower, Enable := bPower, Override:= 100.0); 
+
+IF bMCRun THEN
+fbPower(
+	Axis:= G.stAxes.Line1Front, 
+	Enable:= bPower, 
+	Enable_Positive:= bPower, 
+	Enable_Negative:= bPower, 
+	Override:= 100.0, 
+  Status=>bPowerStatus,
+	Busy=>bBusy , 
+	Error=>bError, 
+	ErrorID=> errId);
+
+(*fbReset(
+	Axis:= G.stAxes.Line1Front, 
+	Execute:= bReset, 
+	Done=> bResetDone,
+	Busy=> bBusy, 
+	Error=>bError, 
+	ErrorID=>errId);*)
+ELSE
+  bPower := G.AxisLine1Front._bPowerOn;
+  fbPower(
+	Axis:= G.stAxes.Line1Front, 
+	Enable:= bPower, 
+	Enable_Positive:= bPower, 
+	Enable_Negative:= bPower, 
+	Override:= 100.0, 
+  Status=>bPowerStatus,
+	Busy=>bBusy , 
+	Error=>bError, 
+	ErrorID=> errId);
+END_IF
+ 
 CASE stm OF 
+  1:
+		bPower := TRUE;
+    bMCRun := TRUE;
+		stm := 2;
+	2:
+		IF G.stAxes.Line1Front.Status.Error THEN //really at the level of NC
+			stm := 3;
+		ELSE
+			stm := 5;
+		END_IF
+	3:
+		bReset := TRUE;
+		stm := 4;	
+	4:
+		IF bResetDone THEN
+			bReset := FALSE;
+			stm := 5;
+		END_IF
+	5:
+    bPowerStatus := fbPower.Status;
+		IF bPowerStatus THEN
+			//bHome := TRUE;
+			stm := 6;
+		END_IF
+  6:
+    stm := 6;
+  
   10:
     stIrrLine.nThis := 0;
     stIrrLine.nFixedID := 1;
-    G.AxisLine1Front.Init(stIrrLine := stIrrLine, stAxisREF_P := ADR(G.stAxes.Line1Front), stAxisMaster_P := ADR(G.stAxes.Master));
-    G.AxisMaster.Init(stIrrLine := stIrrLine, stAxisREF_P := ADR(G.stAxes.Master), stAxisMaster_P := ADR(G.stAxes.Master));
-    stm := 50;
+    G.AxisLine1Front.Init(stIrrLine := stIrrLine, stAxisMotor_R := G.stAxes.Line1Front, stAxisMaster_R := G.stAxes.Master);
+    G.AxisMaster.Init(stIrrLine := stIrrLine, stAxisMotor_R := G.stAxes.Master, stAxisMaster_R := G.stAxes.Master);
+    stm := 100;//50;
 
   50:
     IF NOT G.AxisMaster.IsBusy THEN

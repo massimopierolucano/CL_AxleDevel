@@ -1,5 +1,5 @@
 <?xml version="1.0"?>
-<TcSmItem xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://www.beckhoff.com/schemas/2012/07/TcSmProject" TcSmVersion="1.0" TcVersion="3.1.4024.47" ClassName="CNcAxisDef" SubType="1" TcProjectVariant="MiniRobotSim">
+<TcSmItem xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://www.beckhoff.com/schemas/2012/07/TcSmProject" TcSmVersion="1.0" TcVersion="3.1.4024.47" ClassName="CNcAxisDef" SubType="1" TcProjectVariant="MiniRobot">
 	<DataTypes>
 		<DataType>
 			<Name GUID="{18071995-0000-0000-0000-000000000035}" TcBaseType="true" HideType="true">UINTARR2</Name>
@@ -1424,7 +1424,7 @@ External Setpoint Generation:
 			</Relations>
 		</DataType>
 	</DataTypes>
-	<Axis Id="7" Disabled="true" CreateSymbols="true" AxisType="1" AxisFolder="CGSMiniRobot" GroupId="4">
+	<Axis Id="7" CreateSymbols="true" AxisType="1" AxisFolder="CGSMiniRobot" GroupId="4">
 		<Name>__FILENAME__</Name>
 		<ProjectVariant PvUseDisable="true">
 			<Variant>
@@ -1585,22 +1585,21 @@ External Setpoint Generation:
 	<Mappings>
 		<OwnerA>
 			<OwnerB Name="TIID^CGSMini_IRSMainPLCSafe^CGSMini_RobotAllMainCab-EL1200^CGSMini_Robot01MainCabEtherCATBusEK1122^CGSMini_Robot01OnboardAxisPwrSupply-AX8620^CGSMini_Robot01OnboardAxisDriverLine2-AX8206">
-				<Link VarA="Drive^Inputs^In^nDataIn1" VarB="Front^Ch B PositionControl Inputs^Ch B Following error actual value"/>
-				<Link VarA="Drive^Inputs^In^nDataIn3[0]" VarB="Front^Ch B TorqueControl Inputs^Ch B Torque/force actual value"/>
+				<Link VarA="Drive^Inputs^In^nDataIn1" VarB="Ch B^Ch B PositionControl Inputs^Ch B Following error actual value"/>
 				<Link VarA="Drive^Inputs^In^nDcOutputTime" VarB="InfoData^DcOutputShift"/>
-				<Link VarA="Drive^Inputs^In^nState1" VarB="Front^Ch B AxisMain Inputs^Ch B Statusword" Size="8"/>
-				<Link VarA="Drive^Inputs^In^nState2" VarB="Front^Ch B AxisMain Inputs^Ch B Statusword" Size="8" OffsB="8"/>
-				<Link VarA="Drive^Inputs^In^nState4" VarB="Front^WcState^InputToggle0" Size="1" OffsA="1"/>
-				<Link VarA="Drive^Inputs^In^nState4" VarB="Front^WcState^WcState0" Size="1"/>
-				<Link VarA="Drive^Outputs^Out^nCtrl1" VarB="Front^Ch B AxisMain Outputs^Ch B Controlword" Size="8"/>
-				<Link VarA="Drive^Outputs^Out^nCtrl2" VarB="Front^Ch B AxisMain Outputs^Ch B Controlword" Size="8" OffsB="8"/>
-				<Link VarA="Drive^Outputs^Out^nDataOut1" VarB="Front^Ch B Interpolator Outputs^Ch B Target position"/>
-				<Link VarA="Drive^Outputs^Out^nDataOut2" VarB="Front^Ch B Interpolator Outputs^Ch B Target velocity"/>
-				<Link VarA="Enc^Inputs^In^nDataIn1" VarB="Front^Ch B AxisMain Inputs^Ch B Position actual value"/>
+				<Link VarA="Drive^Inputs^In^nState1" VarB="Ch B^Ch B AxisMain Inputs^Ch B Statusword" Size="8"/>
+				<Link VarA="Drive^Inputs^In^nState2" VarB="Ch B^Ch B AxisMain Inputs^Ch B Statusword" Size="8" OffsB="8"/>
+				<Link VarA="Drive^Inputs^In^nState4" VarB="WcState^InputToggle0" Size="1" OffsA="1"/>
+				<Link VarA="Drive^Inputs^In^nState4" VarB="WcState^WcState0" Size="1"/>
+				<Link VarA="Drive^Outputs^Out^nCtrl1" VarB="Ch B^Ch B AxisMain Outputs^Ch B Controlword" Size="8"/>
+				<Link VarA="Drive^Outputs^Out^nCtrl2" VarB="Ch B^Ch B AxisMain Outputs^Ch B Controlword" Size="8" OffsB="8"/>
+				<Link VarA="Drive^Outputs^Out^nDataOut1" VarB="Ch B^Ch B Interpolator Outputs^Ch B Target position"/>
+				<Link VarA="Drive^Outputs^Out^nDataOut2" VarB="Ch B^Ch B Interpolator Outputs^Ch B Target velocity"/>
+				<Link VarA="Enc^Inputs^In^nDataIn1" VarB="Ch B^Ch B AxisMain Inputs^Ch B Position actual value"/>
 				<Link VarA="Enc^Inputs^In^nDcInputTime" VarB="InfoData^DcInputShift"/>
-				<Link VarA="Enc^Inputs^In^nState2" VarB="Front^Ch B AxisMain Inputs^Position actual value invalid" Size="1" OffsA="5"/>
-				<Link VarA="Enc^Inputs^In^nState4" VarB="Front^WcState^InputToggle0" Size="1" OffsA="1"/>
-				<Link VarA="Enc^Inputs^In^nState4" VarB="Front^WcState^WcState0" Size="1"/>
+				<Link VarA="Enc^Inputs^In^nState2" VarB="Ch B^Ch B AxisMain Inputs^Position actual value invalid" Size="1" OffsA="5"/>
+				<Link VarA="Enc^Inputs^In^nState4" VarB="WcState^InputToggle0" Size="1" OffsA="1"/>
+				<Link VarA="Enc^Inputs^In^nState4" VarB="WcState^WcState0" Size="1"/>
 			</OwnerB>
 		</OwnerA>
 	</Mappings>

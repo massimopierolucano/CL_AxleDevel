@@ -1,5 +1,5 @@
 <?xml version="1.0"?>
-<TcSmItem xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://www.beckhoff.com/schemas/2012/07/TcSmProject" TcSmVersion="1.0" TcVersion="3.1.4024.47" ClassName="CNcAxisDef" SubType="1" TcProjectVariant="MiniRobotSim">
+<TcSmItem xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://www.beckhoff.com/schemas/2012/07/TcSmProject" TcSmVersion="1.0" TcVersion="3.1.4024.47" ClassName="CNcAxisDef" SubType="1" TcProjectVariant="MiniRobot">
 	<DataTypes>
 		<DataType>
 			<Name GUID="{18071995-0000-0000-0000-000000000035}" TcBaseType="true" HideType="true">UINTARR2</Name>
@@ -1424,7 +1424,7 @@ External Setpoint Generation:
 			</Relations>
 		</DataType>
 	</DataTypes>
-	<Axis Id="8" Disabled="true" CreateSymbols="true" AxisType="1" AxisFolder="CGSMiniRobot">
+	<Axis Id="8" CreateSymbols="true" AxisType="1" AxisFolder="CGSMiniRobot">
 		<Name>__FILENAME__</Name>
 		<ProjectVariant PvUseDisable="true">
 			<Variant>
@@ -1446,7 +1446,7 @@ External Setpoint Generation:
 			<OtherSettings AllowMotionCmdToSlave="true"/>
 		</AxisPara>
 		<Encoder Name="Enc" EncType="19">
-			<EncPara ScaleFactorNumerator="0.79" ScaleFactorDenominator="26214400" MaxCount="#xffffffff">
+			<EncPara ScaleFactorNumerator="0.79" ScaleFactorDenominator="26214400" Inverse="true" MaxCount="#xffffffff">
 				<ActPosCorrection Enable="true" Time="1"/>
 			</EncPara>
 			<Vars VarGrpType="1">
@@ -1506,7 +1506,7 @@ External Setpoint Generation:
 			</Vars>
 		</Encoder>
 		<Drive Name="Drive" DrvType="16">
-			<DrvPara MaxCount="#xffffffff" DriveControlDWord="#x00020100">
+			<DrvPara Inverse="true" MaxCount="#xffffffff" DriveControlDWord="#x00020100">
 				<Analog VeloReferenz="0.737" VeloScale="71.5255737304688" TorqueSetpointScale="10" ScaleFactorActTorque="0.1"/>
 				<TimeComp TaskDelayCycles="1"/>
 			</DrvPara>
@@ -1585,22 +1585,21 @@ External Setpoint Generation:
 	<Mappings>
 		<OwnerA>
 			<OwnerB Name="TIID^CGSMini_IRSMainPLCSafe^CGSMini_RobotAllMainCab-EL1200^CGSMini_Robot01MainCabEtherCATBusEK1122^CGSMini_Robot01OnboardAxisPwrSupply-AX8620^CGSMini_Robot01OnboardAxisDriverLine2-AX8206">
-				<Link VarA="Drive^Inputs^In^nDataIn1" VarB="Back^Ch A PositionControl Inputs^Ch A Following error actual value"/>
-				<Link VarA="Drive^Inputs^In^nDataIn3[0]" VarB="Back^Ch A TorqueControl Inputs^Ch A Torque/force actual value"/>
+				<Link VarA="Drive^Inputs^In^nDataIn1" VarB="Ch A^Ch A PositionControl Inputs^Ch A Following error actual value"/>
 				<Link VarA="Drive^Inputs^In^nDcOutputTime" VarB="InfoData^DcOutputShift"/>
-				<Link VarA="Drive^Inputs^In^nState1" VarB="Back^Ch A AxisMain Inputs^Ch A Statusword" Size="8"/>
-				<Link VarA="Drive^Inputs^In^nState2" VarB="Back^Ch A AxisMain Inputs^Ch A Statusword" Size="8" OffsB="8"/>
-				<Link VarA="Drive^Inputs^In^nState4" VarB="Front^WcState^InputToggle0" Size="1" OffsA="1"/>
-				<Link VarA="Drive^Inputs^In^nState4" VarB="Front^WcState^WcState0" Size="1"/>
-				<Link VarA="Drive^Outputs^Out^nCtrl1" VarB="Back^Ch A AxisMain Outputs^Ch A Controlword" Size="8"/>
-				<Link VarA="Drive^Outputs^Out^nCtrl2" VarB="Back^Ch A AxisMain Outputs^Ch A Controlword" Size="8" OffsB="8"/>
-				<Link VarA="Drive^Outputs^Out^nDataOut1" VarB="Back^Ch A Interpolator Outputs^Ch A Target position"/>
-				<Link VarA="Drive^Outputs^Out^nDataOut2" VarB="Back^Ch A Interpolator Outputs^Ch A Target velocity"/>
-				<Link VarA="Enc^Inputs^In^nDataIn1" VarB="Back^Ch A AxisMain Inputs^Ch A Position actual value"/>
+				<Link VarA="Drive^Inputs^In^nState1" VarB="Ch A^Ch A AxisMain Inputs^Ch A Statusword" Size="8"/>
+				<Link VarA="Drive^Inputs^In^nState2" VarB="Ch A^Ch A AxisMain Inputs^Ch A Statusword" Size="8" OffsB="8"/>
+				<Link VarA="Drive^Inputs^In^nState4" VarB="WcState^InputToggle0" Size="1" OffsA="1"/>
+				<Link VarA="Drive^Inputs^In^nState4" VarB="WcState^WcState0" Size="1"/>
+				<Link VarA="Drive^Outputs^Out^nCtrl1" VarB="Ch A^Ch A AxisMain Outputs^Ch A Controlword" Size="8"/>
+				<Link VarA="Drive^Outputs^Out^nCtrl2" VarB="Ch A^Ch A AxisMain Outputs^Ch A Controlword" Size="8" OffsB="8"/>
+				<Link VarA="Drive^Outputs^Out^nDataOut1" VarB="Ch A^Ch A Interpolator Outputs^Ch A Target position"/>
+				<Link VarA="Drive^Outputs^Out^nDataOut2" VarB="Ch A^Ch A Interpolator Outputs^Ch A Target velocity"/>
+				<Link VarA="Enc^Inputs^In^nDataIn1" VarB="Ch A^Ch A AxisMain Inputs^Ch A Position actual value"/>
 				<Link VarA="Enc^Inputs^In^nDcInputTime" VarB="InfoData^DcInputShift"/>
-				<Link VarA="Enc^Inputs^In^nState2" VarB="Back^Ch A AxisMain Inputs^Position actual value invalid" Size="1" OffsA="5"/>
-				<Link VarA="Enc^Inputs^In^nState4" VarB="Front^WcState^InputToggle0" Size="1" OffsA="1"/>
-				<Link VarA="Enc^Inputs^In^nState4" VarB="Front^WcState^WcState0" Size="1"/>
+				<Link VarA="Enc^Inputs^In^nState2" VarB="Ch A^Ch A AxisMain Inputs^Position actual value invalid" Size="1" OffsA="5"/>
+				<Link VarA="Enc^Inputs^In^nState4" VarB="WcState^InputToggle0" Size="1" OffsA="1"/>
+				<Link VarA="Enc^Inputs^In^nState4" VarB="WcState^WcState0" Size="1"/>
 			</OwnerB>
 		</OwnerA>
 	</Mappings>

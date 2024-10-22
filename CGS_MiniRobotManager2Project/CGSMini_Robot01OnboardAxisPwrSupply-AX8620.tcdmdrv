@@ -3,25 +3,30 @@
   <ItemName>CGSMini_Robot01OnboardAxisPwrSupply-AX8620</ItemName>
   <PathName>TIID^CGSMini_IRSMainPLCSafe^CGSMini_RobotAllMainCab-EL1200^CGSMini_Robot01MainCabEtherCATBusEK1122^CGSMini_Robot01OnboardAxisPwrSupply-AX8620</PathName>
   <ItemType>5</ItemType>
-  <ItemId>39</ItemId>
-  <ObjectId>#x03020027</ObjectId>
+  <ItemId>37</ItemId>
+  <ObjectId>#x03020025</ObjectId>
   <ItemSubType>9099</ItemSubType>
   <ItemSubTypeName>AX8620-0000-0105</ItemSubTypeName>
-  <ChildCount>1</ChildCount>
+  <ChildCount>3</ChildCount>
   <Disabled>false</Disabled>
   <TreeImageData16x14>424dd6020000000000003600000028000000100000000e0000000100180000000000a002000000000000000000000000000000000000c3c3c3c3c3c3c3c3c3c3c3c3c3c3c3c3c3c3ff00ffff00ffff00ffff00ffff00ffff00ffff00ffff00ffff00ffff00ffc3c3c3c3c3c3c3c3c3000000000000000000ff00ffff00ffff00ffff00ffff00ffff00ffff00ffff00ffff00ffff00ffc3c3c3c3c3c3c3c3c3c3c3c3c3c3c3c3c3c3ff00ffff00ffff00ffff00ffff00ffff00ffff00ffff00ffff00ffff00ffc3c3c3c3c3c3c3c3c3000000000000000000ff00ffff00ffff00ffff00ffff00ffff00ffff00ffff00ffff00ffff00ffc3c3c3c3c3c3c3c3c3c3c3c3c3c3c3c3c3c3ff00ffff00ffff00ffff00ffff00ffff00ffff00ffff00ffff00ffff00ffc3c3c3c3c3c3c3c3c3000000000000000000ff00ffff00ffff00ffff00ffff00ffff00ffff00ffff00ffff00ffff00ffc3c3c3c3c3c3c3c3c3c3c3c3241cedc3c3c3ff00ffff00ffff00ffff00ffff00ffff00ffff00ffff00ffff00ffff00ffc3c3c3c3c3c3c3c3c3c3c3c3241cedc3c3c3ff00ffff00ffff00ffff00ffff00ffff00ffff00ffff00ffff00ffff00ffc3c3c3000000c3c3c3c3c3c3241cedc3c3c3ff00ffff00ffff00ffff00ffff00ffff00ffff00ffff00ffff00ffff00ffc3c3c3c3c3c3c3c3c3c3c3c3241cedc3c3c3ff00ffff00ffff00ffff00ffff00ffff00ffff00ffff00ffff00ffff00ffc3c3c3000000c3c3c3c3c3c3241cedc3c3c3ff00ffff00ffff00ffff00ffff00ffff00ffff00ffff00ffff00ffff00ffc3c3c3c3c3c3c3c3c3c3c3c3241cedc3c3c3ff00ffff00ffff00ffff00ffff00ffff00ffff00ffff00ffff00ffff00ff000000000000000000000000000000000000ff00ffff00ffff00ffff00ffff00ffff00ffff00ffff00ffff00ffff00ffc3c3c3c3c3c3c3c3c3c3c3c3c3c3c3c3c3c3ff00ffff00ffff00ffff00ffff00ffff00ffff00ffff00ffff00ffff00ff</TreeImageData16x14>
   <Xml>
-    <TcDMDrive Disabled="true">
+    <TcDMDrive>
       <SortId>0</SortId>
       <DriveModuleType>27</DriveModuleType>
       <TcLink>
-        <TcPrjPath>..\IrrigationRobotSWProj\IrrigationSystemSWProj.tsproj</TcPrjPath>
+        <TcPrjPath>..\AxleDevelSWProj\AxleDevelSWProj.tsproj</TcPrjPath>
         <IoItemPathName>TIID^CGSMini_IRSMainPLCSafe^CGSMini_RobotAllMainCab-EL1200^CGSMini_Robot01MainCabEtherCATBusEK1122^CGSMini_Robot01OnboardAxisPwrSupply-AX8620</IoItemPathName>
-        <ItemId>39</ItemId>
-        <ObjectId>#x03020027</ObjectId>
+        <ItemId>37</ItemId>
+        <ObjectId>#x03020025</ObjectId>
       </TcLink>
       <OrderCode>AX8620-0000-0000</OrderCode>
       <Name>CGSMini_Robot01OnboardAxisPwrSupply-AX8620</Name>
+      <FirmwareVersion>01.05 b0006</FirmwareVersion>
+      <CatalogNo>AX8620-0000-0000</CatalogNo>
+      <HardwareVersion>00.00(10.10.2023)</HardwareVersion>
+      <SerialNr>625 092</SerialNr>
+      <BIC>1P131384SBTN00085fum1KAX8620-0000-0000              Q1    51S000625092</BIC>
       <ProductRevision>AX8620-0000-0105</ProductRevision>
       <WatchLog UpdateIntervalInMs="500">
         <WatchLogItem>
@@ -93,7 +98,7 @@
     </TcDMDrive>
   </Xml>
   <BoxDef>
-    <FieldbusAddress>0</FieldbusAddress>
+    <FieldbusAddress>1017</FieldbusAddress>
     <AmsAddress>
       <AmsPort>0</AmsPort>
       <AmsPortTimeout>5</AmsPortTimeout>
@@ -103,8 +108,8 @@
     <Slave>
       <Info>
         <Name><![CDATA[CGSMini_Robot01OnboardAxisPwrSupply-AX8620]]></Name>
-        <PhysAddr>0</PhysAddr>
-        <AutoIncAddr>1</AutoIncAddr>
+        <PhysAddr>1017</PhysAddr>
+        <AutoIncAddr>65520</AutoIncAddr>
         <Physics>YKY</Physics>
         <VendorId>2</VendorId>
         <ProductCode>564944914</ProductCode>
@@ -114,8 +119,8 @@
       </Info>
       <ProcessData>
         <Recv>
-          <BitStart>576</BitStart>
-          <BitLength>112</BitLength>
+          <BitStart>2992</BitStart>
+          <BitLength>16</BitLength>
         </Recv>
         <Sm2>
           <Type>Outputs</Type>
@@ -130,8 +135,6 @@
           <ControlByte>32</ControlByte>
           <Enable>1</Enable>
           <Pdo>6656</Pdo>
-          <Pdo>6657</Pdo>
-          <Pdo>6663</Pdo>
         </Sm3>
         <TxPdo Fixed="true" Sm="3">
           <Index>#x1a00</Index>
@@ -147,8 +150,8 @@
               <AmsAddress>
                 <AmsPort>11</AmsPort>
               </AmsAddress>
-              <IndexGroup>50593856</IndexGroup>
-              <IndexOffset>-1073741824</IndexOffset>
+              <IndexGroup>50593808</IndexGroup>
+              <IndexOffset>-1073738832</IndexOffset>
               <Length>1</Length>
             </AdsInfo>
           </Entry>
@@ -163,8 +166,8 @@
               <AmsAddress>
                 <AmsPort>11</AmsPort>
               </AmsAddress>
-              <IndexGroup>50593856</IndexGroup>
-              <IndexOffset>-1073741823</IndexOffset>
+              <IndexGroup>50593808</IndexGroup>
+              <IndexOffset>-1073738831</IndexOffset>
               <Length>1</Length>
             </AdsInfo>
           </Entry>
@@ -179,8 +182,8 @@
               <AmsAddress>
                 <AmsPort>11</AmsPort>
               </AmsAddress>
-              <IndexGroup>50593856</IndexGroup>
-              <IndexOffset>-1073741822</IndexOffset>
+              <IndexGroup>50593808</IndexGroup>
+              <IndexOffset>-1073738830</IndexOffset>
               <Length>1</Length>
             </AdsInfo>
           </Entry>
@@ -195,8 +198,8 @@
               <AmsAddress>
                 <AmsPort>11</AmsPort>
               </AmsAddress>
-              <IndexGroup>50593856</IndexGroup>
-              <IndexOffset>-1073741821</IndexOffset>
+              <IndexGroup>50593808</IndexGroup>
+              <IndexOffset>-1073738829</IndexOffset>
               <Length>1</Length>
             </AdsInfo>
           </Entry>
@@ -211,8 +214,8 @@
               <AmsAddress>
                 <AmsPort>11</AmsPort>
               </AmsAddress>
-              <IndexGroup>50593856</IndexGroup>
-              <IndexOffset>-1073741820</IndexOffset>
+              <IndexGroup>50593808</IndexGroup>
+              <IndexOffset>-1073738828</IndexOffset>
               <Length>1</Length>
             </AdsInfo>
           </Entry>
@@ -227,8 +230,8 @@
               <AmsAddress>
                 <AmsPort>11</AmsPort>
               </AmsAddress>
-              <IndexGroup>50593856</IndexGroup>
-              <IndexOffset>-1073741819</IndexOffset>
+              <IndexGroup>50593808</IndexGroup>
+              <IndexOffset>-1073738827</IndexOffset>
               <Length>1</Length>
             </AdsInfo>
           </Entry>
@@ -253,13 +256,13 @@
               <AmsAddress>
                 <AmsPort>11</AmsPort>
               </AmsAddress>
-              <IndexGroup>50593856</IndexGroup>
-              <IndexOffset>-1073741813</IndexOffset>
+              <IndexGroup>50593808</IndexGroup>
+              <IndexOffset>-1073738821</IndexOffset>
               <Length>1</Length>
             </AdsInfo>
           </Entry>
         </TxPdo>
-        <TxPdo Fixed="true" Sm="3">
+        <TxPdo Fixed="true">
           <Index>#x1a01</Index>
           <Name>PSM Warning register</Name>
           <Entry>
@@ -268,14 +271,6 @@
             <BitLen>1</BitLen>
             <Name>Warning__A0 Reserviert</Name>
             <DataType>BIT</DataType>
-            <AdsInfo>
-              <AmsAddress>
-                <AmsPort>11</AmsPort>
-              </AmsAddress>
-              <IndexGroup>50593856</IndexGroup>
-              <IndexOffset>-1073741824</IndexOffset>
-              <Length>1</Length>
-            </AdsInfo>
           </Entry>
           <Entry>
             <Index>#x6004</Index>
@@ -284,14 +279,6 @@
             <Name>Warning__A1 Brake resistor power overload</Name>
             <Comment>Actual brake power or energy above brake resistor power warning threshold (8000:0D).</Comment>
             <DataType>BIT</DataType>
-            <AdsInfo>
-              <AmsAddress>
-                <AmsPort>11</AmsPort>
-              </AmsAddress>
-              <IndexGroup>50593856</IndexGroup>
-              <IndexOffset>-1073741823</IndexOffset>
-              <Length>1</Length>
-            </AdsInfo>
           </Entry>
           <Entry>
             <Index>#x6004</Index>
@@ -300,14 +287,6 @@
             <Name>Warning__A2 Device overtemperature</Name>
             <Comment>Actual heatsink temperature above heatsink temperature warning threshold (8000:0A).</Comment>
             <DataType>BIT</DataType>
-            <AdsInfo>
-              <AmsAddress>
-                <AmsPort>11</AmsPort>
-              </AmsAddress>
-              <IndexGroup>50593856</IndexGroup>
-              <IndexOffset>-1073741822</IndexOffset>
-              <Length>1</Length>
-            </AdsInfo>
           </Entry>
           <Entry>
             <Index>#x6004</Index>
@@ -316,14 +295,6 @@
             <Name>Warning__A3 DC link continuous overcurrent</Name>
             <Comment>DC link current above DC link continuous overcurrent warning threshold (8000:02).</Comment>
             <DataType>BIT</DataType>
-            <AdsInfo>
-              <AmsAddress>
-                <AmsPort>11</AmsPort>
-              </AmsAddress>
-              <IndexGroup>50593856</IndexGroup>
-              <IndexOffset>-1073741821</IndexOffset>
-              <Length>1</Length>
-            </AdsInfo>
           </Entry>
           <Entry>
             <Index>#x6004</Index>
@@ -332,14 +303,6 @@
             <Name>Warning__A4 Fan malfunction</Name>
             <Comment>Fan does not work.</Comment>
             <DataType>BIT</DataType>
-            <AdsInfo>
-              <AmsAddress>
-                <AmsPort>11</AmsPort>
-              </AmsAddress>
-              <IndexGroup>50593856</IndexGroup>
-              <IndexOffset>-1073741820</IndexOffset>
-              <Length>1</Length>
-            </AdsInfo>
           </Entry>
           <Entry>
             <Index>#x6004</Index>
@@ -348,14 +311,6 @@
             <Name>Warning__A5 Mains overvoltage</Name>
             <Comment>Actual mains voltage above mains voltage max tolerance (8000:07).</Comment>
             <DataType>BIT</DataType>
-            <AdsInfo>
-              <AmsAddress>
-                <AmsPort>11</AmsPort>
-              </AmsAddress>
-              <IndexGroup>50593856</IndexGroup>
-              <IndexOffset>-1073741819</IndexOffset>
-              <Length>1</Length>
-            </AdsInfo>
           </Entry>
           <Entry>
             <Index>#x6004</Index>
@@ -364,14 +319,6 @@
             <Name>Warning__A6 Mains undervoltage</Name>
             <Comment>Actual mains voltage below mains voltage min tolerance (8000:08).</Comment>
             <DataType>BIT</DataType>
-            <AdsInfo>
-              <AmsAddress>
-                <AmsPort>11</AmsPort>
-              </AmsAddress>
-              <IndexGroup>50593856</IndexGroup>
-              <IndexOffset>-1073741818</IndexOffset>
-              <Length>1</Length>
-            </AdsInfo>
           </Entry>
           <Entry>
             <Index>#x0</Index>
@@ -538,7 +485,7 @@
             <DataType>UINT</DataType>
           </Entry>
         </TxPdo>
-        <TxPdo Sm="3">
+        <TxPdo>
           <Index>#x1a07</Index>
           <Name>PSM Process values</Name>
           <Entry>
@@ -548,14 +495,6 @@
             <Name>Actual brake resistor continuous power</Name>
             <Comment>Actual continuous power converted in the brake resistor.</Comment>
             <DataType>UINT</DataType>
-            <AdsInfo>
-              <AmsAddress>
-                <AmsPort>11</AmsPort>
-              </AmsAddress>
-              <IndexGroup>50593856</IndexGroup>
-              <IndexOffset>-2147483648</IndexOffset>
-              <Length>2</Length>
-            </AdsInfo>
           </Entry>
           <Entry>
             <Index>#x6003</Index>
@@ -564,63 +503,6 @@
             <Name>Actual brake resistor short-time energy</Name>
             <Comment>Actual brake energy generated in last second in % of maximal short-time energy (by on-time 1s). Max short-time energy = Continuous max power x Overload factor for 1s x Switch-On-Time (1s).</Comment>
             <DataType>UINT</DataType>
-            <AdsInfo>
-              <AmsAddress>
-                <AmsPort>11</AmsPort>
-              </AmsAddress>
-              <IndexGroup>50593856</IndexGroup>
-              <IndexOffset>-2147483648</IndexOffset>
-              <Length>2</Length>
-            </AdsInfo>
-          </Entry>
-          <Entry>
-            <Index>#x6007</Index>
-            <SubIndex>6</SubIndex>
-            <BitLen>1</BitLen>
-            <Name>Fan active</Name>
-            <DataType>BIT</DataType>
-            <AdsInfo>
-              <AmsAddress>
-                <AmsPort>11</AmsPort>
-              </AmsAddress>
-              <IndexGroup>50593856</IndexGroup>
-              <IndexOffset>-1073741824</IndexOffset>
-              <Length>1</Length>
-            </AdsInfo>
-          </Entry>
-          <Entry>
-            <Index>#x0</Index>
-            <BitLen>7</BitLen>
-          </Entry>
-          <Entry>
-            <Index>#x6001</Index>
-            <SubIndex>2</SubIndex>
-            <BitLen>32</BitLen>
-            <Name>Actual mains voltage</Name>
-            <DataType>UDINT</DataType>
-            <AdsInfo>
-              <AmsAddress>
-                <AmsPort>11</AmsPort>
-              </AmsAddress>
-              <IndexGroup>50593856</IndexGroup>
-              <IndexOffset>-2147483648</IndexOffset>
-              <Length>4</Length>
-            </AdsInfo>
-          </Entry>
-          <Entry>
-            <Index>#x6005</Index>
-            <SubIndex>2</SubIndex>
-            <BitLen>8</BitLen>
-            <Name>Umains state machine</Name>
-            <DataType>BYTE</DataType>
-            <AdsInfo>
-              <AmsAddress>
-                <AmsPort>11</AmsPort>
-              </AmsAddress>
-              <IndexGroup>50593856</IndexGroup>
-              <IndexOffset>-2147483648</IndexOffset>
-              <Length>1</Length>
-            </AdsInfo>
           </Entry>
         </TxPdo>
       </ProcessData>
@@ -659,7 +541,7 @@
               <Ccs>1</Ccs>
               <Index>6663</Index>
               <SubIndex>0</SubIndex>
-              <Data>0600100103601002036001060760070000002002016008020560</Data>
+              <Data>02001001036010020360</Data>
             </InitCmd>
             <InitCmd Fixed="true" CompleteAccess="true">
               <Transition>PS</Transition>
@@ -677,7 +559,7 @@
               <Ccs>1</Ccs>
               <Index>7187</Index>
               <SubIndex>0</SubIndex>
-              <Data>0300001a011a071a</Data>
+              <Data>0100001a</Data>
             </InitCmd>
             <InitCmd>
               <Transition>IP</Transition>
@@ -715,6 +597,33 @@
               <SubIndex>6</SubIndex>
               <Data>a00f</Data>
             </InitCmd>
+            <InitCmd>
+              <Transition>PS</Transition>
+              <Comment><![CDATA[PSM Parameters / DC link max voltage]]></Comment>
+              <Timeout>0</Timeout>
+              <Ccs>1</Ccs>
+              <Index>32768</Index>
+              <SubIndex>1</SubIndex>
+              <Data>2e22</Data>
+            </InitCmd>
+            <InitCmd>
+              <Transition>PS</Transition>
+              <Comment><![CDATA[PSM Parameters / Mains voltage max tolerance]]></Comment>
+              <Timeout>0</Timeout>
+              <Ccs>1</Ccs>
+              <Index>32768</Index>
+              <SubIndex>7</SubIndex>
+              <Data>0a00</Data>
+            </InitCmd>
+            <InitCmd>
+              <Transition>PS</Transition>
+              <Comment><![CDATA[PSM Parameters / Mains voltage min tolerance]]></Comment>
+              <Timeout>0</Timeout>
+              <Ccs>1</Ccs>
+              <Index>32768</Index>
+              <SubIndex>8</SubIndex>
+              <Data>1900</Data>
+            </InitCmd>
           </InitCmds>
           <CanOpenType>47</CanOpenType>
           <Profile>
@@ -735,7 +644,7 @@
           <Comment><![CDATA[set device state to INIT]]></Comment>
           <Requires>cycle</Requires>
           <Cmd>2</Cmd>
-          <Adp>1</Adp>
+          <Adp>65520</Adp>
           <Ado>288</Ado>
           <Data>1100</Data>
           <Retries>3</Retries>
@@ -747,7 +656,7 @@
           <Comment><![CDATA[clear DC activation]]></Comment>
           <Requires>cycle</Requires>
           <Cmd>2</Cmd>
-          <Adp>1</Adp>
+          <Adp>65520</Adp>
           <Ado>2432</Ado>
           <Data>0000</Data>
           <Retries>3</Retries>
@@ -759,7 +668,7 @@
           <Comment><![CDATA[check device state for INIT]]></Comment>
           <Requires>cycle</Requires>
           <Cmd>1</Cmd>
-          <Adp>1</Adp>
+          <Adp>65520</Adp>
           <Ado>304</Ado>
           <Data>0000</Data>
           <Retries>3</Retries>
@@ -774,7 +683,7 @@
           <Comment><![CDATA[check device state for INIT]]></Comment>
           <Requires>cycle</Requires>
           <Cmd>1</Cmd>
-          <Adp>1</Adp>
+          <Adp>65520</Adp>
           <Ado>304</Ado>
           <Data>0000</Data>
           <Retries>3</Retries>
@@ -790,7 +699,7 @@
           <Comment><![CDATA[set device state to INIT]]></Comment>
           <Requires>cycle</Requires>
           <Cmd>2</Cmd>
-          <Adp>1</Adp>
+          <Adp>65520</Adp>
           <Ado>288</Ado>
           <Data>1100</Data>
           <Cnt>1</Cnt>
@@ -803,7 +712,7 @@
           <Comment><![CDATA[check device state for INIT]]></Comment>
           <Requires>cycle</Requires>
           <Cmd>1</Cmd>
-          <Adp>1</Adp>
+          <Adp>65520</Adp>
           <Ado>304</Ado>
           <Data>0000</Data>
           <Cnt>1</Cnt>
@@ -819,7 +728,7 @@
           <Comment><![CDATA[assign EEPROM to ECAT]]></Comment>
           <Requires>cycle</Requires>
           <Cmd>2</Cmd>
-          <Adp>1</Adp>
+          <Adp>65520</Adp>
           <Ado>1280</Ado>
           <Data>00</Data>
           <Cnt>1</Cnt>
@@ -829,7 +738,7 @@
           <Transition>IP</Transition>
           <Comment><![CDATA[check vendor id]]></Comment>
           <Cmd>2</Cmd>
-          <Adp>1</Adp>
+          <Adp>65520</Adp>
           <Ado>1282</Ado>
           <Data>000108000000</Data>
           <Cnt>1</Cnt>
@@ -840,7 +749,7 @@
           <Comment><![CDATA[check vendor id]]></Comment>
           <Requires>cycle</Requires>
           <Cmd>1</Cmd>
-          <Adp>1</Adp>
+          <Adp>65520</Adp>
           <Ado>1288</Ado>
           <Data>00000000</Data>
           <Cnt>1</Cnt>
@@ -854,7 +763,7 @@
           <Transition>IP</Transition>
           <Comment><![CDATA[check product code]]></Comment>
           <Cmd>2</Cmd>
-          <Adp>1</Adp>
+          <Adp>65520</Adp>
           <Ado>1282</Ado>
           <Data>00010a000000</Data>
           <Cnt>1</Cnt>
@@ -865,7 +774,7 @@
           <Comment><![CDATA[check product code]]></Comment>
           <Requires>cycle</Requires>
           <Cmd>1</Cmd>
-          <Adp>1</Adp>
+          <Adp>65520</Adp>
           <Ado>1288</Ado>
           <Data>00000000</Data>
           <Cnt>1</Cnt>
@@ -879,7 +788,7 @@
           <Transition>IP</Transition>
           <Comment><![CDATA[check revision number (lo word)]]></Comment>
           <Cmd>2</Cmd>
-          <Adp>1</Adp>
+          <Adp>65520</Adp>
           <Ado>1282</Ado>
           <Data>00010c000000</Data>
           <Cnt>1</Cnt>
@@ -890,7 +799,7 @@
           <Comment><![CDATA[check revision number (lo word)]]></Comment>
           <Requires>cycle</Requires>
           <Cmd>1</Cmd>
-          <Adp>1</Adp>
+          <Adp>65520</Adp>
           <Ado>1288</Ado>
           <Data>0000</Data>
           <Cnt>1</Cnt>
@@ -904,7 +813,7 @@
           <Transition>IP</Transition>
           <Comment><![CDATA[check revision number (hi word >=)]]></Comment>
           <Cmd>2</Cmd>
-          <Adp>1</Adp>
+          <Adp>65520</Adp>
           <Ado>1282</Ado>
           <Data>00010d000000</Data>
           <Cnt>1</Cnt>
@@ -915,7 +824,7 @@
           <Comment><![CDATA[check revision number (hi word >=)]]></Comment>
           <Requires>cycle</Requires>
           <Cmd>1</Cmd>
-          <Adp>1</Adp>
+          <Adp>65520</Adp>
           <Ado>1288</Ado>
           <Data>0000</Data>
           <Cnt>1</Cnt>
@@ -931,9 +840,9 @@
           <Comment><![CDATA[set physical address]]></Comment>
           <Requires>cycle</Requires>
           <Cmd>2</Cmd>
-          <Adp>1</Adp>
+          <Adp>65520</Adp>
           <Ado>16</Ado>
-          <Data>0000</Data>
+          <Data>f903</Data>
           <Cnt>1</Cnt>
           <Retries>3</Retries>
         </InitCmd>
@@ -945,7 +854,7 @@
           <Transition>OI</Transition>
           <Comment><![CDATA[clear sm 0/1 (mailbox out/in)]]></Comment>
           <Cmd>5</Cmd>
-          <Adp>0</Adp>
+          <Adp>1017</Adp>
           <Ado>2048</Ado>
           <Data>00000000000000000000000000000000</Data>
           <Retries>3</Retries>
@@ -954,7 +863,7 @@
           <Transition>BI</Transition>
           <Comment><![CDATA[clear sm 0/1 (mailbox out/in)]]></Comment>
           <Cmd>2</Cmd>
-          <Adp>1</Adp>
+          <Adp>65520</Adp>
           <Ado>2048</Ado>
           <Data>00000000000000000000000000000000</Data>
           <Retries>3</Retries>
@@ -963,7 +872,7 @@
           <Transition>IP</Transition>
           <Comment><![CDATA[set sm 0 (mailbox out)]]></Comment>
           <Cmd>5</Cmd>
-          <Adp>0</Adp>
+          <Adp>1017</Adp>
           <Ado>2048</Ado>
           <Data>0010000126000100</Data>
           <Cnt>1</Cnt>
@@ -973,7 +882,7 @@
           <Transition>IP</Transition>
           <Comment><![CDATA[set sm 1 (mailbox in)]]></Comment>
           <Cmd>5</Cmd>
-          <Adp>0</Adp>
+          <Adp>1017</Adp>
           <Ado>2056</Ado>
           <Data>0011000122000100</Data>
           <Cnt>1</Cnt>
@@ -983,7 +892,7 @@
           <Transition>IB</Transition>
           <Comment><![CDATA[set sm 0 (bootstrap out)]]></Comment>
           <Cmd>5</Cmd>
-          <Adp>0</Adp>
+          <Adp>1017</Adp>
           <Ado>2048</Ado>
           <Data>0010f40026000100</Data>
           <Cnt>1</Cnt>
@@ -993,7 +902,7 @@
           <Transition>IB</Transition>
           <Comment><![CDATA[set sm 1 (bootstrap in)]]></Comment>
           <Cmd>5</Cmd>
-          <Adp>0</Adp>
+          <Adp>1017</Adp>
           <Ado>2056</Ado>
           <Data>f410f40022000100</Data>
           <Cnt>1</Cnt>
@@ -1004,7 +913,7 @@
           <Comment><![CDATA[set DC cycle time]]></Comment>
           <Requires>cycle</Requires>
           <Cmd>5</Cmd>
-          <Adp>0</Adp>
+          <Adp>1017</Adp>
           <Ado>2464</Ado>
           <Data>80841e0000000000</Data>
           <Cnt>1</Cnt>
@@ -1015,7 +924,7 @@
           <Comment><![CDATA[set DC start time]]></Comment>
           <Requires>cycle</Requires>
           <Cmd>5</Cmd>
-          <Adp>0</Adp>
+          <Adp>1017</Adp>
           <Ado>2448</Ado>
           <Data>0000000000000000</Data>
           <Cnt>1</Cnt>
@@ -1026,7 +935,7 @@
           <Comment><![CDATA[set DC activation]]></Comment>
           <Requires>cycle</Requires>
           <Cmd>5</Cmd>
-          <Adp>0</Adp>
+          <Adp>1017</Adp>
           <Ado>2432</Ado>
           <Data>0003</Data>
           <Cnt>1</Cnt>
@@ -1037,7 +946,7 @@
           <Comment><![CDATA[set DC latch cfg]]></Comment>
           <Requires>cycle</Requires>
           <Cmd>5</Cmd>
-          <Adp>0</Adp>
+          <Adp>1017</Adp>
           <Ado>2472</Ado>
           <Data>0000</Data>
           <Retries>3</Retries>
@@ -1048,7 +957,7 @@
           <Comment><![CDATA[clear DC activation]]></Comment>
           <Requires>cycle</Requires>
           <Cmd>5</Cmd>
-          <Adp>0</Adp>
+          <Adp>1017</Adp>
           <Ado>2432</Ado>
           <Data>0000</Data>
           <Retries>3</Retries>
@@ -1059,7 +968,7 @@
           <Comment><![CDATA[set device state to PREOP]]></Comment>
           <Requires>cycle</Requires>
           <Cmd>5</Cmd>
-          <Adp>0</Adp>
+          <Adp>1017</Adp>
           <Ado>288</Ado>
           <Data>1200</Data>
           <Retries>300</Retries>
@@ -1073,7 +982,7 @@
           <Transition>OI</Transition>
           <Comment><![CDATA[clear sms]]></Comment>
           <Cmd>5</Cmd>
-          <Adp>0</Adp>
+          <Adp>1017</Adp>
           <Ado>2064</Ado>
           <Data>00000000000000000000000000000000</Data>
           <Retries>3</Retries>
@@ -1082,7 +991,7 @@
           <Transition>PS</Transition>
           <Comment><![CDATA[set sm 2 (outputs)]]></Comment>
           <Cmd>5</Cmd>
-          <Adp>0</Adp>
+          <Adp>1017</Adp>
           <Ado>2064</Ado>
           <Data>0012000004000000</Data>
           <Cnt>1</Cnt>
@@ -1092,9 +1001,9 @@
           <Transition>PS</Transition>
           <Comment><![CDATA[set sm 3 (inputs)]]></Comment>
           <Cmd>5</Cmd>
-          <Adp>0</Adp>
+          <Adp>1017</Adp>
           <Ado>2072</Ado>
-          <Data>00190e0020000100</Data>
+          <Data>0019020020000100</Data>
           <Cnt>1</Cnt>
           <Retries>3</Retries>
         </InitCmd>
@@ -1102,9 +1011,9 @@
           <Transition>PS</Transition>
           <Comment><![CDATA[set fmmu 0 (inputs)]]></Comment>
           <Cmd>5</Cmd>
-          <Adp>0</Adp>
+          <Adp>1017</Adp>
           <Ado>1536</Ado>
-          <Data>00000000000000000019000101000000</Data>
+          <Data>d4100001020000070019000101000000</Data>
           <Cnt>1</Cnt>
           <Retries>3</Retries>
         </InitCmd>
@@ -1113,9 +1022,9 @@
           <Transition>IB</Transition>
           <Comment><![CDATA[set fmmu 1 (mailbox state)]]></Comment>
           <Cmd>5</Cmd>
-          <Adp>0</Adp>
+          <Adp>1017</Adp>
           <Ado>1552</Ado>
-          <Data>00000000000000000d08000101000000</Data>
+          <Data>01000009010000000d08000101000000</Data>
           <Cnt>1</Cnt>
           <Retries>3</Retries>
         </InitCmd>
@@ -1124,7 +1033,7 @@
           <Comment><![CDATA[set device state to SAFEOP]]></Comment>
           <Requires>cycle</Requires>
           <Cmd>5</Cmd>
-          <Adp>0</Adp>
+          <Adp>1017</Adp>
           <Ado>288</Ado>
           <Data>0400</Data>
           <Retries>3</Retries>
@@ -1137,7 +1046,7 @@
           <Transition>OI</Transition>
           <Comment><![CDATA[clear fmmu 0]]></Comment>
           <Cmd>5</Cmd>
-          <Adp>0</Adp>
+          <Adp>1017</Adp>
           <Ado>1536</Ado>
           <Data>00000000000000000000000000000000</Data>
           <Retries>3</Retries>
@@ -1149,7 +1058,7 @@
           <Transition>OI</Transition>
           <Comment><![CDATA[clear fmmu 1]]></Comment>
           <Cmd>5</Cmd>
-          <Adp>0</Adp>
+          <Adp>1017</Adp>
           <Ado>1552</Ado>
           <Data>00000000000000000000000000000000</Data>
           <Retries>3</Retries>
@@ -1160,7 +1069,7 @@
           <Comment><![CDATA[clear DC activation]]></Comment>
           <Requires>cycle</Requires>
           <Cmd>5</Cmd>
-          <Adp>0</Adp>
+          <Adp>1017</Adp>
           <Ado>2432</Ado>
           <Data>0000</Data>
           <Retries>3</Retries>
@@ -1171,7 +1080,7 @@
           <Comment><![CDATA[check device state for PREOP]]></Comment>
           <Requires>cycle</Requires>
           <Cmd>4</Cmd>
-          <Adp>0</Adp>
+          <Adp>1017</Adp>
           <Ado>304</Ado>
           <Data>000000000000</Data>
           <Retries>3</Retries>
@@ -1187,7 +1096,7 @@
           <Comment><![CDATA[assign EEPROM to PDI]]></Comment>
           <Requires>cycle</Requires>
           <Cmd>5</Cmd>
-          <Adp>0</Adp>
+          <Adp>1017</Adp>
           <Ado>1280</Ado>
           <Data>01</Data>
           <Cnt>1</Cnt>
@@ -1198,7 +1107,7 @@
           <Comment><![CDATA[assign EEPROM back to ECAT]]></Comment>
           <Requires>cycle</Requires>
           <Cmd>2</Cmd>
-          <Adp>1</Adp>
+          <Adp>65520</Adp>
           <Ado>1280</Ado>
           <Data>00</Data>
           <Retries>3</Retries>
@@ -1208,7 +1117,7 @@
           <Comment><![CDATA[set device state to PREOP]]></Comment>
           <Requires>cycle</Requires>
           <Cmd>5</Cmd>
-          <Adp>0</Adp>
+          <Adp>1017</Adp>
           <Ado>288</Ado>
           <Data>1200</Data>
           <Cnt>1</Cnt>
@@ -1220,7 +1129,7 @@
           <Comment><![CDATA[check device state for PREOP]]></Comment>
           <Requires>cycle</Requires>
           <Cmd>4</Cmd>
-          <Adp>0</Adp>
+          <Adp>1017</Adp>
           <Ado>304</Ado>
           <Data>000000000000</Data>
           <Cnt>1</Cnt>
@@ -1237,7 +1146,7 @@
           <Comment><![CDATA[assign EEPROM back to ECAT]]></Comment>
           <Requires>cycle</Requires>
           <Cmd>2</Cmd>
-          <Adp>1</Adp>
+          <Adp>65520</Adp>
           <Ado>1280</Ado>
           <Data>00</Data>
           <Retries>3</Retries>
@@ -1247,7 +1156,7 @@
           <Comment><![CDATA[set device state to BOOT]]></Comment>
           <Requires>cycle</Requires>
           <Cmd>5</Cmd>
-          <Adp>0</Adp>
+          <Adp>1017</Adp>
           <Ado>288</Ado>
           <Data>1300</Data>
           <Cnt>1</Cnt>
@@ -1259,7 +1168,7 @@
           <Comment><![CDATA[check device state for BOOT]]></Comment>
           <Requires>cycle</Requires>
           <Cmd>4</Cmd>
-          <Adp>0</Adp>
+          <Adp>1017</Adp>
           <Ado>304</Ado>
           <Data>000000000000</Data>
           <Cnt>1</Cnt>
@@ -1275,7 +1184,7 @@
           <Comment><![CDATA[set device state to SAFEOP]]></Comment>
           <Requires>cycle</Requires>
           <Cmd>5</Cmd>
-          <Adp>0</Adp>
+          <Adp>1017</Adp>
           <Ado>288</Ado>
           <Data>0400</Data>
           <Cnt>1</Cnt>
@@ -1287,7 +1196,7 @@
           <Comment><![CDATA[check device state for SAFEOP]]></Comment>
           <Requires>cycle</Requires>
           <Cmd>4</Cmd>
-          <Adp>0</Adp>
+          <Adp>1017</Adp>
           <Ado>304</Ado>
           <Data>000000000000</Data>
           <Cnt>1</Cnt>
@@ -1303,7 +1212,7 @@
           <Comment><![CDATA[check device state for SAFEOP]]></Comment>
           <Requires>cycle</Requires>
           <Cmd>4</Cmd>
-          <Adp>0</Adp>
+          <Adp>1017</Adp>
           <Ado>304</Ado>
           <Data>000000000000</Data>
           <Retries>3</Retries>
@@ -1318,7 +1227,7 @@
           <Comment><![CDATA[set device state to OP]]></Comment>
           <Requires>cycle</Requires>
           <Cmd>5</Cmd>
-          <Adp>0</Adp>
+          <Adp>1017</Adp>
           <Ado>288</Ado>
           <Data>0800</Data>
           <Cnt>1</Cnt>
@@ -1330,7 +1239,7 @@
           <Comment><![CDATA[check device state for OP]]></Comment>
           <Requires>cycle</Requires>
           <Cmd>4</Cmd>
-          <Adp>0</Adp>
+          <Adp>1017</Adp>
           <Ado>304</Ado>
           <Data>000000000000</Data>
           <Cnt>1</Cnt>
@@ -1344,15 +1253,12 @@
       </InitCmds>
       <PreviousPort Selected="true">
         <Port>C</Port>
-        <PhysAddr>0</PhysAddr>
+        <PhysAddr>1014</PhysAddr>
       </PreviousPort>
-      <SyncUnits>
-        <SyncUnit SuTask="#x5000010">&lt;default&gt;</SyncUnit>
-      </SyncUnits>
       <DC>
         <PotentialReferenceClock>false</PotentialReferenceClock>
         <TimeLoopControlOnly>false</TimeLoopControlOnly>
-        <ReferenceClock>false</ReferenceClock>
+        <ReferenceClock>true</ReferenceClock>
         <CycleTime0>2000000</CycleTime0>
         <CycleTime1>0</CycleTime1>
         <ShiftTime>0</ShiftTime>
@@ -1417,8 +1323,8 @@
       </TwinCAT>
     </Slave>
     <AmsAddress>
-      <AmsNetId>192.168.1.5.3.1</AmsNetId>
-      <AmsPort>0</AmsPort>
+      <AmsNetId>5.93.147.0.2.1</AmsNetId>
+      <AmsPort>1017</AmsPort>
     </AmsAddress>
   </EtherCAT>
 </TreeItem>
