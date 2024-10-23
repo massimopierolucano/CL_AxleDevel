@@ -6,7 +6,8 @@ VAR
  	fbPowerMaster : FB_PowerMaster;
   fbPowerAxis1 : FB_PowerAxis1;
   
-  //fbTestAxle : FB_testAxle;
+  fbTestAxle : FB_testAxle;
+  
   //Axis day 2 training
   myAxisA : FB_Axis;
 	myAxisB : FB_Axis;
@@ -23,8 +24,12 @@ END_VAR
 //myAxisStepper(AxisInOut := GVL.Axis_servo);
 //fbAxisStMachine(AxisInOut := GVL.Axis_servoA);
 
-fbPowerAxis1();
-fbPowerMaster();
+//fbPowerAxis1();
+//fbPowerMaster();
+
+fbTestAxle();
+
+
 ]]></ST>
     </Implementation>
   </POU>
