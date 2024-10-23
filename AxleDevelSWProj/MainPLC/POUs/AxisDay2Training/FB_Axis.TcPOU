@@ -1,0 +1,47 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.12">
+  <POU Name="FB_Axis" Id="{eb00e675-402a-4cb2-abd1-cb3e6f46bf72}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION_BLOCK FB_Axis
+VAR_INPUT
+END_VAR
+VAR_OUTPUT
+END_VAR
+VAR_IN_OUT
+	AxisInOut : AXIS_REF;//AXIS_REF contains input and output
+END_VAR
+VAR
+	fbPower : MC_Power;
+	fbMoveAbs : MC_MoveAbsolute;
+	fTarget	: LREAL := 720;
+	fVelocity : LREAL := 360;
+	
+	errId : UDINT;
+	bBusy,bError, bMove, bDone : BOOL;
+END_VAR]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[AxisInOut.ReadStatus();//must be always called each cycle
+
+fbPower(
+	Axis:= AxisInOut, 
+	Enable:= TRUE, 
+	Enable_Positive:= TRUE, 
+	Enable_Negative:= TRUE, 
+	Override:= 100, 
+	Busy=>bBusy , 
+	Error=> bError, 
+	ErrorID=> errId);
+	
+fbMoveAbs(
+	Axis:= AxisInOut, 
+	Execute:= bMove, 
+	Position:= fTarget, 
+	Velocity:= fVelocity,  
+	Done=> bDone, 
+	Busy=>bBusy, 
+	Error=>bError, 
+	ErrorID=> errId);
+	
+]]></ST>
+    </Implementation>
+  </POU>
+</TcPlcObject>

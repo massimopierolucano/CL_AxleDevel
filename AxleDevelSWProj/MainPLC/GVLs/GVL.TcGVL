@@ -1,0 +1,13 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.12">
+  <GVL Name="GVL" Id="{1681d69f-05d1-44d7-a747-dbb565223030}">
+    <Declaration><![CDATA[{attribute 'qualified_only'}
+//Axis day 2 training
+VAR_GLOBAL
+	Axis_servoA : AXIS_REF;
+	Axis_servoB : AXIS_REF;
+	Axis_servoVirtual : AXIS_REF;
+	Axis_servo : AXIS_REF; 
+END_VAR]]></Declaration>
+  </GVL>
+</TcPlcObject>

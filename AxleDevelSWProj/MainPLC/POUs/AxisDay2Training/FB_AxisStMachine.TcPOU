@@ -1,0 +1,167 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.12">
+  <POU Name="FB_AxisStMachine" Id="{fdcd5b3f-e29e-48df-af83-d5b92ab54a21}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION_BLOCK FB_AxisStMachine
+VAR_IN_OUT
+	AxisInOut : AXIS_REF;//AXIS_REF contains input and output
+END_VAR
+VAR
+	nStep : UINT := 10;
+	
+	fbPower : MC_Power;
+		
+	errId : UDINT;
+	bBusy, bError, bMoveAbs, bMoveVel, bDone, bPower, bReset, bResetDone,bVelocity, bInVelocity, MoveAbsbDone, bDoneHalt, bAborted,bHalt,bHomingDone : BOOL;
+
+	bDemandStop,bDemandVel  AT%I* : BOOL;
+	
+	fbMoveAbs : MC_MoveAbsolute;
+	fTarget	: LREAL := 720;
+	fVelocity : LREAL := 36;
+	fVelocityInfinite : LREAL := 360;
+	fbReset : MC_Reset;//remove error in the NC only for AX8000 but not for AX5000
+	fbVelocity : MC_MoveVelocity;
+	fbHalt : MC_HALT;
+	fbHome : MC_Home;
+	bCalibCam AT%I* : BOOL;
+	bHome : BOOL;
+END_VAR
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[RunFBs();
+
+CASE nStep OF
+	0 : //Idle
+		;
+	10:
+		bPower := TRUE;
+		nStep := 15;
+	15:
+		IF AxisInOut.Status.Error THEN //really at the level of NC
+			nStep := 20;
+		ELSE
+			nstep := 40;
+		END_IF
+	20:
+		bReset := TRUE;
+		nstep := 30;	
+	30:
+		IF bResetDone THEN
+			bReset := FALSE;
+			nStep := 40;
+		END_IF
+	40:
+		IF fbPower.Status THEN
+			bHome := TRUE;
+			nStep := 45;
+		END_IF
+	45:
+		IF bHomingDone THEN
+			bHome := FALSE;
+			nStep := 50;
+		END_IF 
+	50:
+		bMoveAbs := TRUE;
+		fTarget	 := 36;//gradi
+		fVelocity := 36;
+		nstep := 60;
+	60:
+		IF MoveAbsbDone THEN
+			bMoveAbs := FALSE;
+			nStep := 65;
+		END_IF
+	65:
+		IF bDemandVel THEN
+			nStep := 70;
+		END_IF
+	70:
+		bMoveVel := TRUE;
+		fVelocityInfinite := 1440;
+		nStep := 80;
+	80:
+		IF bDemandStop THEN
+			bMoveVel := FALSE;
+			nStep := 90;
+		END_IF
+	90:
+		bHalt := TRUE;
+		nStep := 100;
+	
+	100:
+		IF fbHalt.Done THEN
+			bHalt := FALSE;
+			nStep := 0;
+		END_IF
+	ELSE
+		;
+END_CASE]]></ST>
+    </Implementation>
+    <Method Name="RunFBs" Id="{4904ffc5-b862-45f0-aa86-b6bc2e2df186}">
+      <Declaration><![CDATA[METHOD RunFBs : BOOL
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[fbPower(
+	Axis:= AxisInOut, 
+	Enable:= bPower, 
+	Enable_Positive:= TRUE, 
+	Enable_Negative:= TRUE, 
+	Override:= 100, 
+	Busy=>bBusy , 
+	Error=>bError, 
+	ErrorID=> errId);
+
+fbMoveAbs(
+	Axis:= AxisInOut, 
+	Execute:= bMoveAbs, 
+	Position:= fTarget, 
+	Velocity:= fVelocity,  
+	Done=> MoveAbsbDone, 
+	Busy=>bBusy, 
+	Error=>bError, 
+	ErrorID=> errId);
+
+fbReset(
+	Axis:= AxisInOut, 
+	Execute:= bReset, 
+	Done=> bResetDone,
+	Busy=> bBusy, 
+	Error=>bError, 
+	ErrorID=>errId);
+	
+fbVelocity(
+	Axis:= AxisInOut, 
+	Execute:= bMoveVel, 
+	Velocity:= fVelocityInfinite, 
+	InVelocity=> bInVelocity, 
+	Busy=> bBusy, 
+	Error=>bError, 
+	ErrorID=>errId);
+
+fbHalt(
+	Axis:= AxisInOut, 
+	Execute:= bHalt, 
+	Done=> bDoneHalt, 
+	Busy=> bBusy, 
+	CommandAborted=> bAborted, 
+	Error=> bError, 
+	ErrorID=>errId);
+
+	//without giving special values to the parameters NC parameters are used
+fbHome(
+	Axis:= AxisInOut, 
+	Execute:= bHome, 
+	Position:= , 
+	HomingMode:= , 
+	BufferMode:= , 
+	Options:= , 
+	bCalibrationCam:= bCalibCam, 
+	Done=> bHomingDone, 
+	Busy=> , 
+	Active=> , 
+	CommandAborted=> , 
+	Error=> , 
+	ErrorID=> );]]></ST>
+      </Implementation>
+    </Method>
+  </POU>
+</TcPlcObject>

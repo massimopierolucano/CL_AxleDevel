@@ -54,6 +54,10 @@
       <SubType>Code</SubType>
       <LinkAlways>true</LinkAlways>
     </Compile>
+    <Compile Include="GVLs\GVL.TcGVL">
+      <SubType>Code</SubType>
+      <LinkAlways>true</LinkAlways>
+    </Compile>
     <Compile Include="PlcTask.TcTTO">
       <SubType>Code</SubType>
     </Compile>
@@ -66,7 +70,25 @@
     <Compile Include="POUs\CL_CGSSystemBase.TcPOU">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="POUs\FB_testAxle.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="POUs\FB_TestMCSimple.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="POUs\Main.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="POUs\AxisDay2Training\FB_Axis.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="POUs\AxisDay2Training\FB_AxisStMachine.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="POUs\AxisDay2Training\FB_AxisStMachineMaster.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="POUs\AxisDay2Training\MAIN_1.TcPOU">
       <SubType>Code</SubType>
     </Compile>
   </ItemGroup>
@@ -74,6 +96,7 @@
     <Folder Include="DUTs" />
     <Folder Include="GVLs" />
     <Folder Include="POUs" />
+    <Folder Include="POUs\AxisDay2Training" />
   </ItemGroup>
   <ItemGroup>
     <PlaceholderReference Include="CGS_ObjectsLibrary">
