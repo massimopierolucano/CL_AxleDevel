@@ -1,10 +1,10 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.12">
-  <POU Name="FB_TestMCSimple" Id="{0630e2cf-2446-4a55-9ef4-978bf9a13065}" SpecialFunc="None">
-    <Declaration><![CDATA[FUNCTION_BLOCK FB_TestMCSimple EXTENDS CL_HystoDebug
+  <POU Name="FB_PowerMaster" Id="{ae35270e-336b-4fe2-a4a1-bdb5084d3b39}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION_BLOCK FB_PowerMaster
 VAR
   stm	: UINT := 10;
-  bMCRun, bFW, bBW,bPower,bReset,bResetDone,bError,bBusy,bPowerStatus : BOOL := FALSE;
+  bFW, bBW,bPower,bReset,bResetDone,bError,bBusy,bPowerStatus : BOOL := FALSE;
   errId : UDINT;
   
   fbPower : MC_Power;
@@ -13,7 +13,7 @@ END_VAR
 ]]></Declaration>
     <Implementation>
       <ST><![CDATA[fbPower(
-	Axis:= G.stAX.Line1Front, 
+	Axis:= G.stAX.Master, 
 	Enable:= bPower, 
 	Enable_Positive:= bPower, 
 	Enable_Negative:= bPower, 
@@ -24,7 +24,7 @@ END_VAR
 	ErrorID=> errId);
 
 fbReset(
-	Axis:= G.stAX.Line1Front, 
+	Axis:= G.stAX.Master, 
 	Execute:= bReset, 
 	Done=> bResetDone,
 	Busy=> bBusy, 
@@ -32,32 +32,31 @@ fbReset(
 	ErrorID=>errId);
   
 CASE stm OF 
-  1:
+  10:
 		bPower := TRUE;
-    bMCRun := TRUE;
-		stm := 2;
-	2:
-		IF G.stAX.Line1Front.Status.Error THEN //really at the level of NC
-			stm := 3;
+ 		stm := 20;
+	20:
+		IF G.stAX.Master.Status.Error THEN //really at the level of NC
+			stm := 30;
 		ELSE
-			stm := 5;
+			stm := 50;
 		END_IF
-	3:
+	30:
 		bReset := TRUE;
-		stm := 4;	
-	4:
+		stm := 40;	
+	40:
 		IF bResetDone THEN
 			bReset := FALSE;
-			stm := 5;
+			stm := 50;
 		END_IF
-	5:
+	50:
     bPowerStatus := fbPower.Status;
 		IF bPowerStatus THEN
-			stm := 6;
+			stm := 0;
 		END_IF
-  6:
-    stm := 6;
-end_case]]></ST>
+   
+  0:stm := 0;
+END_CASE]]></ST>
     </Implementation>
   </POU>
 </TcPlcObject>

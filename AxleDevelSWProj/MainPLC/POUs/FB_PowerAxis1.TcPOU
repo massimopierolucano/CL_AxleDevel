@@ -1,0 +1,62 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.12">
+  <POU Name="FB_PowerAxis1" Id="{0630e2cf-2446-4a55-9ef4-978bf9a13065}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION_BLOCK FB_PowerAxis1
+VAR
+  stm	: UINT := 10;
+  bFW, bBW,bPower,bReset,bResetDone,bError,bBusy,bPowerStatus : BOOL := FALSE;
+  errId : UDINT;
+  
+  fbPower : MC_Power;
+  fbReset : MC_Reset;
+END_VAR
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[fbPower(
+	Axis:= G.stAX.Line1Front, 
+	Enable:= bPower, 
+	Enable_Positive:= bPower, 
+	Enable_Negative:= bPower, 
+	Override:= 100.0, 
+  Status=>bPowerStatus,
+	Busy=>bBusy , 
+	Error=>bError, 
+	ErrorID=> errId);
+
+fbReset(
+	Axis:= G.stAX.Line1Front, 
+	Execute:= bReset, 
+	Done=> bResetDone,
+	Busy=> bBusy, 
+	Error=>bError, 
+	ErrorID=>errId);
+  
+CASE stm OF 
+  10:
+		bPower := TRUE;
+		stm := 20;
+	20:
+		IF G.stAX.Line1Front.Status.Error THEN //really at the level of NC
+			stm := 30;
+		ELSE
+			stm := 50;
+		END_IF
+	30:
+		bReset := TRUE;
+		stm := 40;	
+	40:
+		IF bResetDone THEN
+			bReset := FALSE;
+			stm := 50;
+		END_IF
+	50:
+    bPowerStatus := fbPower.Status;
+		IF bPowerStatus THEN
+			stm := 0;
+		END_IF
+   
+  0:stm := 0;
+END_CASE]]></ST>
+    </Implementation>
+  </POU>
+</TcPlcObject>

@@ -73,7 +73,10 @@
     <Compile Include="POUs\FB_testAxle.TcPOU">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="POUs\FB_TestMCSimple.TcPOU">
+    <Compile Include="POUs\FB_PowerAxis1.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="POUs\FB_PowerMaster.TcPOU">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="POUs\Main.TcPOU">
@@ -86,9 +89,6 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="POUs\AxisDay2Training\FB_AxisStMachineMaster.TcPOU">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="POUs\AxisDay2Training\MAIN_1.TcPOU">
       <SubType>Code</SubType>
     </Compile>
   </ItemGroup>

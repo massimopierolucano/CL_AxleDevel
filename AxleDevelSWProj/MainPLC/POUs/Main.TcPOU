@@ -3,14 +3,10 @@
   <POU Name="Main" Id="{b2f2a346-2aab-4873-ae80-3f4daff09e02}" SpecialFunc="None">
     <Declaration><![CDATA[PROGRAM Main
 VAR
- 	stm	: UINT := 10;
-  bMCRun, bFW, bBW,bPower,bReset,bResetDone,bError,bBusy,bPowerStatus : BOOL := FALSE;
-  errId : UDINT;
+ 	fbPowerMaster : FB_PowerMaster;
+  fbPowerAxis1 : FB_PowerAxis1;
   
-  fbPower : MC_Power;
-  fbReset : MC_Reset;
-  
-  fbTestAxle : FB_testAxle;
+  //fbTestAxle : FB_testAxle;
   //Axis day 2 training
   myAxisA : FB_Axis;
 	myAxisB : FB_Axis;
@@ -26,8 +22,10 @@ END_VAR
 //myAxisVirtual(AxisInOut := GVL.Axis_servoVirtual);
 //myAxisStepper(AxisInOut := GVL.Axis_servo);
 //fbAxisStMachine(AxisInOut := GVL.Axis_servoA);
- 
-FB_TestMCSimple();]]></ST>
+
+fbPowerAxis1();
+fbPowerMaster();
+]]></ST>
     </Implementation>
   </POU>
 </TcPlcObject>
