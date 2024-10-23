@@ -25,9 +25,9 @@ END_VAR
 //fbAxisStMachine(AxisInOut := GVL.Axis_servoA);
 
 //fbPowerAxis1();
-//fbPowerMaster();
+fbPowerMaster();
 
-fbTestAxle();
+//fbTestAxle();
 
 
 ]]></ST>

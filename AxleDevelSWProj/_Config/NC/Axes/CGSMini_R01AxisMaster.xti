@@ -1432,8 +1432,8 @@ External Setpoint Generation:
 			<Velo RefSearch="0.01752" RefSync="0.01752" SlowManual="0.0876" FastManual="0.5256" Fast="1.752" Maximum="0.67"/>
 			<OtherSettings AllowMotionCmdToSlave="true"/>
 		</AxisPara>
-		<Encoder Name="Enc" EncType="19">
-			<EncPara ScaleFactorNumerator="0.79" ScaleFactorDenominator="26214400" Inverse="true" MaxCount="#xffffffff">
+		<Encoder Name="Enc" EncType="1">
+			<EncPara ScaleFactorNumerator="0.79" ScaleFactorDenominator="26214400" Inverse="true">
 				<ActPosCorrection Enable="true" Time="1"/>
 			</EncPara>
 			<Vars VarGrpType="1">
@@ -1492,9 +1492,9 @@ External Setpoint Generation:
 				</Var>
 			</Vars>
 		</Encoder>
-		<Drive Name="Drive" DrvType="16">
-			<DrvPara Inverse="true" MaxCount="#xffffffff" DriveControlDWord="#x00020100">
-				<Analog VeloReferenz="0.737" VeloScale="71.5255737304688" TorqueSetpointScale="10" ScaleFactorActTorque="0.1"/>
+		<Drive Name="Drive" DrvType="5">
+			<DrvPara Inverse="true">
+				<Analog VeloReferenz="0.737" TorqueSetpointScale="10" ScaleFactorActTorque="0.1"/>
 				<TimeComp TaskDelayCycles="1"/>
 			</DrvPara>
 			<Vars VarGrpType="1">
@@ -1532,6 +1532,22 @@ External Setpoint Generation:
 					</SubVar>
 					<SubVar TypeFormatIndex="2">
 						<Name>nDataOut2</Name>
+					</SubVar>
+					<SubVar>
+						<Name>nCtrl2</Name>
+						<Comment><![CDATA[Digital Outputs Setpoint Generator:
+0x41 (0100 0001) = Minus (0x42 for inverse motor polarity)
+0x42 (0100 0010) = Plus (0x41 for inverse motor polarity)
+0x80 (1000 0000) = Stop
+]]></Comment>
+					</SubVar>
+					<SubVar>
+						<Name>nCtrl3</Name>
+						<Comment><![CDATA[Digital Outputs (Setpoint Generator + Position Controller):
+0x41 (0100 0001) = Minus (0x42 for inverse motor polarity)
+0x42 (0100 0010) = Plus (0x41 for inverse motor polarity)
+0x80 (1000 0000) = Stop
+]]></Comment>
 					</SubVar>
 					<SubVar TypeFormatIndex="2">
 						<Name>nDataOut3</Name>

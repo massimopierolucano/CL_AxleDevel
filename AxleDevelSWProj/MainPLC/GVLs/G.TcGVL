@@ -11,7 +11,7 @@ VAR_GLOBAL
                           .Line1Back                        := CGSMini_Robot01AxisLine1Back;
                           .Line2Front                       := CGSMini_Robot01AxisLine2Front;
                           .Line2Back                        := CGSMini_Robot01AxisLine2Back;
-                          .Master                           := CGSMini_Robot01AxisMaster'}
+                          .Master                           := CGSMini_R01AxisMaster'}
   stAX : ST_Robot_Axes;
   
   (*
