@@ -1,13 +1,12 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.12">
-  <POU Name="CL_Axle" Id="{86271131-74c3-440e-8c21-b97ff935d7af}" SpecialFunc="None">
-    <Declaration><![CDATA[FUNCTION_BLOCK CL_Axle EXTENDS CL_CGSSystemBase
+  <POU Name="CL_AxisRobot" Id="{86271131-74c3-440e-8c21-b97ff935d7af}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION_BLOCK CL_AxisRobot EXTENDS CL_CGSSystemBase
 VAR
   bInit                 : BOOL := FALSE;
   _stMotorAxis_R			  : REFERENCE TO AXIS_REF;//axis reference linked to I/O
   _stMasterAxis_R       : REFERENCE TO AXIS_REF;//master axis
   _stFBAxle             : ST_Axle;
-  //fbPower : MC_Power;
   _stAxisJog_R           : REFERENCE TO AXIS_REF;
   
   //private properties 
@@ -29,16 +28,14 @@ VAR
 	_MCerrId			        : UDINT;
   _bMCStatus            : BOOL;
 
-  _bPowerOn            : BOOL := FALSE;
+  _bPowerOn             : BOOL := FALSE;
   _bGearOut             : BOOL := FALSE;
   _bGearInDyn           : BOOL := FALSE;
   _bJogFW               : BOOL := FALSE;
   _bJogBW               : BOOL := FALSE;
   
   _bExecPreviousRequ    : BOOL := FALSE;
-  
-  //_bErrMsgShow          : BOOL := true;
-  
+    
 	_bEnableMove          : BOOL := TRUE;   // Enable the moving of axis
 	_lrAxisOverride	      : LREAL:= 100.0;    // Override of the axis velocity
   
@@ -63,31 +60,16 @@ VAR
   WaitNextState         : CL_WaitTimer; 
   
   _nJogMode             : E_JogMode;
+  
+  //Error handling
+  //_bErrMsgShow        : BOOL := true;
+  sWhichAxis            : string(16);
+  _nAxisErrType         : E_AxisErrorType;
 END_VAR
 ]]></Declaration>
     <Implementation>
       <ST><![CDATA[IF bInit THEN
-  _stFBAxle.fbPower(
-      Axis:= _stMotorAxis_R, 
-      Enable:= _bPowerOn, 
-      Enable_Positive:= _bPowerOn, 
-      Enable_Negative:= _bPowerOn, 
-      Override:= _lrAxisOverride, 
-      Status=>_bMCStatus ,
-      Busy=>_bMCBusy , 
-      Error=>_bMCError, 
-      ErrorID=> _MCerrId);
-          
-  _stFBAxle.fbReset(
-      Axis:= _stMotorAxis_R, 
-      Busy=>_bMCBusy , 
-      Error=>_bMCError, 
-      ErrorID=> _MCerrId);
-
-//_stFBAxle.fbGearInDyn(Master := _stMasterAxis_R, Slave:= _stMotorAxis_R, Enable := _bGearInDyn, GearRatio := _lrMotorGearRatio, Acceleration := _lrAcceleration);
-//_stFBAxle.fbGearOut(Slave:= _stMotorAxis_R, Execute := _bGearOut);
-//_stFBAxle.fbMoveJog(Axis := _stAxisJog_R, JogForward := _bJogFW, JogBackwards := _bJogBW, Mode := _nJogMode, Velocity := _lrJogVelocity);
-      
+   This^.RunMC();   
    THIS^.Run();
 END_IF
 ]]></ST>
@@ -112,6 +94,7 @@ IF stAxisMotor_R <> 0 AND stAxisMaster_R <> 0 AND NOT bInit THEN
   //if the listed parameters are equal 0.0 -> the standard parameter from the axis configuration in the System Manager is used
   _lrJogVelocity := 0.3;//m/s
   _nJogMode := MC_JOGMODE_STANDARD_SLOW;//MC_JOGMODE_STANDARD_FAST;  MC_JOGMODE_CONTINUOUS
+  _nJogMode := MC_JOGMODE_STANDARD_FAST; 
   _stFBAxle.fbMoveJog(Axis := _stMotorAxis_R, Position := 0.0, Velocity := _lrJogVelocity, Acceleration := 0.0, Deceleration := 0.0, Jerk := 0.0);
   
   bInit := SUPER^.InitSystemBase( IrrLine := stIrrLine, stSystemStatus_ARR := G.stSystemStatus_ARR);
@@ -190,6 +173,9 @@ if bExecJogFWIn <> bExecJogBWIn then
 else
   _bExecJogFWIn := _bExecJogBWIn := FALSE;
 END_IF
+
+_bJogFW := _bExecJogFWIn;
+_bJogBW := _bExecJogBWIn;
 ]]></ST>
       </Implementation>
     </Method>
@@ -228,7 +214,8 @@ _bExecJog := false;]]></ST>
     <Method Name="OnExitRequError" Id="{d015decd-a857-4c36-a77e-6afbb638a30b}">
       <Declaration><![CDATA[METHOD PRIVATE OnExitRequError
 VAR_INPUT
-  ErrorIDIn : UDINT;
+  ErrorIDIn     : UDINT;
+  nAxisErrIn    : E_AxisErrorType;
 END_VAR
 ]]></Declaration>
       <Implementation>
@@ -239,7 +226,9 @@ _nErrorId := ErrorIDIn;
 _nStepMain := E_RequAxle.Error;
 _bExecPreviousRequ := FALSE;
 _bIsPowered := FALSE;
-]]></ST>
+_nAxisErrType := nAxisErrIn;
+
+ ]]></ST>
       </Implementation>
     </Method>
     <Method Name="OnExitRequOk" Id="{a0389a39-6280-4762-8dbf-2b24b6c17de9}">
@@ -409,14 +398,42 @@ CASE _nStepMain OF
   E_RequAxle.Error : StmError();
   else;     
 END_CASE
-]]></ST>
+Case01Hysto(_nStepMain);]]></ST>
       </Implementation>
     </Method>
-    <Method Name="RunObj" Id="{effdf679-c8e9-4b8a-be02-83c601485a94}">
-      <Declaration><![CDATA[METHOD PRIVATE RunObj
+    <Method Name="RunMC" Id="{effdf679-c8e9-4b8a-be02-83c601485a94}">
+      <Declaration><![CDATA[METHOD PRIVATE RunMC
 ]]></Declaration>
       <Implementation>
-        <ST><![CDATA[	(*
+        <ST><![CDATA[_stFBAxle.fbPower(
+    Axis:= _stMotorAxis_R, 
+    Enable:= _bPowerOn, 
+    Enable_Positive:= _bPowerOn, 
+    Enable_Negative:= _bPowerOn, 
+    Override:= _lrAxisOverride, 
+    Status=>_bMCStatus ,
+    Busy=>_bMCBusy , 
+    Error=>_bMCError, 
+    ErrorID=> _MCerrId);
+        
+_stFBAxle.fbReset(
+    Axis:= _stMotorAxis_R, 
+    Busy=>_bMCBusy , 
+    Error=>_bMCError, 
+    ErrorID=> _MCerrId);
+
+_stFBAxle.fbMoveJog(
+    Axis := _stAxisJog_R,
+    JogForward := _bJogFW,
+    JogBackwards := _bJogBW,
+    Mode := _nJogMode,
+    Velocity := _lrJogVelocity);
+      
+//_stFBAxle.fbGearInDyn(Master := _stMasterAxis_R, Slave:= _stMotorAxis_R, Enable := _bGearInDyn, GearRatio := _lrMotorGearRatio, Acceleration := _lrAcceleration);
+//_stFBAxle.fbGearOut(Slave:= _stMotorAxis_R, Execute := _bGearOut);
+
+///////////////////////////////////////////////OLD
+	(*
   fbPower						        : MC_Power;//Axis function - Power
 	fbReset						        : MC_Reset;//Axis function - Reset
 	fbSetPosition					    : MC_SetPosition;//Axis function - Set Position
@@ -439,12 +456,22 @@ END_CASE
 	fbPosCorrectionLimiter    : MC_PositionCorrectionLimiter;//Special extensions - Position Correction Limiter
 *)
 
+//_stFBAxle.fbPower(Axis:=MotorAxle^, Override:= _lrAxisOverride);
+//_stFBAxle.fbStop(Axis:=MotorAxle^);
+//_stFBAxle.fbReset(Axis:=MotorAxle^);
+ 
+ //timers
+// fbTimeOutReset(IN := _nStep = E_StepAxle.ResetTimeout);
+ 
 (*
  _stFBAxle.fbHome(Axis:=MotorAxle^, bCalibrationCam:=_udCalibrationSensor_P^.19,
 		    Options := stHomingOption, Position := lrnOffsetExtractorHoming);
-      
+        
+        
 fbMoveAbso(Axis:= _AxisREF_P^);
 fbReadStatus(Axis:= _AxisREF_P^,Enable := TRUE);	// Ok, actually done in the first lines.
+fbMoveJog(Axis := _AxisREF_P^,JogForward := stJogControl.bMoveFW, JogBackwards := stJogControl.bMoveBW);
+
 
 fbTimeRetryHomming(IN := nStep = E_StepAxis.AbortHoming);
 fbTimeAbortHoming(IN := nStep = E_StepAxis.RetryHoming);
@@ -455,17 +482,54 @@ fbTrigErrorMotor(CLK := _AxisREF_P^.NcToPlc.ErrorCode <> 0);
     </Method>
     <Method Name="StmError" Id="{87aea61f-b034-476e-8424-5557144e0f3e}">
       <Declaration><![CDATA[METHOD PRIVATE StmError
-]]></Declaration>
+var
+  nActLine      : UINT;
+  fbFormatStr	  : FB_FormatString;
+  sTmp          : T_MaxString;
+  sOutMsg       : T_MaxString;
+  //bTmp1Err      : BOOL;
+  //nErrIdOut     : UDINT;
+END_VAR]]></Declaration>
       <Implementation>
-        <ST><![CDATA[//_stFBAxle.fbPower.Enable := FALSE;
+        <ST><![CDATA[_nStepMain := E_RequAxle.Idle;
+//_stFBAxle.fbPower.Enable := FALSE;
 //_stFBAxle.fbPower.Enable_Positive	:= FALSE;
 //_stFBAxle.fbPower.Enable_Negative	:= FALSE;
 //fbHome.Execute			:= FALSE;
 //fbHomeInv.Execute			:= FALSE;
-//_nStepMain := E_RequAxle.Idle;
-ADSLOGSTR(ADSLOG_MSGTYPE_LOG, 'CL_Axis error loop','');
-ADSLOGSTR(ADSLOG_MSGTYPE_MSGBOX, 'CL_Axis error loop','');
-_nStepMain := E_RequAxle.Idle;]]></ST>
+
+if MRIrrLine <> MRIrrLineFixedID then 
+  nActLine := MRIrrLineFixedID;//the real line if an HMI for each ronot is contained in MRIrrLineFixedID
+else
+  nActLine := MRIrrLine;
+END_IF
+
+sTmp := sWhichAxis;
+fbFormatStr(
+  sFormat	:= 'Irrigation line: %d  Axis motor : %s  Error ID: %d', 
+  arg1  := F_UINT(nActLine),
+  arg2  := F_STRING(sTmp),
+  arg3	:= F_UDINT(_nErrorId),
+  //bError => bTmp1Err,  
+  //nErrId => nErrIdOut, 
+  sOut	=> sOutMsg);
+
+sTmp := '';
+CASE _nAxisErrType OF
+  E_AxisErrorType.NoError : ;
+  E_AxisErrorType.MCError : ;
+  E_AxisErrorType.Retry : sTmp :='  Request retry failed';
+  E_AxisErrorType.Timeout : sTmp :='  Request timed out';
+  ELSE;
+END_CASE
+sOutMsg := concat(sOutMsg,sTmp);
+  
+ADSLOGSTR(ADSLOG_MSGTYPE_LOG, 'CL_Axis error loop  %s',sOutMsg);
+ADSLOGSTR(ADSLOG_MSGTYPE_MSGBOX, 'CL_Axis error loop  %s',sOutMsg);
+  
+
+
+]]></ST>
       </Implementation>
     </Method>
     <Method Name="StmGearInDyn" Id="{9a3ea223-c254-4297-9010-6a65a69a26e6}">
@@ -498,7 +562,7 @@ E_StepMC.End:
     OnExitRequOk();
   ELSE
     _bRequTimeout := false;
-    OnExitRequError(_stFBAxle.fbGearInDyn.ErrorID);
+    OnExitRequError(_stFBAxle.fbGearInDyn.ErrorID, E_AxisErrorType.MCError);
   END_IF
 
 E_StepMC.CmdAborted:
@@ -508,7 +572,7 @@ E_StepMC.CmdAborted:
   
 E_StepMC.Timeout:
   _bRequTimeout := true;
-  OnExitRequError(_stFBAxle.fbGearInDyn.ErrorID);   
+  OnExitRequError(_stFBAxle.fbGearInDyn.ErrorID, E_AxisErrorType.Timeout);   
 end_case]]></ST>
       </Implementation>
     </Method>
@@ -547,13 +611,13 @@ E_StepMC.End:
   ELSE
     _bGearOut := TRUE;
     _bRequTimeout := false;
-    OnExitRequError(_stFBAxle.fbGearOut.ErrorID);
+    OnExitRequError(_stFBAxle.fbGearOut.ErrorID, E_AxisErrorType.MCError);
   END_IF
 
 E_StepMC.Timeout:
     _stFBAxle.fbGearOut.Execute := FALSE;
     _bRequTimeout := true;
-    OnExitRequError(_stFBAxle.fbGearOut.ErrorID);  
+    OnExitRequError(_stFBAxle.fbGearOut.ErrorID, E_AxisErrorType.Timeout);  
 end_case]]></ST>
       </Implementation>
     </Method>
@@ -606,10 +670,10 @@ end_case]]></ST>
     IF not _stFBAxle.fbMoveJog.Error THEN  
       OnExitRequOk();
     ELSE
-      OnExitRequError(_stFBAxle.fbMoveJog.ErrorID);
-    end_if
-                       
+      OnExitRequError(_stFBAxle.fbMoveJog.ErrorID, E_AxisErrorType.MCError);
+    end_if                  
 end_case
+Case02Hysto(_nStep);
 ]]></ST>
       </Implementation>
     </Method>
@@ -672,7 +736,7 @@ END_VAR
   E_StepMC.PowerOnRetryError:
     //_bPowerOn := FALSE;
     IF _uiRetryPowerOnCnt = 0 THEN
-      OnExitRequError(_stFBAxle.fbPower.ErrorID);//after _uiRetryPowerOnCnt still impossible to PowerOn
+      OnExitRequError(_stFBAxle.fbPower.ErrorID, E_AxisErrorType.Retry);//after _uiRetryPowerOnCnt still impossible to PowerOn
       _uiRetryPowerOnCnt := _uiRetryPowerOnCnt_C;
       _bExecPreviousRequ := FALSE;
      ELSE
@@ -680,7 +744,7 @@ END_VAR
       _uiRetryPowerOnCnt := _uiRetryPowerOnCnt - 1;
     END_IF    
 END_CASE
-Case01Hysto(_nStep);]]></ST>
+Case02Hysto(_nStep);]]></ST>
       </Implementation>
     </Method>
     <Method Name="StmReset" Id="{752c42b5-45d9-41b7-a20c-71af002eb088}">
@@ -724,14 +788,15 @@ E_StepMC.End:
   ELSE
     _stFBAxle.fbReset.Execute := FALSE;
     _bRequTimeout := false;
-    OnExitRequError(_stFBAxle.fbReset.ErrorID);
+    OnExitRequError(_stFBAxle.fbReset.ErrorID, E_AxisErrorType.MCError);
   END_IF
 
 E_StepMC.Timeout:
     _stFBAxle.fbReset.Execute := FALSE;
     _bRequTimeout := true;
-    OnExitRequError(_stFBAxle.fbReset.ErrorID);  
-end_case]]></ST>
+    OnExitRequError(_stFBAxle.fbReset.ErrorID, E_AxisErrorType.Timeout);  
+end_case
+Case03Hysto(_nStep);]]></ST>
       </Implementation>
     </Method>
   </POU>

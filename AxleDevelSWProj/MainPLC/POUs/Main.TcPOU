@@ -3,17 +3,13 @@
   <POU Name="Main" Id="{b2f2a346-2aab-4873-ae80-3f4daff09e02}" SpecialFunc="None">
     <Declaration><![CDATA[PROGRAM Main
 VAR
- 	fbPowerMaster : FB_PowerMaster;
-  fbPowerAxis1 : FB_PowerAxis1;
+ 	//fbPowerMaster : FB_PowerMaster;
+  //fbPowerAxis1 : FB_PowerAxis1;
+  //fbAxisStMachine : FB_AxisStMachine;
   
-  fbTestAxle : FB_testAxle;
+  //fbAxisJog : FB_testAxisL1LeftFrontJog;
   
-  //Axis day 2 training
-  myAxisA : FB_Axis;
-	myAxisB : FB_Axis;
-	myAxisVirtual : FB_Axis;
-	myAxisStepper : FB_Axis;
-	fbAxisStMachine : FB_AxisStMachine;
+  fbAxisAllJog : FB_testAxleAllJog;
 END_VAR
 ]]></Declaration>
     <Implementation>
@@ -25,12 +21,11 @@ END_VAR
 //fbAxisStMachine(AxisInOut := GVL.Axis_servoA);
 
 //fbPowerAxis1();
-fbPowerMaster();
+//fbPowerMaster();
 
 //fbTestAxle();
-
-
-]]></ST>
+//fbAxisJog();
+fbAxisAllJog();]]></ST>
     </Implementation>
   </POU>
 </TcPlcObject>

@@ -1,0 +1,18 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.12">
+  <DUT Name="E_AxisErrorType" Id="{65e0e0ae-3ce4-4e10-b454-9d864f076b5d}">
+    <Declaration><![CDATA[{attribute 'qualified_only'}
+{attribute 'strict'}
+TYPE E_AxisErrorType :
+(
+  NoError := 0,
+  MCError := 1,
+  Retry := 2,
+  Timeout := 3,
+  
+  NoOp := 255
+);
+END_TYPE
+]]></Declaration>
+  </DUT>
+</TcPlcObject>

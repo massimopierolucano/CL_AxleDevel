@@ -23,6 +23,9 @@
     <ProjectVersion>0.5beat1</ProjectVersion>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="DUTs\E_AxisErrorType.TcDUT">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="DUTs\ST_SystemStatus_ARP.TcDUT">
       <SubType>Code</SubType>
     </Compile>
@@ -61,16 +64,31 @@
     <Compile Include="PlcTask.TcTTO">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="POUs\CL_AxisMaster.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="POUs\CL_AxisL2RightBack.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="POUs\CL_AxisL1LeftFront.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="POUs\CL_AxisL1LeftBack.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="POUs\CL_AxisL2RighFront.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="POUs\CL_Axis_old.TcPOU">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="POUs\CL_Axle.TcPOU">
+    <Compile Include="POUs\CL_AxisRobot.TcPOU">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="POUs\CL_CGSSystemBase.TcPOU">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="POUs\FB_testAxle.TcPOU">
+    <Compile Include="POUs\FB_testAxleAllJog.TcPOU">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="POUs\FB_PowerAxis1.TcPOU">
@@ -79,10 +97,10 @@
     <Compile Include="POUs\FB_PowerMaster.TcPOU">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="POUs\Main.TcPOU">
+    <Compile Include="POUs\FB_testAxisL1LeftFrontJog.TcPOU">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="POUs\AxisDay2Training\FB_Axis.TcPOU">
+    <Compile Include="POUs\Main.TcPOU">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="POUs\AxisDay2Training\FB_AxisStMachine.TcPOU">

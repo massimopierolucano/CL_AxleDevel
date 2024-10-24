@@ -1,0 +1,19 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.12">
+  <POU Name="CL_AxisL2RightBack" Id="{9581f397-500f-4bc2-83c1-3fff25c338cc}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION_BLOCK CL_AxisL2RightBack EXTENDS CL_AxisRobot
+var
+END_VAR]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[SUPER^();]]></ST>
+    </Implementation>
+    <Method Name="InitDefect" Id="{255aed50-cbe1-4d37-a724-ff92b8ae219e}">
+      <Declaration><![CDATA[METHOD PROTECTED InitDefect : BOOL
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[sWhichAxis := 'right(L2)-back';
+InitDefect := true;]]></ST>
+      </Implementation>
+    </Method>
+  </POU>
+</TcPlcObject>

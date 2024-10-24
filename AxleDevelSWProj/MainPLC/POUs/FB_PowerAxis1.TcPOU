@@ -13,7 +13,7 @@ END_VAR
 ]]></Declaration>
     <Implementation>
       <ST><![CDATA[fbPower(
-	Axis:= G.stAX.Line1Front, 
+	Axis:= G.stAX.L1LeftFront, 
 	Enable:= bPower, 
 	Enable_Positive:= bPower, 
 	Enable_Negative:= bPower, 
@@ -24,7 +24,7 @@ END_VAR
 	ErrorID=> errId);
 
 fbReset(
-	Axis:= G.stAX.Line1Front, 
+	Axis:= G.stAX.L1LeftFront, 
 	Execute:= bReset, 
 	Done=> bResetDone,
 	Busy=> bBusy, 
@@ -36,7 +36,7 @@ CASE stm OF
 		bPower := TRUE;
 		stm := 20;
 	20:
-		IF G.stAX.Line1Front.Status.Error THEN //really at the level of NC
+		IF G.stAX.L1LeftFront.Status.Error THEN //really at the level of NC
 			stm := 30;
 		ELSE
 			stm := 50;

@@ -1,0 +1,75 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.12">
+  <POU Name="FB_testAxisL1LeftFrontJog" Id="{9053ab39-9f13-4249-be36-30799056a5fb}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION_BLOCK FB_testAxisL1LeftFrontJog 
+VAR
+ 	stm	: UINT := 10;
+  stIRL : ST_LineReference;
+  b, bFW, bBW : BOOL := FALSE;
+END_VAR]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[G.AxisL1LeftFront(); 
+//G.AxisL2RightFront();
+//G.AxisL1LeftBack();
+//G.AxisL2RightBack();
+//G.AxisMaster();
+
+CASE stm OF   
+  10:
+    stIRL.nThis := 0;
+    stIRL.nFixedID := 1;
+    b := G.AxisL1LeftFront.Init(stIrrLine := stIRL, stAxisMotor_R := ADR(G.stAX.L1LeftFront), stAxisMaster_R := ADR(G.stAX.Master));
+    //G.AxisL2RightFront.Init(stIrrLine := stIRL, stAxisMotor_R := ADR(G.stAX.L2RightFront), stAxisMaster_R := ADR(G.stAX.Master));
+    //G.AxisL1LeftBack.Init(stIrrLine := stIRL, stAxisMotor_R := ADR(G.stAX.L1LeftBack), stAxisMaster_R := ADR(G.stAX.Master));
+    //G.AxisL2RightBack.Init(stIrrLine := stIRL, stAxisMotor_R := ADR(G.stAX.L2RightBack), stAxisMaster_R := ADR(G.stAX.Master));
+    //G.AxisMaster.Init(stIrrLine := stIRL, stAxisMotor_R := ADR(G.stAX.Master), stAxisMaster_R := ADR(G.stAX.Master));
+    if b then
+      stm := 50;
+		END_IF   
+
+  50:
+    IF NOT G.AxisL1LeftFront.IsBusy THEN
+      G.AxisL1LeftFront.RequPowerOn();
+      stm := 60;
+    END_IF
+  60:
+    IF G.AxisL1LeftFront.IsDone THEN
+      stm := 70;
+    END_IF
+  70:
+    IF NOT G.AxisL1LeftFront.IsError THEN
+      stm := 100;
+    ELSE
+      stm := 0;
+    END_IF
+
+  100:
+    IF NOT G.AxisL1LeftFront.IsBusy THEN
+      G.AxisL1LeftFront.RequJogAxisMaster();
+      bFW := true;
+      stm := 110;
+    END_IF
+
+  110:
+    IF G.AxisL1LeftFront.IsDone THEN
+      stm := 120;
+    END_IF
+    
+  120:
+    IF NOT G.AxisL1LeftFront.IsError THEN
+      stm := 130;
+    ELSE
+      stm := 0;
+    END_IF
+
+  130:
+    bFW := true;
+    bBW := FALSE;
+    G.AxisL1LeftFront.JogExec(bExecIn := TRUE, bExecJogFWIn := bFW, bExecJogBWIn := bBW);
+    stm := 130;
+  
+  0:; //park 
+END_CASE]]></ST>
+    </Implementation>
+  </POU>
+</TcPlcObject>

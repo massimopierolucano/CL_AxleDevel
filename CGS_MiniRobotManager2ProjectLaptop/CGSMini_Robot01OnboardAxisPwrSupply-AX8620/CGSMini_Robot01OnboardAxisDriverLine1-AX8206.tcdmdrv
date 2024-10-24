@@ -68,7 +68,7 @@
           <TcLink>
             <TcPrjPath>..\AxleDevelSWProj\AxleDevelSWProj.tsproj</TcPrjPath>
             <IoItemPathName>TIID^CGSMini_IRSMainPLCSafe^CGSMini_RobotAllMainCab-EL1200^CGSMini_Robot01MainCabEtherCATBusEK1122^CGSMini_Robot01OnboardAxisPwrSupply-AX8620^CGSMini_Robot01OnboardAxisDriverLine1-AX8206</IoItemPathName>
-            <NcItemPathName AxisType="1">TINC^NC-Task 1 SAF^Axes^CGSMini_Robot01AxisLine1Back</NcItemPathName>
+            <NcItemPathName AxisType="1">TINC^NC-Task 1 SAF^Axes^CGSMini_R01AxisL1Back</NcItemPathName>
           </TcLink>
           <SelectedModifyOptPDOsMode>0</SelectedModifyOptPDOsMode>
           <Modulo>
@@ -649,7 +649,7 @@
           <TcLink>
             <TcPrjPath>..\AxleDevelSWProj\AxleDevelSWProj.tsproj</TcPrjPath>
             <IoItemPathName>TIID^CGSMini_IRSMainPLCSafe^CGSMini_RobotAllMainCab-EL1200^CGSMini_Robot01MainCabEtherCATBusEK1122^CGSMini_Robot01OnboardAxisPwrSupply-AX8620^CGSMini_Robot01OnboardAxisDriverLine1-AX8206</IoItemPathName>
-            <NcItemPathName AxisType="1">TINC^NC-Task 1 SAF^Axes^CGSMini_Robot01AxisLine1Front</NcItemPathName>
+            <NcItemPathName AxisType="1">TINC^NC-Task 1 SAF^Axes^CGSMini_R01AxisL1Front</NcItemPathName>
           </TcLink>
           <SelectedModifyOptPDOsMode>0</SelectedModifyOptPDOsMode>
           <Modulo>
@@ -3772,7 +3772,7 @@
               <Ccs>1</Ccs>
               <Index>12480</Index>
               <SubIndex>1</SubIndex>
-              <Data>0000a041</Data>
+              <Data>0000f041</Data>
             </InitCmd>
             <InitCmd>
               <Transition>PS</Transition>
@@ -3781,7 +3781,7 @@
               <Ccs>1</Ccs>
               <Index>13504</Index>
               <SubIndex>1</SubIndex>
-              <Data>0000a041</Data>
+              <Data>0000f041</Data>
             </InitCmd>
             <InitCmd>
               <Transition>PS</Transition>
@@ -6968,7 +6968,7 @@
       <AmsPort>1019</AmsPort>
     </AmsAddress>
     <CoeDS402Channels>2</CoeDS402Channels>
-    <LinkedAxis Chn="0">TINC^NC-Task 1 SAF^Axes^CGSMini_Robot01AxisLine1Back</LinkedAxis>
-    <LinkedAxis Chn="1">TINC^NC-Task 1 SAF^Axes^CGSMini_Robot01AxisLine1Front</LinkedAxis>
+    <LinkedAxis Chn="0">TINC^NC-Task 1 SAF^Axes^CGSMini_R01AxisL1Back</LinkedAxis>
+    <LinkedAxis Chn="1">TINC^NC-Task 1 SAF^Axes^CGSMini_R01AxisL1Front</LinkedAxis>
   </EtherCAT>
 </TreeItem>

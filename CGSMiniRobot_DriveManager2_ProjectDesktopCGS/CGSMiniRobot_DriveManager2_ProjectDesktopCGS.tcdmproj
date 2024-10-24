@@ -1,0 +1,25 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Name>Drive Manager 2</Name>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{fe209ab3-2a90-4657-af2f-74e34f6735dd}</ProjectGuid>
+    <TcPath>
+    </TcPath>
+    <AssemblyName>CGSMiniRobot_DriveManager2_ProjectDesktopCGS</AssemblyName>
+    <RootNamespace>CGSMiniRobot_DriveManager2_ProjectDesktopCGS</RootNamespace>
+  </PropertyGroup>
+  <ItemGroup>
+    <Content Include="CGSMini_Robot01OnboardAxisPwrSupply-AX8620.tcdmdrv">
+      <SubType>Content</SubType>
+    </Content>
+    <Content Include="CGSMini_Robot01OnboardAxisPwrSupply-AX8620\CGSMini_Robot01OnboardAxisDriverLine1-AX8206.tcdmdrv">
+      <SubType>Content</SubType>
+      <DependentUpon>CGSMini_Robot01OnboardAxisPwrSupply-AX8620.tcdmdrv</DependentUpon>
+    </Content>
+    <Content Include="CGSMini_Robot01OnboardAxisPwrSupply-AX8620\CGSMini_Robot01OnboardAxisDriverLine2-AX8206.tcdmdrv">
+      <SubType>Content</SubType>
+      <DependentUpon>CGSMini_Robot01OnboardAxisPwrSupply-AX8620.tcdmdrv</DependentUpon>
+    </Content>
+  </ItemGroup>
+</Project>

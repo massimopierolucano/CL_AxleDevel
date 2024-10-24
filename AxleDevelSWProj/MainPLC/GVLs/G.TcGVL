@@ -7,26 +7,27 @@ VAR_GLOBAL
   stSystemStatus_ARR      : REFERENCE TO ST_SystemStatus_AR := _stSystemStatus_AR;
   
   
-  {attribute 'TcNcAxis' := '.Line1Front                       := CGSMini_Robot01AxisLine1Front;
-                          .Line1Back                        := CGSMini_Robot01AxisLine1Back;
-                          .Line2Front                       := CGSMini_Robot01AxisLine2Front;
-                          .Line2Back                        := CGSMini_Robot01AxisLine2Back;
-                          .Master                           := CGSMini_R01AxisMaster'}
+  {attribute 'TcNcAxis' := '.L1LeftFront                     := CGSMini_R01AxisL1LeftFront;
+                          .L1LeftBack                        := CGSMini_R01AxisL1LeftBack;
+                          .L2RightFront                      := CGSMini_R01AxisL2RightFront;
+                          .L2RightBack                       := CGSMini_R01AxisL2RightBack;
+                          .Master                            := CGSMini_R01AxisMaster'}
   stAX : ST_Robot_Axes;
   
   (*
-  {attribute 'TcNcAxis' := '.Line1Front                     := Sim_Robot01AxisLine1Front;
-                          .Line1Back                        := Sim_Robot01AxisLine1Back;
-                          .Line2Front                       := Sim_Robot01AxisLine2Front;
-                          .Line2Back                        := Sim_Robot01AxisLine2Back;
+  {attribute 'TcNcAxis' := '.L1LeftFront                     := Sim_Robot01AxisLine1Front;
+                          .L1LeftBack                        := Sim_Robot01AxisLine1Back;
+                          .L2RightFront                       := Sim_Robot01AxisLine2Front;
+                          .L2RightBack                        := Sim_Robot01AxisLine2Back;
                           .Master                           := Sim_Robot01AxisMaster'}
   stAxes : ST_Robot_Axes;*)
   
-  AxisLine1Front  : CL_Axle;
-  AxisLine2Front  : CL_Axle;
-  AxisLine1Back  : CL_Axle;
-  AxisLine2Back  : CL_Axle;
-  AxisMaster      : CL_Axle;
-END_VAR]]></Declaration>
+  AxisL1LeftFront   : CL_AxisL1LeftFront;
+  AxisL2RightFront  : CL_AxisL2RighFront;
+  AxisL1LeftBack    : CL_AxisL1LeftBack;
+  AxisL2RightBack   : CL_AxisL2RightBack;
+  AxisMaster        : CL_AxisMaster;
+END_VAR
+]]></Declaration>
   </GVL>
 </TcPlcObject>

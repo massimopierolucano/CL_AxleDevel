@@ -1,0 +1,108 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.12">
+  <POU Name="FB_testAxleAllJog" Id="{9bd3fa27-2c86-4015-af85-c6190e6bedf9}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION_BLOCK FB_testAxleAllJog 
+VAR
+ 	stm	: UINT := 10;
+  stmAfterInit : UINT := 1000;
+  stIRL : ST_LineReference;
+  bFW, bBW, b : BOOL := FALSE;
+END_VAR]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[G.AxisL1LeftFront(); 
+G.AxisL2RightFront();
+G.AxisL1LeftBack();
+G.AxisL2RightBack();
+G.AxisMaster();
+
+CASE stm OF   
+  10:
+    stIRL.nThis := 0;
+    stIRL.nFixedID := 1;
+    b := G.AxisL1LeftFront.Init(stIrrLine := stIRL, stAxisMotor_R := ADR(G.stAX.L1LeftFront), stAxisMaster_R := ADR(G.stAX.Master));
+    b := b and G.AxisL2RightFront.Init(stIrrLine := stIRL, stAxisMotor_R := ADR(G.stAX.L2RightFront), stAxisMaster_R := ADR(G.stAX.Master));
+    b := b and G.AxisL1LeftBack.Init(stIrrLine := stIRL, stAxisMotor_R := ADR(G.stAX.L1LeftBack), stAxisMaster_R := ADR(G.stAX.Master));
+    b := b and G.AxisL2RightBack.Init(stIrrLine := stIRL, stAxisMotor_R := ADR(G.stAX.L2RightBack), stAxisMaster_R := ADR(G.stAX.Master));
+    b := b and G.AxisMaster.Init(stIrrLine := stIRL, stAxisMotor_R := ADR(G.stAX.Master), stAxisMaster_R := ADR(G.stAX.Master));
+    if b then
+      stm := 1000;
+		END_IF   
+ 
+  1000:
+    IF NOT G.AxisL1LeftFront.IsBusy AND NOT G.AxisL2RightFront.IsBusy AND NOT G.AxisL1LeftBack.IsBusy AND NOT G.AxisL2RightBack.IsBusy AND NOT G.AxisMaster.IsBusy THEN
+      G.AxisL1LeftFront.RequPowerOn();
+      G.AxisL2RightFront.RequPowerOn();
+      G.AxisL1LeftBack.RequPowerOn();
+      G.AxisL2RightBack.RequPowerOn();
+      //G.AxisMaster.RequPowerOn();
+      stm := 1120;
+    END_IF
+    
+  1120:
+    IF G.AxisL1LeftFront.IsDone AND G.AxisL2RightFront.IsDone AND G.AxisL1LeftBack.IsDone AND G.AxisL2RightBack.IsDone THEN //AND G.AxisMaster.IsDone
+      stm := 1130;
+    END_IF
+    
+  1130:
+    IF NOT G.AxisL1LeftFront.IsError AND NOT G.AxisL2RightFront.IsError AND NOT G.AxisL1LeftBack.IsError AND NOT G.AxisL2RightBack.IsError THEN // AND NOT G.AxisMaster.IsError 
+      stm := 1140;
+    ELSE
+      stm := 0;
+    END_IF
+  
+  1140:
+    IF G.AxisL1LeftFront.IsDone AND G.AxisL2RightFront.IsDone AND G.AxisL1LeftBack.IsDone AND G.AxisL2RightBack.IsDone THEN //AND G.AxisMaster.IsDone
+      stm := 1150;
+    END_IF
+    
+  1150:
+    IF NOT G.AxisL1LeftFront.IsError AND NOT G.AxisL2RightFront.IsError AND NOT G.AxisL1LeftBack.IsError AND NOT G.AxisL2RightBack.IsError THEN // AND NOT G.AxisMaster.IsError 
+      stm := 2000;
+    ELSE
+      stm := 0;
+    END_IF
+  
+  2000:
+    bFW := true;
+    bBW := FALSE;
+    G.AxisL1LeftFront.JogExec(bExecIn := TRUE, bExecJogFWIn := bFW, bExecJogBWIn := bBW);
+    G.AxisL1LeftBack.JogExec(bExecIn := TRUE, bExecJogFWIn := bFW, bExecJogBWIn := bBW);
+    G.AxisL2RightFront.JogExec(bExecIn := TRUE, bExecJogFWIn := bFW, bExecJogBWIn := bBW);
+    G.AxisL2RightBack.JogExec(bExecIn := TRUE, bExecJogFWIn := bFW, bExecJogBWIn := bBW);
+    stm := 2000;
+  
+  0:; //park 
+END_CASE
+
+(*
+  140:
+    IF NOT G.AxisL1LeftFront.IsBusy THEN
+      G.AxisL1LeftFront.RequGearInDyn();
+      stm := 150;
+    END_IF
+  150:
+    IF G.AxisL1LeftFront.IsDone THEN
+      stm := 160;
+    END_IF
+  160:
+    IF NOT G.AxisL1LeftFront.IsError THEN
+      stm := 170; 
+    ELSE
+      stm := 0;
+    END_IF
+    
+  170:
+    IF NOT G.AxisMaster.IsBusy THEN
+      G.AxisMaster.RequJogAxisMaster();
+      stm := 180;
+    END_IF
+    
+  2000:
+    bFW := FALSE;
+    bBW := FALSE;
+    G.AxisMaster.JogExec(bExecIn := TRUE, bExecJogFWIn := bFW, bExecJogBWIn := bBW);
+    stm := 180;
+*)]]></ST>
+    </Implementation>
+  </POU>
+</TcPlcObject>
