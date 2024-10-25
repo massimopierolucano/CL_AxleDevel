@@ -100,6 +100,9 @@
     <Compile Include="POUs\FB_testAxisL1LeftFrontJog.TcPOU">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="POUs\FB_testAxleMasterJog.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="POUs\Main.TcPOU">
       <SubType>Code</SubType>
     </Compile>
