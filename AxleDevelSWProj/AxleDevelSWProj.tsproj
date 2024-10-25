@@ -1054,7 +1054,7 @@ External Setpoint Generation:
 						<Defines/>
 					</Variant>
 				</ProjectVariant>
-				<Instance Id="#x08502000" TcSmClass="TComPlcObjDef" KeepUnrestoredLinks="2" TmcPath="MainPLC\MainPLC.tmc" TmcHash="{EC48F8E7-30EF-5F62-84FC-77C6DD5D2316}">
+				<Instance Id="#x08502000" TcSmClass="TComPlcObjDef" KeepUnrestoredLinks="2" TmcPath="MainPLC\MainPLC.tmc" TmcHash="{5B801512-D6F9-667E-86B1-276BBF2F3946}">
 					<Name>MainPLC Instance</Name>
 					<CLSID ClassFactory="TcPlc30">{08500001-0000-0000-F000-000000000064}</CLSID>
 					<Vars VarGrpType="1">

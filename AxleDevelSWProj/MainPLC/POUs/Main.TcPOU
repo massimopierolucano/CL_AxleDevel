@@ -9,7 +9,9 @@ VAR
   
   //fbAxisJog : FB_testAxisL1LeftFrontJog;
   
-  fbAxisAllJog : FB_testAxleAllJog;
+  //fbAxisAllJog : FB_testAxleAllJog;
+  
+  fbAxleMasterJog : FB_testAxleMasterJog;
 END_VAR
 ]]></Declaration>
     <Implementation>
@@ -25,7 +27,8 @@ END_VAR
 
 //fbTestAxle();
 //fbAxisJog();
-fbAxisAllJog();]]></ST>
+//fbAxisAllJog();
+fbAxleMasterJog();  ]]></ST>
     </Implementation>
   </POU>
 </TcPlcObject>

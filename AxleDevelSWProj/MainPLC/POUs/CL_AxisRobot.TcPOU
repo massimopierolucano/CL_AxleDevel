@@ -37,7 +37,7 @@ VAR
   _bExecPreviousRequ    : BOOL := FALSE;
     
 	_bEnableMove          : BOOL := TRUE;   // Enable the moving of axis
-	_lrAxisOverride	      : LREAL:= 100.0;    // Override of the axis velocity
+	_lrAxisOverride	      : LREAL:= 100.0;  // Override of the axis velocity
   
   _bExecJog             : BOOL := FALSE;
   _bExecJogFWIn         : BOOL := FALSE;
@@ -50,6 +50,7 @@ VAR
   _bGearInCmdAborted    : BOOL := FALSE;
   _lrMotorGearRatio     : LREAL;
   _lrAcceleration       : LREAL;
+  _lrInverse            : LREAL; //Line1-Left -> _lrInverse:=1.0 while Line2-Right -> _lrInverse:=-1.0
   
   //counters
   _uiRetryPowerOnCnt_C  : UINT := C.uiRetryPowerOnCnt_C;  //PowerOn retry
@@ -78,26 +79,21 @@ END_IF
       <Declaration><![CDATA[METHOD PUBLIC Init : BOOL
 VAR_INPUT
   stIrrLine       : ST_LineReference;
-  stAxisMotor_R	  : POINTER TO AXIS_REF;
-  stAxisMaster_R  : POINTER TO AXIS_REF;
+  stAxisMotor_P	  : POINTER TO AXIS_REF;
+  stAxisMaster_P  : POINTER TO AXIS_REF;
 END_VAR
 ]]></Declaration>
       <Implementation>
         <ST><![CDATA[Init := false;
-//IF __ISVALIDREF(stAxisMotor_R) AND __ISVALIDREF(stAxisMaster_R) AND NOT bInit THEN
-IF stAxisMotor_R <> 0 AND stAxisMaster_R <> 0 AND NOT bInit THEN
-  _bIsAxisMaster := stAxisMotor_R = stAxisMaster_R;
-  _stMotorAxis_R REF= stAxisMotor_R^;
-  _stMasterAxis_R REF= stAxisMaster_R^;
+//IF __ISVALIDREF(stAxisMotor_P) AND __ISVALIDREF(stAxisMaster_P) AND NOT bInit THEN
+IF stAxisMotor_P <> 0 AND stAxisMaster_P <> 0 AND NOT bInit THEN
+  _bIsAxisMaster := stAxisMotor_P = stAxisMaster_P;
+  _stMotorAxis_R REF= stAxisMotor_P^;
+  _stMasterAxis_R REF= stAxisMaster_P^;
   _stAxisJog_R REF= _stMotorAxis_R;
-  
-  //if the listed parameters are equal 0.0 -> the standard parameter from the axis configuration in the System Manager is used
-  _lrJogVelocity := 0.3;//m/s
-  _nJogMode := MC_JOGMODE_STANDARD_SLOW;//MC_JOGMODE_STANDARD_FAST;  MC_JOGMODE_CONTINUOUS
-  _nJogMode := MC_JOGMODE_STANDARD_FAST; 
-  _stFBAxle.fbMoveJog(Axis := _stMotorAxis_R, Position := 0.0, Velocity := _lrJogVelocity, Acceleration := 0.0, Deceleration := 0.0, Jerk := 0.0);
-  
+    
   bInit := SUPER^.InitSystemBase( IrrLine := stIrrLine, stSystemStatus_ARR := G.stSystemStatus_ARR);
+  bInit := bInit AND InitParams();
   bInit := bInit AND InitDefect();
   Init := bInit;
 END_IF]]></ST>
@@ -110,6 +106,21 @@ END_VAR
 ]]></Declaration>
       <Implementation>
         <ST><![CDATA[InitDefect := true;]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="InitParams" Id="{c822e9fa-eea8-4311-a8be-35f66d9b703d}">
+      <Declaration><![CDATA[METHOD PROTECTED InitParams : BOOL
+VAR_INPUT
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[InitParams := true;
+//if the listed parameters are equal 0.0 -> the standard parameter from the axis configuration in the System Manager is used
+_lrJogVelocity := 0.3;//m/s
+_nJogMode := MC_JOGMODE_STANDARD_SLOW;//MC_JOGMODE_STANDARD_FAST;  MC_JOGMODE_CONTINUOUS
+_nJogMode := MC_JOGMODE_STANDARD_FAST; 
+_stFBAxle.fbMoveJog(Axis := _stMotorAxis_R, Position := 0.0, Velocity := _lrJogVelocity, Acceleration := 0.0, Deceleration := 0.0, Jerk := 0.0);
+_lrInverse := 1.0;]]></ST>
       </Implementation>
     </Method>
     <Property Name="IsBusy" Id="{d7c98a25-7356-4fb0-9e7a-bc4c705a71dc}">
@@ -272,7 +283,7 @@ METHOD RequGearInDyn : bool
       <Implementation>
         <ST><![CDATA[RequGearInDyn := bInit AND _bIsPowered AND NOT _bError AND NOT _bIsBusy AND NOT _bIsAxisMaster;
 //_stMotorAxis_R <> _stMasterAxis_R GearInDyn only on real axis not master axis
-//_stMotorAxis_R 0 _stMasterAxis_R GearInDyn only for virtual master axis
+//_stMotorAxis_R = _stMasterAxis_R GearInDyn on virtual axis in this case make no sense
 IF RequGearInDyn THEN
 	_nRequAxle := E_RequAxle.GearInDyn;
 else
@@ -287,7 +298,7 @@ METHOD RequGearOut : bool
       <Implementation>
         <ST><![CDATA[RequGearOut := bInit AND _bIsPowered AND NOT _bError AND NOT _bIsBusy  AND NOT _bIsAxisMaster;
 //_stMotorAxis_R <> _stMasterAxis_R GearInDyn only on real axis not master axis
-//_stMotorAxis_R 0 _stMasterAxis_R GearInDyn only for virtual master axis
+//_stMotorAxis_R = _stMasterAxis_R GearInDyn on virtual axis in this case make no sense
 IF RequGearOut THEN
 	_nRequAxle := E_RequAxle.GearOut;
 else
@@ -413,14 +424,12 @@ Case01Hysto(_nStepMain);]]></ST>
     Override:= _lrAxisOverride, 
     Status=>_bMCStatus ,
     Busy=>_bMCBusy , 
-    Error=>_bMCError, 
-    ErrorID=> _MCerrId);
+    Error=>_bMCError);
         
 _stFBAxle.fbReset(
     Axis:= _stMotorAxis_R, 
     Busy=>_bMCBusy , 
-    Error=>_bMCError, 
-    ErrorID=> _MCerrId);
+    Error=>_bMCError);
 
 _stFBAxle.fbMoveJog(
     Axis := _stAxisJog_R,
@@ -429,8 +438,19 @@ _stFBAxle.fbMoveJog(
     Mode := _nJogMode,
     Velocity := _lrJogVelocity);
       
-//_stFBAxle.fbGearInDyn(Master := _stMasterAxis_R, Slave:= _stMotorAxis_R, Enable := _bGearInDyn, GearRatio := _lrMotorGearRatio, Acceleration := _lrAcceleration);
-//_stFBAxle.fbGearOut(Slave:= _stMotorAxis_R, Execute := _bGearOut);
+_stFBAxle.fbGearInDyn(
+    Master := _stMasterAxis_R,
+    Slave:= _stMotorAxis_R,
+    Enable := _bGearInDyn,
+    GearRatio := _lrMotorGearRatio,
+    Acceleration := _lrAcceleration,
+    Busy=>_bMCBusy,
+    Error=>_bMCError);
+//ATTENTION MC_GearInDyn has Busy = Active = true until is active!
+
+_stFBAxle.fbGearOut(
+    Slave:= _stMotorAxis_R,
+    Execute := _bGearOut);
 
 ///////////////////////////////////////////////OLD
 	(*
@@ -455,13 +475,6 @@ _stFBAxle.fbMoveJog(
 	fbGearOut						      : MC_GearOut;//Axis coupling - GearOut
 	fbPosCorrectionLimiter    : MC_PositionCorrectionLimiter;//Special extensions - Position Correction Limiter
 *)
-
-//_stFBAxle.fbPower(Axis:=MotorAxle^, Override:= _lrAxisOverride);
-//_stFBAxle.fbStop(Axis:=MotorAxle^);
-//_stFBAxle.fbReset(Axis:=MotorAxle^);
- 
- //timers
-// fbTimeOutReset(IN := _nStep = E_StepAxle.ResetTimeout);
  
 (*
  _stFBAxle.fbHome(Axis:=MotorAxle^, bCalibrationCam:=_udCalibrationSensor_P^.19,
@@ -542,7 +555,7 @@ ADSLOGSTR(ADSLOG_MSGTYPE_MSGBOX, 'CL_Axis error loop  %s',sOutMsg);
 E_StepMC.Init :
   _bGearInDyn	:= TRUE;//until enable = true -> As long as "Enable" is TRUE, the gear factor can be changed cyclically
   _bGearOut := false;
-  _lrMotorGearRatio := 2.0;
+  _lrMotorGearRatio := 1.0 * _lrInverse;
   _lrAcceleration := 0.0;// If the value is 0, the standard acceleration from the axis configuration in the System Manager is used
   WaitNextState.Start(C.tTimeOutAxisMC_C);
   _nStep := E_StepMC.Busy;
@@ -553,7 +566,8 @@ E_StepMC.Busy :
   END_IF
   IF WaitNextState.End THEN
     _nStep := E_StepMC.Timeout;
-  ELSIF not _stFBAxle.fbGearInDyn.Busy THEN //Active == Busy
+  ELSIF _stFBAxle.fbGearInDyn.Busy THEN //Active == Busy
+    //ATTENTION MC_GearInDyn has Busy = Active = true until is active!
     _nStep := E_StepMC.End;
   END_IF
   
@@ -585,7 +599,7 @@ end_case]]></ST>
         <ST><![CDATA[CASE _nStep OF 
 E_StepMC.Init :
   _bGearInDyn	:= false;
-  _bGearOut := TRUE;
+  _bGearOut := TRUE; //executed with a rising edge
   WaitNextState.Start(C.tTimeOutAxisMC_C);
   _nStep := E_StepMC.Busy;
 
@@ -606,17 +620,17 @@ E_StepMC.Done :
   
 E_StepMC.End:
   IF not _stFBAxle.fbGearOut.Error THEN  
-    _bGearOut := TRUE;
+    _bGearOut := false;//executed with a rising edge
     OnExitRequOk();
   ELSE
-    _bGearOut := TRUE;
+    _bGearOut := false;//executed with a rising edge
     _bRequTimeout := false;
     OnExitRequError(_stFBAxle.fbGearOut.ErrorID, E_AxisErrorType.MCError);
   END_IF
 
 E_StepMC.Timeout:
     _stFBAxle.fbGearOut.Execute := FALSE;
-    _bRequTimeout := true;
+    _bRequTimeout := false;//executed with a rising edge
     OnExitRequError(_stFBAxle.fbGearOut.ErrorID, E_AxisErrorType.Timeout);  
 end_case]]></ST>
       </Implementation>

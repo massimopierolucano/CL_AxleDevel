@@ -4,7 +4,6 @@
     <Declaration><![CDATA[FUNCTION_BLOCK FB_testAxleAllJog 
 VAR
  	stm	: UINT := 10;
-  stmAfterInit : UINT := 1000;
   stIRL : ST_LineReference;
   bFW, bBW, b : BOOL := FALSE;
 END_VAR]]></Declaration>
@@ -19,11 +18,11 @@ CASE stm OF
   10:
     stIRL.nThis := 0;
     stIRL.nFixedID := 1;
-    b := G.AxisL1LeftFront.Init(stIrrLine := stIRL, stAxisMotor_R := ADR(G.stAX.L1LeftFront), stAxisMaster_R := ADR(G.stAX.Master));
-    b := b and G.AxisL2RightFront.Init(stIrrLine := stIRL, stAxisMotor_R := ADR(G.stAX.L2RightFront), stAxisMaster_R := ADR(G.stAX.Master));
-    b := b and G.AxisL1LeftBack.Init(stIrrLine := stIRL, stAxisMotor_R := ADR(G.stAX.L1LeftBack), stAxisMaster_R := ADR(G.stAX.Master));
-    b := b and G.AxisL2RightBack.Init(stIrrLine := stIRL, stAxisMotor_R := ADR(G.stAX.L2RightBack), stAxisMaster_R := ADR(G.stAX.Master));
-    b := b and G.AxisMaster.Init(stIrrLine := stIRL, stAxisMotor_R := ADR(G.stAX.Master), stAxisMaster_R := ADR(G.stAX.Master));
+    b := G.AxisL1LeftFront.Init(stIrrLine := stIRL, stAxisMotor_P := ADR(G.stAX.L1LeftFront), stAxisMaster_P := ADR(G.stAX.Master));
+    b := b and G.AxisL2RightFront.Init(stIrrLine := stIRL, stAxisMotor_P := ADR(G.stAX.L2RightFront), stAxisMaster_P := ADR(G.stAX.Master));
+    b := b and G.AxisL1LeftBack.Init(stIrrLine := stIRL, stAxisMotor_P := ADR(G.stAX.L1LeftBack), stAxisMaster_P := ADR(G.stAX.Master));
+    b := b and G.AxisL2RightBack.Init(stIrrLine := stIRL, stAxisMotor_P := ADR(G.stAX.L2RightBack), stAxisMaster_P := ADR(G.stAX.Master));
+    b := b and G.AxisMaster.Init(stIrrLine := stIRL, stAxisMotor_P := ADR(G.stAX.Master), stAxisMaster_P := ADR(G.stAX.Master));
     if b then
       stm := 1000;
 		END_IF   

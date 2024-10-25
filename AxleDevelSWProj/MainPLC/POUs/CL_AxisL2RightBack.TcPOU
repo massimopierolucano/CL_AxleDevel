@@ -15,5 +15,16 @@ END_VAR]]></Declaration>
 InitDefect := true;]]></ST>
       </Implementation>
     </Method>
+    <Method Name="InitParams" Id="{f630f93c-65da-4341-ab5f-5ba2af850e86}">
+      <Declaration><![CDATA[METHOD PROTECTED InitParams : BOOL
+VAR_INPUT
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[InitParams := super^.InitParams();
+_lrInverse := -1.0;
+]]></ST>
+      </Implementation>
+    </Method>
   </POU>
 </TcPlcObject>
