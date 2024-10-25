@@ -26,6 +26,9 @@
     <Compile Include="DUTs\E_AxisErrorType.TcDUT">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="DUTs\ST_AXIS_MOVE_PROFILE.TcDUT">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="DUTs\ST_SystemStatus_ARP.TcDUT">
       <SubType>Code</SubType>
     </Compile>

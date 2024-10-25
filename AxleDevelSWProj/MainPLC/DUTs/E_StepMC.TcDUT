@@ -22,12 +22,12 @@ TYPE E_StepMC :
   PowerOnRetryError := 23,
   
   //Jog
-  JogInitEnd := 30,
-  JogBusyEnd := 31,
+  //JogInitEnd := 30,
+  //JogBusyEnd := 31,
   
 	//STEPS STOP
  	Stopping		  := 51,
-  EndStopping   := 52,
+  //EndStopping   := 52,
 	  
 	//STEPS HOMING
   InitHoming    := 60,

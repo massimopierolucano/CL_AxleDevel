@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.12">
   <POU Name="FB_testAxleMasterJog" Id="{e2f1bb32-fdc6-418f-a49e-b60b14043616}" SpecialFunc="None">
-    <Declaration><![CDATA[FUNCTION_BLOCK FB_testAxleMasterJog  EXTENDS CL_CGSSystemBase
+    <Declaration><![CDATA[FUNCTION_BLOCK FB_testAxleMasterJog  EXTENDS CL_MasterRootClass
 VAR
  	stm	: UINT := 10;
   stIRL : ST_LineReference;
@@ -14,6 +14,7 @@ G.AxisL1LeftBack();
 G.AxisL2RightBack();
 G.AxisMaster();
 
+Case01Hysto(stm);
 CASE stm OF   
   10:
     stIRL.nThis := 0;
@@ -24,10 +25,31 @@ CASE stm OF
     b := b and G.AxisL2RightBack.Init(stIrrLine := stIRL, stAxisMotor_P := ADR(G.stAX.L2RightBack), stAxisMaster_P := ADR(G.stAX.Master));
     b := b and G.AxisMaster.Init(stIrrLine := stIRL, stAxisMotor_P := ADR(G.stAX.Master), stAxisMaster_P := ADR(G.stAX.Master));
     if b then
-      stm := 1000;
+      stm := 900;
 		END_IF   
  
-  //ATTENTION: to power-on again axis, they MUST be decoupled 
+  900:
+    IF NOT G.AxisL1LeftFront.IsBusy AND NOT G.AxisL2RightFront.IsBusy AND NOT G.AxisL1LeftBack.IsBusy AND NOT G.AxisL2RightBack.IsBusy THEN
+      G.AxisL1LeftFront.RequGearOut();
+      G.AxisL2RightFront.RequGearOut();
+      G.AxisL1LeftBack.RequGearOut();
+      G.AxisL2RightBack.RequGearOut();
+      stm := 910;
+    END_IF 
+    
+  910:
+    IF G.AxisL1LeftFront.IsDone AND G.AxisL2RightFront.IsDone AND G.AxisL1LeftBack.IsDone AND G.AxisL2RightBack.IsDone THEN
+      stm := 920;
+    END_IF
+    
+  920:
+    IF NOT G.AxisL1LeftFront.IsError AND NOT G.AxisL2RightFront.IsError AND NOT G.AxisL1LeftBack.IsError AND NOT G.AxisL2RightBack.IsError THEN
+      stm := 1000;
+    ELSE
+      stm := 0;
+    END_IF
+  
+  //ATTENTION: to power-on axis, they MUST be decoupled 
   1000:
     IF NOT G.AxisL1LeftFront.IsBusy AND NOT G.AxisL2RightFront.IsBusy AND NOT G.AxisL1LeftBack.IsBusy AND NOT G.AxisL2RightBack.IsBusy THEN
       G.AxisL1LeftFront.RequPowerOn();
@@ -107,13 +129,39 @@ CASE stm OF
   1300:
     bFW := true;
     bBW := FALSE;
-    G.AxisMaster.JogExec(bExecIn := TRUE, bExecJogFWIn := bFW, bExecJogBWIn := bBW);
+    G.AxisMaster.JogExec(bExecJogFWIn := bFW, bExecJogBWIn := bBW);
     if not bGearOut then
       stm := 1300;
     else
-      stm := 1400;
+      stm := 1310;
     end_if
+  
+  1310:
+    G.AxisMaster.JogExec(bExecJogFWIn := false, bExecJogBWIn := false);
+    stm := 1320;
+  
+  1320:
+    IF NOT G.AxisL1LeftFront.IsBusy AND NOT G.AxisL2RightFront.IsBusy AND NOT G.AxisL1LeftBack.IsBusy AND NOT G.AxisL2RightBack.IsBusy and NOT G.AxisMaster.IsBusy THEN
+      G.AxisMaster.RequStop();
+      G.AxisL1LeftFront.RequStop();
+      G.AxisL2RightFront.RequStop();
+      G.AxisL1LeftBack.RequStop();
+      G.AxisL2RightBack.RequStop();
+      stm := 1330;
+    END_IF
     
+  1330:
+    IF G.AxisL1LeftFront.IsDone AND G.AxisL2RightFront.IsDone AND G.AxisL1LeftBack.IsDone AND G.AxisL2RightBack.IsDone THEN
+      stm := 1340;
+    end_if
+
+  1340:
+    IF NOT G.AxisL1LeftFront.IsError AND NOT G.AxisL2RightFront.IsError AND NOT G.AxisL1LeftBack.IsError AND NOT G.AxisL2RightBack.IsError and not G.AxisMaster.IsError THEN
+      stm := 1400;
+    ELSE
+      stm := 0;
+    END_IF 
+
   1400:
     IF NOT G.AxisL1LeftFront.IsBusy AND NOT G.AxisL2RightFront.IsBusy AND NOT G.AxisL1LeftBack.IsBusy AND NOT G.AxisL2RightBack.IsBusy THEN
       G.AxisL1LeftFront.RequGearOut();
@@ -137,7 +185,7 @@ CASE stm OF
 
   0:; //park 
 END_CASE
-Case01Hysto(stm);]]></ST>
+]]></ST>
     </Implementation>
   </POU>
 </TcPlcObject>
