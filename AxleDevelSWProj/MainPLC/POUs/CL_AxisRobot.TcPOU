@@ -15,6 +15,7 @@ VAR
   
   _nRequAxle            : E_RequAxle;
   _nPreviousRequ        : E_RequAxle;
+  _nActualRequ          : E_RequAxle;  
   
   _bIsDone			        : BOOL := FALSE;	
   _bIsBusy			        : BOOL := FALSE;	
@@ -23,10 +24,12 @@ VAR
   _bIsAxisMaster			  : BOOL := FALSE;
 	_nErrorId		          : UDINT := 0;
  
+  //remove the following after debug
   _bMCBusy			        : BOOL;
   _bMCError			        : BOOL;
-	_MCerrId			        : UDINT;
   _bMCStatus            : BOOL;
+	//_MCerrId			        : UDINT;
+ 
 
   _bPowerOn             : BOOL := FALSE;
   _bGearOut             : BOOL := FALSE;
@@ -34,6 +37,7 @@ VAR
   _bGearInDyn           : BOOL := FALSE;
   _bJogFW               : BOOL := FALSE;
   _bJogBW               : BOOL := FALSE;
+  _bIsCoupled           : BOOL := FALSE;
   
   _bExecPreviousRequ    : BOOL := FALSE;
     
@@ -77,7 +81,8 @@ END_VAR
    THIS^.Run();
    This^.RunMC();//run M.otion C.ontrol (MC) FB function on exit, to speed-up 1 PLC cycle the refresh of the MC command
 END_IF
-]]></ST>
+
+    ]]></ST>
     </Implementation>
     <Method Name="Init" Id="{2947aad6-89af-4507-aa27-ffb6102c3e52}">
       <Declaration><![CDATA[METHOD PUBLIC Init : BOOL
@@ -226,8 +231,8 @@ _bRequTimeout := false;
 _bGearInCmdAborted := FALSE;
 _bJogCmdAborted := false;
 _bJogFW := _bJogBW := false;
-//_bExecJogFWIn := _bExecJogBWIn := false;
 _bAxisMovedbyJog := false;
+//_bExecJogFWIn := _bExecJogBWIn := false;
 //_bExecJog := false;]]></ST>
       </Implementation>
     </Method>
@@ -239,11 +244,11 @@ VAR_INPUT
 END_VAR
 ]]></Declaration>
       <Implementation>
-        <ST><![CDATA[_bIsDone	:= TRUE;
+        <ST><![CDATA[_nStepMain := E_RequAxle.Error;
+_bIsDone	:= TRUE;
 _bIsBusy	:= FALSE;
 _bError := true;
 _nErrorId := ErrorIDIn;
-_nStepMain := E_RequAxle.Error;
 _bExecPreviousRequ := FALSE;
 _bIsPowered := FALSE;
 _nAxisErrType := nAxisErrIn;
@@ -257,11 +262,11 @@ VAR_INPUT
 END_VAR
 ]]></Declaration>
       <Implementation>
-        <ST><![CDATA[_bIsDone	:= TRUE;
+        <ST><![CDATA[_nStepMain := E_RequAxle.Idle;
+_bIsDone	:= TRUE;
 _bIsBusy	:= FALSE;
 _bError := false;
 _nErrorId	:= 0;
-_nStepMain := E_RequAxle.Idle;
 //_nRequAxle := E_RequAxle.NoRequ;//not necessary set inside method Run
 ]]></ST>
       </Implementation>
@@ -274,11 +279,11 @@ VAR_INPUT
 END_VAR
 ]]></Declaration>
       <Implementation>
-        <ST><![CDATA[_bIsDone	:= FALSE;
+        <ST><![CDATA[_nStepMain := E_RequAxle.Idle;
+_bIsDone	:= FALSE;
 _bIsBusy	:= TRUE;
 _bError := true;
 _nErrorId := ErrorIDIn;
-_nStepMain := E_RequAxle.Idle;
 _nRequAxle := RequRetryIn;
 _bExecPreviousRequ := TRUE;
 _bIsPowered := false;
@@ -305,14 +310,22 @@ END_IF]]></ST>
 METHOD RequGearOut : bool
 ]]></Declaration>
       <Implementation>
-        <ST><![CDATA[RequGearOut := bInit AND _bIsPowered AND NOT _bError AND NOT _bIsBusy  AND NOT _bIsAxisMaster;
+        <ST><![CDATA[RequGearOut := bInit AND NOT _bError AND NOT _bIsBusy AND NOT _bIsAxisMaster;
+//to not check _bIsPowered because the GearOut cab be executed even if not power-on
 //_stMotorAxis_R <> _stMasterAxis_R GearInDyn only on real axis not master axis
 //_stMotorAxis_R = _stMasterAxis_R GearInDyn on virtual axis in this case make no sense
-IF RequGearOut THEN
+
+IF RequGearOut and _bIsCoupled THEN
 	_nRequAxle := E_RequAxle.GearOut;
+  //request GearOut only if the axis is coupled
 else
+  //RequGearOut can be only false, _bIsCoupled can be true or false
+  _bIsDone := not _bIsCoupled;
+  //the axis was already Decoupled; only in this case set _bIsDone as the request to decouple is "virtually" executed
+  //otherwise set it to false
   _nRequAxle := E_RequAxle.NoRequ;
-END_IF]]></ST>
+END_IF
+]]></ST>
       </Implementation>
     </Method>
     <Method Name="RequJogAxisMaster" Id="{7c24f518-fbdc-4e8f-95c9-e66859ad42bc}">
@@ -419,6 +432,7 @@ CASE _nStepMain OF
         _nPreviousRequ := _nRequAxle;
       END_IF
       _nStepMain := _nRequAxle;
+      _nActualRequ := _nRequAxle;
       _nRequAxle := E_RequAxle.NoRequ;
       OnEntryRequ();
     end_if
@@ -478,22 +492,23 @@ _stFBAxle.fbGearOut(
 _stFBAxle.fbStop(
     Axis:= _stMotorAxis_R,
     Execute := _bStop);//rising edge
-    
+
+_bIsCoupled := _stMotorAxis_R.Status.Coupled;
+   
 ///////////////////////////////////////////////OLD
 	(*
- 	fbSetPosition					    : MC_SetPosition;//Axis function - Set Position
-	fbHalt							      : MC_Halt;//Halt
-	fbHome							      : MC_Home;//Home
   fbReadStatus              : MC_ReadStatus;
+	fbReadAxisError				    : MC_ReadAxisError;//Status and parameter - Read Axis Error
+	fbReadActualPosition			: MC_ReadActualPosition;//Status and parameter - Read Actual Position
+	fbReadActualVelocity			: MC_ReadActualVelocity;//Status and parameter - Read Actual Velocity
   
+ 	fbSetPosition					    : MC_SetPosition;//Axis function - Set Position
+	fbHome							      : MC_Home;//Home
 	fbMoveAbsolute1				    : MC_MoveAbsolute;//	MC_MoveAbsolute1
   fbMoveAbsoluteWheelCheck  : MC_MoveAbsolute;// Add CustomAutomation 07.03.2023: Check du diamètre des roues 
   fbMoveAbsoluteCorrection  : MC_MoveAbsolute;// Add CustomAutomation 07.03.2023: Correction fin de parcours
  	fbMoveRelative					  : MC_MoveRelative;//Move Relative
 	fbMoveVelocity					  : MC_MoveVelocity;//Move Velocity
-	fbReadAxisError				    : MC_ReadAxisError;//Status and parameter - Read Axis Error
-	fbReadActualPosition			: MC_ReadActualPosition;//Status and parameter - Read Actual Position
-	fbReadActualVelocity			: MC_ReadActualVelocity;//Status and parameter - Read Actual Velocity
 	fbPosCorrectionLimiter    : MC_PositionCorrectionLimiter;//Special extensions - Position Correction Limiter
 *)
  
@@ -525,8 +540,8 @@ END_VAR]]></Declaration>
 //_stFBAxle.fbPower.Enable := FALSE;
 //_stFBAxle.fbPower.Enable_Positive	:= FALSE;
 //_stFBAxle.fbPower.Enable_Negative	:= FALSE;
-//fbHome.Execute			:= FALSE;
-//fbHomeInv.Execute			:= FALSE;
+//fbHome.Execute := FALSE;
+//fbHomeInv.Execute	:= FALSE;
 
 if MRIrrLine <> MRIrrLineFixedID then 
   nActLine := MRIrrLineFixedID;//the real line if an HMI for each ronot is contained in MRIrrLineFixedID
@@ -534,9 +549,9 @@ else
   nActLine := MRIrrLine;
 END_IF
 
-sTmp := sWhichAxis;
+sTmp := sWhichAxis;  
 fbFormatStr(
-  sFormat	:= 'Irrigation line: %d  Axis motor : %s  Error ID: %d', 
+  sFormat	:= 'Irrigation line: %d  Axis motor: %s  MC error ID: %d  Request: ', 
   arg1  := F_UINT(nActLine),
   arg2  := F_STRING(sTmp),
   arg3	:= F_UDINT(_nErrorId),
@@ -545,17 +560,31 @@ fbFormatStr(
   sOut	=> sOutMsg);
 
 sTmp := '';
+case _nActualRequ of
+  E_RequAxle.PowerOn : sTmp := 'Power ON';
+  E_RequAxle.PowerOff : sTmp := 'Power OFF';
+  E_RequAxle.Reset : sTmp := 'Reset';
+  E_RequAxle.Jog : sTmp := 'Jog';
+  E_RequAxle.GearInDyn : sTmp := 'GearInDyn';
+  E_RequAxle.GearOut : sTmp := 'GearOut';
+  E_RequAxle.Stop : sTmp := 'Stop';
+  else
+    sTmp := 'Not listed';
+end_case
+sOutMsg := concat(sOutMsg,sTmp);
+
+sTmp := '';
 CASE _nAxisErrType OF
-  E_AxisErrorType.NoError : ;
-  E_AxisErrorType.MCError : ;
-  E_AxisErrorType.Retry : sTmp :='  Request retry failed';
-  E_AxisErrorType.Timeout : sTmp :='  Request timed out';
+  E_AxisErrorType.NoError : sTmp :=' failed no error reported';
+  E_AxisErrorType.MCError : sTmp :=' failed due to MC error';
+  E_AxisErrorType.Retry : sTmp :=' failed after retry';
+  E_AxisErrorType.Timeout : sTmp :=' timed out';
   ELSE;
 END_CASE
 sOutMsg := concat(sOutMsg,sTmp);
   
 ADSLOGSTR(ADSLOG_MSGTYPE_LOG, 'CL_Axis error loop  %s',sOutMsg);
-ADSLOGSTR(ADSLOG_MSGTYPE_MSGBOX, 'CL_Axis error loop  %s',sOutMsg);
+//ADSLOGSTR(ADSLOG_MSGTYPE_MSGBOX, 'CL_Axis error loop  %s',sOutMsg);
   
 
 

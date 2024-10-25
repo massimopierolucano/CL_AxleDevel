@@ -25,9 +25,10 @@ CASE stm OF
     b := b and G.AxisL2RightBack.Init(stIrrLine := stIRL, stAxisMotor_P := ADR(G.stAX.L2RightBack), stAxisMaster_P := ADR(G.stAX.Master));
     b := b and G.AxisMaster.Init(stIrrLine := stIRL, stAxisMotor_P := ADR(G.stAX.Master), stAxisMaster_P := ADR(G.stAX.Master));
     if b then
-      stm := 900;
+      stm := 1000;
 		END_IF   
  
+  //for the moment it doesn't work...waiting for an answer _stMotorAxis_R.Status.Coupled doesn't return true even if the axis is coupled
   900:
     IF NOT G.AxisL1LeftFront.IsBusy AND NOT G.AxisL2RightFront.IsBusy AND NOT G.AxisL1LeftBack.IsBusy AND NOT G.AxisL2RightBack.IsBusy THEN
       G.AxisL1LeftFront.RequGearOut();
@@ -35,13 +36,11 @@ CASE stm OF
       G.AxisL1LeftBack.RequGearOut();
       G.AxisL2RightBack.RequGearOut();
       stm := 910;
-    END_IF 
-    
+    END_IF    
   910:
     IF G.AxisL1LeftFront.IsDone AND G.AxisL2RightFront.IsDone AND G.AxisL1LeftBack.IsDone AND G.AxisL2RightBack.IsDone THEN
       stm := 920;
-    END_IF
-    
+    END_IF   
   920:
     IF NOT G.AxisL1LeftFront.IsError AND NOT G.AxisL2RightFront.IsError AND NOT G.AxisL1LeftBack.IsError AND NOT G.AxisL2RightBack.IsError THEN
       stm := 1000;
