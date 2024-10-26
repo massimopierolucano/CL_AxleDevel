@@ -15,6 +15,15 @@ END_IF
 
 ]]></ST>
     </Implementation>
+    <Method Name="IGBTTemp" Id="{c792859a-a34b-4aa2-aa04-6ec6fb6cae5a}">
+      <Declaration><![CDATA[METHOD PUBLIC IGBTTemp : real
+VAR_INPUT
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[IGBTTemp := INT_TO_REAL(_stDriverCh_P^.siIGBTTemp);]]></ST>
+      </Implementation>
+    </Method>
     <Method Name="InitDefect" Id="{73fa3589-ebd6-4c1f-92bb-37f72a7474db}">
       <Declaration><![CDATA[METHOD PROTECTED InitDefect : BOOL
 VAR_INPUT
@@ -41,6 +50,15 @@ IF stDriverCom_P <> 0 AND stDriverCh_P <> 0 AND NOT bInit THEN
 END_IF]]></ST>
       </Implementation>
     </Method>
+    <Method Name="MotorTemp" Id="{438ee63f-944b-4ab1-82f0-2ff8c18e2ed5}">
+      <Declaration><![CDATA[METHOD PUBLIC MotorTemp : real
+VAR_INPUT
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[MotorTemp := _stDriverCh_P^.rMotorTemp;]]></ST>
+      </Implementation>
+    </Method>
     <Method Name="Run" Id="{1277389a-916b-454f-ab5b-820e51c371c2}">
       <Declaration><![CDATA[METHOD PRIVATE Run
 VAR_INPUT
@@ -48,6 +66,15 @@ END_VAR
 ]]></Declaration>
       <Implementation>
         <ST><![CDATA[]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="Torque" Id="{7db54c62-9df9-481c-9881-5f6d890e6567}">
+      <Declaration><![CDATA[METHOD PUBLIC Torque : REAL
+
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[Torque := _stDriverCh_P^.rMotorTorque;
+]]></ST>
       </Implementation>
     </Method>
   </POU>
