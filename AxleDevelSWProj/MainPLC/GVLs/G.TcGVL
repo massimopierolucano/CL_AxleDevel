@@ -77,13 +77,11 @@ VAR_GLOBAL
                         .stDriverL2Right.stBack.rMotorTorque     := TIIB[CGSMini_Robot01OnboardAxisPwrSupply-AX8620]^CGSMini_Robot01OnboardAxisDriverL2Right-AX8206^Back^Ch A TorqueControl Inputs^Ch A Torque/force actual value;'}
   stIN AT %I*:ST_Robot_HWI;
  
-  AxisL1LeftFront   : CL_AxisL1LeftFront;
-  AxisL2RightFront  : CL_AxisL2RighFront;
-  AxisL1LeftBack    : CL_AxisL1LeftBack;
-  AxisL2RightBack   : CL_AxisL2RightBack;
-  AxisMaster        : CL_AxisMaster;
-  
-  AxDrvrL1LeftBack  : CL_AxisDriverL1LeftBack;
+  AxisL1LeftFront   : CL_AxisMCL1LeftFront;
+  AxisL2RightFront  : CL_AxisMCL2RightFront;
+  AxisL1LeftBack    : CL_AxisMCL1LeftBack;
+  AxisL2RightBack   : CL_AxisMCL2RightBack;
+  AxisMaster        : CL_AxisMCMaster;
 END_VAR
 ]]></Declaration>
   </GVL>

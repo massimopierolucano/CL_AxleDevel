@@ -18,14 +18,12 @@ Case01Hysto(stm);
 CASE stm OF   
   10:
     stIRL.nThis := 0;
-    stIRL.nFixedID := 1;
-    b := G.AxDrvrL1LeftBack.Init(stDriverCom_P := ADR(G.stIN.stDriverL1Left.comState), stDriverCh_P := ADR(G.stIN.stDriverL1Left.stBack));
-    
-    b := b AND G.AxisL1LeftFront.Init(stIrrLine := stIRL, stAxisMotor_P := ADR(G.stAX.L1LeftFront), stAxisMaster_P := ADR(G.stAX.Master), AxisDriver_P := ADR(G.AxDrvrL1LeftBack));
-    b := b AND G.AxisL2RightFront.Init(stIrrLine := stIRL, stAxisMotor_P := ADR(G.stAX.L2RightFront), stAxisMaster_P := ADR(G.stAX.Master), AxisDriver_P := ADR(G.AxDrvrL1LeftBack));
-    b := b AND G.AxisL1LeftBack.Init(stIrrLine := stIRL, stAxisMotor_P := ADR(G.stAX.L1LeftBack), stAxisMaster_P := ADR(G.stAX.Master), AxisDriver_P := ADR(G.AxDrvrL1LeftBack));
-    b := b AND G.AxisL2RightBack.Init(stIrrLine := stIRL, stAxisMotor_P := ADR(G.stAX.L2RightBack), stAxisMaster_P := ADR(G.stAX.Master), AxisDriver_P := ADR(G.AxDrvrL1LeftBack));
-    b := b AND G.AxisMaster.Init(stIrrLine := stIRL, stAxisMotor_P := ADR(G.stAX.Master), stAxisMaster_P := ADR(G.stAX.Master), AxisDriver_P := ADR(G.AxDrvrL1LeftBack));
+    stIRL.nFixedID := 1;    
+    b := b AND G.AxisL1LeftFront.Init(stIrrLine := stIRL, stAxisMotor_P := ADR(G.stAX.L1LeftFront), stAxisMaster_P := ADR(G.stAX.Master), stDriver := ADR(G.stIN.stDriverL1Left));
+    b := b AND G.AxisL1LeftBack.Init(stIrrLine := stIRL, stAxisMotor_P := ADR(G.stAX.L1LeftBack), stAxisMaster_P := ADR(G.stAX.Master), stDriver := ADR(G.stIN.stDriverL1Left));
+    b := b AND G.AxisL2RightFront.Init(stIrrLine := stIRL, stAxisMotor_P := ADR(G.stAX.L2RightFront), stAxisMaster_P := ADR(G.stAX.Master), stDriver := ADR(G.stIN.stDriverL2Right));
+    b := b AND G.AxisL2RightBack.Init(stIrrLine := stIRL, stAxisMotor_P := ADR(G.stAX.L2RightBack), stAxisMaster_P := ADR(G.stAX.Master), stDriver := ADR(G.stIN.stDriverL2Right));
+    b := b AND G.AxisMaster.Init(stIrrLine := stIRL, stAxisMaster_P := ADR(G.stAX.Master));
     if b then
       stm := 1000;
 		END_IF   

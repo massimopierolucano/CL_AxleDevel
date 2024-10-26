@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.12">
-  <POU Name="CL_AxisRobot" Id="{86271131-74c3-440e-8c21-b97ff935d7af}" SpecialFunc="None">
-    <Declaration><![CDATA[FUNCTION_BLOCK CL_AxisRobot EXTENDS CL_CGSSystemBase
+  <POU Name="CL_AxisMC" Id="{86271131-74c3-440e-8c21-b97ff935d7af}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION_BLOCK CL_AxisMC EXTENDS CL_CGSSystemBase
 VAR
   bInit                 : BOOL := FALSE;
   _AxisDriver_R         : REFERENCE TO CL_AxisDriverAX8206;
@@ -31,7 +31,6 @@ VAR
   _bMCError			        : BOOL;
   _bMCStatus            : BOOL;
 	//_MCerrId			        : UDINT;
- 
 
   _bPowerOn             : BOOL := FALSE;
   _bGearOut             : BOOL := FALSE;
@@ -73,7 +72,7 @@ VAR
   
   //Error handling
   //_bErrMsgShow        : BOOL := true;
-  sWhichAxis            : string(16);
+  _sWhichAxis           : STRING(16);
   _nAxisErrType         : E_AxisErrorType;
 END_VAR
 ]]></Declaration>
@@ -86,8 +85,17 @@ END_IF
 
     ]]></ST>
     </Implementation>
-    <Method Name="Init" Id="{2947aad6-89af-4507-aa27-ffb6102c3e52}">
-      <Declaration><![CDATA[METHOD PUBLIC Init : BOOL
+    <Method Name="InitDefect" Id="{69a74c5b-a8c1-48ec-ad03-8339b041f124}">
+      <Declaration><![CDATA[METHOD PROTECTED InitDefect : BOOL
+VAR_INPUT
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[InitDefect := true;]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="InitMC" Id="{2947aad6-89af-4507-aa27-ffb6102c3e52}">
+      <Declaration><![CDATA[METHOD PUBLIC InitMC : BOOL
 VAR_INPUT
   stIrrLine       : ST_LineReference;
   stAxisMotor_P	  : POINTER TO AXIS_REF;
@@ -96,7 +104,7 @@ VAR_INPUT
 END_VAR
 ]]></Declaration>
       <Implementation>
-        <ST><![CDATA[Init := FALSE;
+        <ST><![CDATA[InitMC := FALSE;
 //do not check AxisDriver_P, because master axis ha no driver associated
 IF stAxisMotor_P <> 0 AND stAxisMaster_P <> 0 AND NOT bInit THEN
   _bIsAxisMaster := stAxisMotor_P = stAxisMaster_P;
@@ -107,7 +115,7 @@ IF stAxisMotor_P <> 0 AND stAxisMaster_P <> 0 AND NOT bInit THEN
   
   IF _bIsAxisMaster THEN
     bInit := AxisDriver_P = 0; 
-    // do not assign _AxisDriver_R !
+    //do not assign _AxisDriver_R, because master axis has no driver associated !
   ELSE
     _AxisDriver_R REF= AxisDriver_P^;
     bInit := TRUE;
@@ -116,17 +124,8 @@ IF stAxisMotor_P <> 0 AND stAxisMaster_P <> 0 AND NOT bInit THEN
   bInit := binit AND SUPER^.InitSystemBase( IrrLine := stIrrLine, stSystemStatus_ARR := G.stSystemStatus_ARR);
   bInit := bInit AND InitParams();
   bInit := bInit AND InitDefect();
-  Init := bInit;
+  InitMC := bInit;
 END_IF]]></ST>
-      </Implementation>
-    </Method>
-    <Method Name="InitDefect" Id="{69a74c5b-a8c1-48ec-ad03-8339b041f124}">
-      <Declaration><![CDATA[METHOD PROTECTED InitDefect : BOOL
-VAR_INPUT
-END_VAR
-]]></Declaration>
-      <Implementation>
-        <ST><![CDATA[InitDefect := true;]]></ST>
       </Implementation>
     </Method>
     <Method Name="InitParams" Id="{c822e9fa-eea8-4311-a8be-35f66d9b703d}">
@@ -561,7 +560,7 @@ else
   nActLine := MRIrrLine;
 END_IF
 
-sTmp := sWhichAxis;  
+sTmp := _sWhichAxis;  
 fbFormatStr(
   sFormat	:= 'Irrigation line: %d  Axis motor: %s  MC error ID: %d  Request: ', 
   arg1  := F_UINT(nActLine),

@@ -1,0 +1,49 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.12">
+  <POU Name="CL_AxisMCL2RightFront" Id="{6a3d2686-b758-4c65-905f-34cb410c5611}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION_BLOCK CL_AxisMCL2RightFront EXTENDS CL_AxisMC
+VAR
+  objAxisDriver : CL_AxisDriverL2RightFront;
+END_VAR]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[SUPER^();]]></ST>
+    </Implementation>
+    <Method Name="Init" Id="{77f24120-24f4-4fb4-a685-b7b3cbc398cb}">
+      <Declaration><![CDATA[METHOD PUBLIC Init : BOOL
+VAR_INPUT
+  stIrrLine       : ST_LineReference;
+  stAxisMotor_P	  : POINTER TO AXIS_REF;
+  stAxisMaster_P  : POINTER TO AXIS_REF;
+  stDriver        : POINTER TO ST_DriverAX8206_HWI;
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[Init := FALSE;
+IF stDriver <> 0 THEN
+  Init := objAxisDriver.Init(stDriver := stDriver);
+  Init := Init AND SUPER^.InitMC(stIrrLine := stIrrLine, stAxisMotor_P := stAxisMotor_P, stAxisMaster_P := stAxisMaster_P, AxisDriver_P := ADR(objAxisDriver));
+END_IF]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="InitDefect" Id="{a3c088b0-c881-48fa-a2f2-a087f1582cf9}">
+      <Declaration><![CDATA[METHOD PROTECTED InitDefect : BOOL
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[InitDefect := SUPER^.InitDefect();
+ADSLOGSTR(ADSLOG_MSGTYPE_LOG, 'CL_AxisMCL2RightFront init defect','');]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="InitParams" Id="{ce7c670d-9ae8-438d-bcf2-f57dee39f281}">
+      <Declaration><![CDATA[METHOD PROTECTED InitParams : BOOL
+VAR_INPUT
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[InitParams := SUPER^.InitParams();
+_sWhichAxis := 'right(L2)-front';
+_lrInverse := -1.0;
+]]></ST>
+      </Implementation>
+    </Method>
+  </POU>
+</TcPlcObject>

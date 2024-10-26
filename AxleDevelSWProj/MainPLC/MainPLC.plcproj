@@ -88,31 +88,40 @@
     <Compile Include="PlcTask.TcTTO">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="POUs\AxisDay2Training\CL_Axis_old.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="POUs\CL_AxisDriverAX8206.TcPOU">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="POUs\CL_AxisDriverL1LeftBack.TcPOU">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="POUs\CL_AxisMaster.TcPOU">
+    <Compile Include="POUs\CL_AxisDriverL1LeftFront.TcPOU">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="POUs\CL_AxisL2RightBack.TcPOU">
+    <Compile Include="POUs\CL_AxisDriverL2RightFront.TcPOU">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="POUs\CL_AxisL1LeftFront.TcPOU">
+    <Compile Include="POUs\CL_AxisDriverL2RightBack.TcPOU">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="POUs\CL_AxisL1LeftBack.TcPOU">
+    <Compile Include="POUs\CL_AxisMCMaster.TcPOU">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="POUs\CL_AxisL2RighFront.TcPOU">
+    <Compile Include="POUs\CL_AxisMCL2RightBack.TcPOU">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="POUs\CL_Axis_old.TcPOU">
+    <Compile Include="POUs\CL_AxisMCL1LeftFront.TcPOU">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="POUs\CL_AxisRobot.TcPOU">
+    <Compile Include="POUs\CL_AxisMCL1LeftBack.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="POUs\CL_AxisMCL2RightFront.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="POUs\CL_AxisMC.TcPOU">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="POUs\CL_CardCom.TcPOU">

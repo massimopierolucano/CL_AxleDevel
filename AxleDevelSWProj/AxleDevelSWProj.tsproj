@@ -1,5 +1,5 @@
 <?xml version="1.0"?>
-<TcSmProject xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://www.beckhoff.com/schemas/2012/07/TcSmProject" TcSmVersion="1.0" TcVersion="3.1.4024.47" TcProjectVariant="MiniRobot">
+<TcSmProject xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://www.beckhoff.com/schemas/2012/07/TcSmProject" TcSmVersion="1.0" TcVersion="3.1.4024.47" TcProjectVariant="MiniRobotSim">
 	<DataTypes>
 		<DataType>
 			<Name GUID="{CBC83B73-B816-4597-A9E5-2B03263CA131}" Namespace="MC" TcBaseType="true" HideType="true" IecDeclaration="DWORD;">NCTOPLC_AXIS_REF_STATE</Name>
@@ -795,6 +795,252 @@ External Setpoint Generation:
 			</Relations>
 		</DataType>
 		<DataType>
+			<Name GUID="{08010C3E-A549-E8D3-F791-FED67DA76274}" AutoDeleteType="true">ST_CardState_HWI</Name>
+			<BitSize>32</BitSize>
+			<SubItem>
+				<Name>uiDataState</Name>
+				<Type GUID="{18071995-0000-0000-0000-000000000005}">UINT</Type>
+				<BitSize>16</BitSize>
+				<BitOffs>0</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>bWcState</Name>
+				<Type GUID="{18071995-0000-0000-0000-000000000030}">BOOL</Type>
+				<BitSize>8</BitSize>
+				<BitOffs>16</BitOffs>
+				<Default>
+					<Bool>false</Bool>
+				</Default>
+			</SubItem>
+		</DataType>
+		<DataType>
+			<Name GUID="{AB07D83C-2D79-0246-5728-BF25C6182875}" AutoDeleteType="true">ST_PositioningLaser_HWI</Name>
+			<BitSize>32</BitSize>
+			<SubItem>
+				<Name>udiDistanceRaw</Name>
+				<Type GUID="{18071995-0000-0000-0000-000000000008}">UDINT</Type>
+				<BitSize>32</BitSize>
+				<BitOffs>0</BitOffs>
+			</SubItem>
+		</DataType>
+		<DataType>
+			<Name GUID="{486D6E48-F05C-9F26-25E6-9B9BD917EDBA}" AutoDeleteType="true">ST_Analog_HWI</Name>
+			<BitSize>64</BitSize>
+			<SubItem>
+				<Name>bTUnderRange</Name>
+				<Type GUID="{18071995-0000-0000-0000-000000000030}">BOOL</Type>
+				<BitSize>8</BitSize>
+				<BitOffs>0</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>bTOverRange</Name>
+				<Type GUID="{18071995-0000-0000-0000-000000000030}">BOOL</Type>
+				<BitSize>8</BitSize>
+				<BitOffs>8</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>bTLimit1</Name>
+				<Type GUID="{18071995-0000-0000-0000-000000000030}">BOOL</Type>
+				<BitSize>8</BitSize>
+				<BitOffs>16</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>bTLimit2</Name>
+				<Type GUID="{18071995-0000-0000-0000-000000000030}">BOOL</Type>
+				<BitSize>8</BitSize>
+				<BitOffs>24</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>bTError</Name>
+				<Type GUID="{18071995-0000-0000-0000-000000000030}">BOOL</Type>
+				<BitSize>8</BitSize>
+				<BitOffs>32</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>siAnaRaw</Name>
+				<Type GUID="{18071995-0000-0000-0000-000000000006}">INT</Type>
+				<BitSize>16</BitSize>
+				<BitOffs>48</BitOffs>
+			</SubItem>
+		</DataType>
+		<DataType>
+			<Name GUID="{219155E1-9057-9DB8-762E-174637F46574}" AutoDeleteType="true">ST_PwrSupplyAX8620_HWI</Name>
+			<BitSize>128</BitSize>
+			<SubItem>
+				<Name>comState</Name>
+				<Type GUID="{08010C3E-A549-E8D3-F791-FED67DA76274}">ST_CardState_HWI</Type>
+				<BitSize>32</BitSize>
+				<BitOffs>0</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>sdiDcOutputShift</Name>
+				<Type GUID="{18071995-0000-0000-0000-000000000009}">DINT</Type>
+				<BitSize>32</BitSize>
+				<BitOffs>32</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>sdiDcInputShift</Name>
+				<Type GUID="{18071995-0000-0000-0000-000000000009}">DINT</Type>
+				<BitSize>32</BitSize>
+				<BitOffs>64</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>bOverTemp</Name>
+				<Type GUID="{18071995-0000-0000-0000-000000000030}">BOOL</Type>
+				<BitSize>8</BitSize>
+				<BitOffs>96</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>bFanMalfunc</Name>
+				<Type GUID="{18071995-0000-0000-0000-000000000030}">BOOL</Type>
+				<BitSize>8</BitSize>
+				<BitOffs>104</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>bUnderVoltage</Name>
+				<Type GUID="{18071995-0000-0000-0000-000000000030}">BOOL</Type>
+				<Comment><![CDATA[ Power supply undervoltage]]></Comment>
+				<BitSize>8</BitSize>
+				<BitOffs>112</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>bOverVoltage</Name>
+				<Type GUID="{18071995-0000-0000-0000-000000000030}">BOOL</Type>
+				<Comment><![CDATA[ Power supply overvoltage]]></Comment>
+				<BitSize>8</BitSize>
+				<BitOffs>120</BitOffs>
+			</SubItem>
+		</DataType>
+		<DataType>
+			<Name GUID="{4F001529-5D61-2E49-DFD4-076D94BD2480}" AutoDeleteType="true">ST_ChannelAX8206_HWI</Name>
+			<BitSize>128</BitSize>
+			<SubItem>
+				<Name>siIGBTTemp</Name>
+				<Type GUID="{18071995-0000-0000-0000-000000000006}">INT</Type>
+				<BitSize>16</BitSize>
+				<BitOffs>0</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>rMotorTemp</Name>
+				<Type GUID="{18071995-0000-0000-0000-00000000000D}">REAL</Type>
+				<BitSize>32</BitSize>
+				<BitOffs>32</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>rMotorTorque</Name>
+				<Type GUID="{18071995-0000-0000-0000-00000000000D}">REAL</Type>
+				<BitSize>32</BitSize>
+				<BitOffs>64</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>udMotorDIGIns</Name>
+				<Type GUID="{18071995-0000-0000-0000-000000000008}">UDINT</Type>
+				<BitSize>32</BitSize>
+				<BitOffs>96</BitOffs>
+			</SubItem>
+		</DataType>
+		<DataType>
+			<Name GUID="{7F610799-63FE-2DDA-40B3-47ED1E8CF17F}" AutoDeleteType="true">ST_DriverAX8206_HWI</Name>
+			<BitSize>352</BitSize>
+			<SubItem>
+				<Name>comState</Name>
+				<Type GUID="{08010C3E-A549-E8D3-F791-FED67DA76274}">ST_CardState_HWI</Type>
+				<BitSize>32</BitSize>
+				<BitOffs>0</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>sdiDcOutputShift</Name>
+				<Type GUID="{18071995-0000-0000-0000-000000000009}">DINT</Type>
+				<BitSize>32</BitSize>
+				<BitOffs>32</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>sdiDcInputShift</Name>
+				<Type GUID="{18071995-0000-0000-0000-000000000009}">DINT</Type>
+				<BitSize>32</BitSize>
+				<BitOffs>64</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>stFront</Name>
+				<Type GUID="{4F001529-5D61-2E49-DFD4-076D94BD2480}">ST_ChannelAX8206_HWI</Type>
+				<Comment><![CDATA[ChB]]></Comment>
+				<BitSize>128</BitSize>
+				<BitOffs>96</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>stBack</Name>
+				<Type GUID="{4F001529-5D61-2E49-DFD4-076D94BD2480}">ST_ChannelAX8206_HWI</Type>
+				<Comment><![CDATA[ChA]]></Comment>
+				<BitSize>128</BitSize>
+				<BitOffs>224</BitOffs>
+			</SubItem>
+		</DataType>
+		<DataType>
+			<Name GUID="{76155904-028D-1D83-6E52-AE2C557CA4FA}" AutoDeleteType="true">ST_Robot_HWI</Name>
+			<BitSize>1056</BitSize>
+			<SubItem>
+				<Name>stAnaInN04_3054State</Name>
+				<Type GUID="{08010C3E-A549-E8D3-F791-FED67DA76274}">ST_CardState_HWI</Type>
+				<Comment><![CDATA[CGSMini_Robot01OnBoardBoxAnaInN04-EL3054]]></Comment>
+				<BitSize>32</BitSize>
+				<BitOffs>0</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>stOnboardBox_1100State</Name>
+				<Type GUID="{08010C3E-A549-E8D3-F791-FED67DA76274}">ST_CardState_HWI</Type>
+				<Comment><![CDATA[CGSMini_Robot01OnboardBox-EK1100]]></Comment>
+				<BitSize>32</BitSize>
+				<BitOffs>32</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>stLaserPos_State</Name>
+				<Type GUID="{08010C3E-A549-E8D3-F791-FED67DA76274}">ST_CardState_HWI</Type>
+				<Comment><![CDATA[CGSMini_Robot01Laser-SickDL100]]></Comment>
+				<BitSize>32</BitSize>
+				<BitOffs>64</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>stOutN01_2008State</Name>
+				<Type GUID="{08010C3E-A549-E8D3-F791-FED67DA76274}">ST_CardState_HWI</Type>
+				<Comment><![CDATA[CGSMini_Robot01OnBoardBoxOutN01-EL2008]]></Comment>
+				<BitSize>32</BitSize>
+				<BitOffs>96</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>stLaserPos</Name>
+				<Type GUID="{AB07D83C-2D79-0246-5728-BF25C6182875}">ST_PositioningLaser_HWI</Type>
+				<Comment><![CDATA[CGSMini_Robot01Laser-SickDL100]]></Comment>
+				<BitSize>32</BitSize>
+				<BitOffs>128</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>stAnaOnboardSpare1</Name>
+				<Type GUID="{486D6E48-F05C-9F26-25E6-9B9BD917EDBA}">ST_Analog_HWI</Type>
+				<Comment><![CDATA[CGSMini_Robot01OnBoardBoxAnaInN04-EL3054]]></Comment>
+				<BitSize>64</BitSize>
+				<BitOffs>160</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>stPwrSupplyAX8620</Name>
+				<Type GUID="{219155E1-9057-9DB8-762E-174637F46574}">ST_PwrSupplyAX8620_HWI</Type>
+				<Comment><![CDATA[CGSMini_Robot01OnboardAxisAlim-AX8620]]></Comment>
+				<BitSize>128</BitSize>
+				<BitOffs>224</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>stDriverL1Left</Name>
+				<Type GUID="{7F610799-63FE-2DDA-40B3-47ED1E8CF17F}">ST_DriverAX8206_HWI</Type>
+				<BitSize>352</BitSize>
+				<BitOffs>352</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>stDriverL2Right</Name>
+				<Type GUID="{7F610799-63FE-2DDA-40B3-47ED1E8CF17F}">ST_DriverAX8206_HWI</Type>
+				<BitSize>352</BitSize>
+				<BitOffs>704</BitOffs>
+			</SubItem>
+		</DataType>
+		<DataType>
 			<Name GUID="{875D2B22-B7EB-497E-B933-0C004593CCF3}" Namespace="MC" TcBaseType="true" HideType="true" IecDeclaration="DWORD;">PLCTONC_AXIS_REF_CTRL</Name>
 			<BitSize>32</BitSize>
 			<SubItem>
@@ -982,7 +1228,7 @@ External Setpoint Generation:
 			</Relations>
 		</DataType>
 	</DataTypes>
-	<Project ProjectGUID="{669BDD2C-5F8E-420F-8489-471888613461}" TargetNetId="5.93.147.0.1.1" Target64Bit="true" ShowHideConfigurations="#x106">
+	<Project ProjectGUID="{669BDD2C-5F8E-420F-8489-471888613461}" Target64Bit="true" ShowHideConfigurations="#x106">
 		<System>
 			<Settings MaxCpus="4" NonWinCpus="1">
 				<Cpu CpuId="3"/>
@@ -1044,21 +1290,37 @@ External Setpoint Generation:
 				<ProjectVariant PvUseDefine="true">
 					<Variant>
 						<Name>MiniRobot</Name>
+						<Name>MiniRobotSim</Name>
 						<Defines></Defines>
 					</Variant>
 					<Variant>
-						<Name>MiniRobotSim</Name>
 						<Name>MiniRobotSimNoHWIO</Name>
 						<Name>debugNoHWIO</Name>
 						<Name>debugSim</Name>
 						<Defines/>
 					</Variant>
 				</ProjectVariant>
-				<Instance Id="#x08502000" TcSmClass="TComPlcObjDef" KeepUnrestoredLinks="2" TmcPath="MainPLC\MainPLC.tmc" TmcHash="{8C2CF3CF-2FB0-2FEB-5123-DCA014AF7202}">
+				<Instance Id="#x08502000" TcSmClass="TComPlcObjDef" KeepUnrestoredLinks="2" TmcPath="MainPLC\MainPLC.tmc" TmcHash="{4F1009F4-689E-5344-76A4-A81324BC4C73}">
 					<Name>MainPLC Instance</Name>
 					<CLSID ClassFactory="TcPlc30">{08500001-0000-0000-F000-000000000064}</CLSID>
 					<Vars VarGrpType="1">
 						<Name>PlcTask Inputs</Name>
+						<Var>
+							<Name>GVL.Axis_servoA.NcToPlc</Name>
+							<Type GUID="{25521FAA-EA5F-4C7F-8864-BBCCDACD2E98}" Namespace="MC">NCTOPLC_AXIS_REF</Type>
+						</Var>
+						<Var>
+							<Name>GVL.Axis_servoB.NcToPlc</Name>
+							<Type GUID="{25521FAA-EA5F-4C7F-8864-BBCCDACD2E98}" Namespace="MC">NCTOPLC_AXIS_REF</Type>
+						</Var>
+						<Var>
+							<Name>GVL.Axis_servoVirtual.NcToPlc</Name>
+							<Type GUID="{25521FAA-EA5F-4C7F-8864-BBCCDACD2E98}" Namespace="MC">NCTOPLC_AXIS_REF</Type>
+						</Var>
+						<Var>
+							<Name>GVL.Axis_servo.NcToPlc</Name>
+							<Type GUID="{25521FAA-EA5F-4C7F-8864-BBCCDACD2E98}" Namespace="MC">NCTOPLC_AXIS_REF</Type>
+						</Var>
 						<Var>
 							<Name>G.stAX.L1LeftFront.NcToPlc</Name>
 							<Type GUID="{25521FAA-EA5F-4C7F-8864-BBCCDACD2E98}" Namespace="MC">NCTOPLC_AXIS_REF</Type>
@@ -1080,24 +1342,35 @@ External Setpoint Generation:
 							<Type GUID="{25521FAA-EA5F-4C7F-8864-BBCCDACD2E98}" Namespace="MC">NCTOPLC_AXIS_REF</Type>
 						</Var>
 						<Var>
-							<Name>GVL.Axis_servoA.NcToPlc</Name>
-							<Type GUID="{25521FAA-EA5F-4C7F-8864-BBCCDACD2E98}" Namespace="MC">NCTOPLC_AXIS_REF</Type>
-						</Var>
-						<Var>
-							<Name>GVL.Axis_servoB.NcToPlc</Name>
-							<Type GUID="{25521FAA-EA5F-4C7F-8864-BBCCDACD2E98}" Namespace="MC">NCTOPLC_AXIS_REF</Type>
-						</Var>
-						<Var>
-							<Name>GVL.Axis_servoVirtual.NcToPlc</Name>
-							<Type GUID="{25521FAA-EA5F-4C7F-8864-BBCCDACD2E98}" Namespace="MC">NCTOPLC_AXIS_REF</Type>
-						</Var>
-						<Var>
-							<Name>GVL.Axis_servo.NcToPlc</Name>
-							<Type GUID="{25521FAA-EA5F-4C7F-8864-BBCCDACD2E98}" Namespace="MC">NCTOPLC_AXIS_REF</Type>
+							<Name>G.stIN</Name>
+							<Comment><![CDATA[
+  {attribute 'TcNcAxis' := '.L1LeftFront                     := Sim_Robot01AxisLine1Front;
+                          .L1LeftBack                        := Sim_Robot01AxisLine1Back;
+                          .L2RightFront                       := Sim_Robot01AxisLine2Front;
+                          .L2RightBack                        := Sim_Robot01AxisLine2Back;
+                          .Master                           := Sim_Robot01AxisMaster'}
+  stAxes : ST_Robot_Axes;]]></Comment>
+							<Type GUID="{76155904-028D-1D83-6E52-AE2C557CA4FA}">ST_Robot_HWI</Type>
 						</Var>
 					</Vars>
 					<Vars VarGrpType="2" AreaNo="1">
 						<Name>PlcTask Outputs</Name>
+						<Var>
+							<Name>GVL.Axis_servoA.PlcToNc</Name>
+							<Type GUID="{96B75FEB-2D84-43BE-A3EC-D9A681F27D52}" Namespace="MC">PLCTONC_AXIS_REF</Type>
+						</Var>
+						<Var>
+							<Name>GVL.Axis_servoB.PlcToNc</Name>
+							<Type GUID="{96B75FEB-2D84-43BE-A3EC-D9A681F27D52}" Namespace="MC">PLCTONC_AXIS_REF</Type>
+						</Var>
+						<Var>
+							<Name>GVL.Axis_servoVirtual.PlcToNc</Name>
+							<Type GUID="{96B75FEB-2D84-43BE-A3EC-D9A681F27D52}" Namespace="MC">PLCTONC_AXIS_REF</Type>
+						</Var>
+						<Var>
+							<Name>GVL.Axis_servo.PlcToNc</Name>
+							<Type GUID="{96B75FEB-2D84-43BE-A3EC-D9A681F27D52}" Namespace="MC">PLCTONC_AXIS_REF</Type>
+						</Var>
 						<Var>
 							<Name>G.stAX.L1LeftFront.PlcToNc</Name>
 							<Type GUID="{96B75FEB-2D84-43BE-A3EC-D9A681F27D52}" Namespace="MC">PLCTONC_AXIS_REF</Type>
@@ -1116,22 +1389,6 @@ External Setpoint Generation:
 						</Var>
 						<Var>
 							<Name>G.stAX.Master.PlcToNc</Name>
-							<Type GUID="{96B75FEB-2D84-43BE-A3EC-D9A681F27D52}" Namespace="MC">PLCTONC_AXIS_REF</Type>
-						</Var>
-						<Var>
-							<Name>GVL.Axis_servoA.PlcToNc</Name>
-							<Type GUID="{96B75FEB-2D84-43BE-A3EC-D9A681F27D52}" Namespace="MC">PLCTONC_AXIS_REF</Type>
-						</Var>
-						<Var>
-							<Name>GVL.Axis_servoB.PlcToNc</Name>
-							<Type GUID="{96B75FEB-2D84-43BE-A3EC-D9A681F27D52}" Namespace="MC">PLCTONC_AXIS_REF</Type>
-						</Var>
-						<Var>
-							<Name>GVL.Axis_servoVirtual.PlcToNc</Name>
-							<Type GUID="{96B75FEB-2D84-43BE-A3EC-D9A681F27D52}" Namespace="MC">PLCTONC_AXIS_REF</Type>
-						</Var>
-						<Var>
-							<Name>GVL.Axis_servo.PlcToNc</Name>
 							<Type GUID="{96B75FEB-2D84-43BE-A3EC-D9A681F27D52}" Namespace="MC">PLCTONC_AXIS_REF</Type>
 						</Var>
 					</Vars>
@@ -1179,11 +1436,43 @@ External Setpoint Generation:
 		</Variants>
 	</Project>
 	<Mappings>
-		<MappingInfo Identifier="{00000000-0010-0304-3000-040310000403}" Id="#x02030030"/>
-		<MappingInfo Identifier="{00000000-0020-0304-3000-040321000403}" Id="#x02030040"/>
 		<MappingInfo Identifier="{05000010-2001-0850-3000-040300205008}" Id="#x02030020" Watchdog="14000000040000000400000004000000"/>
-		<MappingInfo Identifier="{03040010-0010-0304-1000-040310000403}" Id="#x02030010" Watchdog="04000000040000000400000004000000"/>
 		<OwnerA Name="TIPC^MainPLC^MainPLC Instance">
+			<OwnerB Name="TIID^CGSMini_IRSMainPLCSafe^CGSMini_RobotAllMainCab-EL1200^CGSMini_Robot01MainCabEtherCATBusEK1122^CGSMini_Robot01Laser-SickDL100">
+				<Link VarA="PlcTask Inputs^G.stIN^stLaserPos" VarB="Distance^Distance" AutoLink="true"/>
+				<Link VarA="PlcTask Inputs^G.stIN^stLaserPos_State^uiDataState" VarB="InfoData^State" AutoLink="true"/>
+			</OwnerB>
+			<OwnerB Name="TIID^CGSMini_IRSMainPLCSafe^CGSMini_RobotAllMainCab-EL1200^CGSMini_Robot01MainCabEtherCATBusEK1122^CGSMini_Robot01OnboardAxisPwrSupply-AX8620">
+				<Link VarA="PlcTask Inputs^G.stIN^stPwrSupplyAX8620^comState^bWcState" VarB="WcState^WcState" AutoLink="true"/>
+				<Link VarA="PlcTask Inputs^G.stIN^stPwrSupplyAX8620^comState^uiDataState" VarB="InfoData^State" AutoLink="true"/>
+				<Link VarA="PlcTask Inputs^G.stIN^stPwrSupplyAX8620^sdiDcInputShift" VarB="InfoData^DcInputShift" AutoLink="true"/>
+				<Link VarA="PlcTask Inputs^G.stIN^stPwrSupplyAX8620^sdiDcOutputShift" VarB="InfoData^DcOutputShift" AutoLink="true"/>
+			</OwnerB>
+			<OwnerB Name="TIID^CGSMini_IRSMainPLCSafe^CGSMini_RobotAllMainCab-EL1200^CGSMini_Robot01MainCabEtherCATBusEK1122^CGSMini_Robot01OnboardAxisPwrSupply-AX8620^CGSMini_Robot01OnboardAxisDriverL1Left-AX8206">
+				<Link VarA="PlcTask Inputs^G.stIN^stDriverL1Left^comState" VarB="InfoData^State" AutoLink="true"/>
+				<Link VarA="PlcTask Inputs^G.stIN^stDriverL1Left^sdiDcInputShift" VarB="InfoData^DcInputShift" AutoLink="true"/>
+				<Link VarA="PlcTask Inputs^G.stIN^stDriverL1Left^sdiDcOutputShift" VarB="InfoData^DcOutputShift" AutoLink="true"/>
+			</OwnerB>
+			<OwnerB Name="TIID^CGSMini_IRSMainPLCSafe^CGSMini_RobotAllMainCab-EL1200^CGSMini_Robot01MainCabEtherCATBusEK1122^CGSMini_Robot01OnboardAxisPwrSupply-AX8620^CGSMini_Robot01OnboardAxisDriverL2Right-AX8206">
+				<Link VarA="PlcTask Inputs^G.stIN^stDriverL2Right^comState" VarB="InfoData^State" AutoLink="true"/>
+				<Link VarA="PlcTask Inputs^G.stIN^stDriverL2Right^sdiDcInputShift" VarB="InfoData^DcInputShift" AutoLink="true"/>
+				<Link VarA="PlcTask Inputs^G.stIN^stDriverL2Right^sdiDcOutputShift" VarB="InfoData^DcOutputShift" AutoLink="true"/>
+			</OwnerB>
+			<OwnerB Name="TIID^CGSMini_IRSMainPLCSafe^CGSMini_RobotAllMainCab-EL1200^CGSMini_Robot01MainCabEtherCATBusEK1122^CGSMini_Robot01OnboardBox-EK1100">
+				<Link VarA="PlcTask Inputs^G.stIN^stOnboardBox_1100State^uiDataState" VarB="InfoData^State" AutoLink="true"/>
+			</OwnerB>
+			<OwnerB Name="TIID^CGSMini_IRSMainPLCSafe^CGSMini_RobotAllMainCab-EL1200^CGSMini_Robot01MainCabEtherCATBusEK1122^CGSMini_Robot01OnboardBox-EK1100^CGSMini_Robot01OnBoardBoxAnaInN04-EL3054">
+				<Link VarA="PlcTask Inputs^G.stIN^stAnaInN04_3054State^uiDataState" VarB="InfoData^State" AutoLink="true"/>
+				<Link VarA="PlcTask Inputs^G.stIN^stAnaOnboardSpare1^bTError" VarB="Spare1^Status^Error" AutoLink="true"/>
+				<Link VarA="PlcTask Inputs^G.stIN^stAnaOnboardSpare1^bTLimit1" VarB="Spare1^Status^Limit 1" AutoLink="true"/>
+				<Link VarA="PlcTask Inputs^G.stIN^stAnaOnboardSpare1^bTLimit2" VarB="Spare1^Status^Limit 2" AutoLink="true"/>
+				<Link VarA="PlcTask Inputs^G.stIN^stAnaOnboardSpare1^bTOverRange" VarB="Spare1^Status^Overrange" AutoLink="true"/>
+				<Link VarA="PlcTask Inputs^G.stIN^stAnaOnboardSpare1^bTUnderRange" VarB="Spare1^Status^Underrange" AutoLink="true"/>
+				<Link VarA="PlcTask Inputs^G.stIN^stAnaOnboardSpare1^siAnaRaw" VarB="Spare1^Value" AutoLink="true"/>
+			</OwnerB>
+			<OwnerB Name="TIID^CGSMini_IRSMainPLCSafe^CGSMini_RobotAllMainCab-EL1200^CGSMini_Robot01MainCabEtherCATBusEK1122^CGSMini_Robot01OnboardBox-EK1100^CGSMini_Robot01OnBoardBoxOutN01-EL2008">
+				<Link VarA="PlcTask Inputs^G.stIN^stOutN01_2008State^uiDataState" VarB="InfoData^State" AutoLink="true"/>
+			</OwnerB>
 			<OwnerB Name="TINC^NC-Task 1 SAF^Axes^CGSMini_R01AxisL1LeftBack">
 				<Link VarA="PlcTask Inputs^G.stAX.L1LeftBack.NcToPlc" VarB="Outputs^ToPlc" AutoLink="true"/>
 				<Link VarA="PlcTask Outputs^G.stAX.L1LeftBack.PlcToNc" VarB="Inputs^FromPlc" AutoLink="true"/>

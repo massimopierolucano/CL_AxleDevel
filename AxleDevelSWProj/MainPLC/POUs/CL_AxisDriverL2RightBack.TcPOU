@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.12">
-  <POU Name="CL_AxisDriverL1LeftBack" Id="{fa1ea31c-ec11-4e67-b56f-8859648caf74}" SpecialFunc="None">
-    <Declaration><![CDATA[FUNCTION_BLOCK CL_AxisDriverL1LeftBack EXTENDS CL_AxisDriverAX8206
+  <POU Name="CL_AxisDriverL2RightBack" Id="{824725c5-fd0a-4827-a667-bf9e93e718ff}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION_BLOCK CL_AxisDriverL2RightBack EXTENDS CL_AxisDriverAX8206
 VAR
 END_VAR
 ]]></Declaration>
@@ -10,7 +10,7 @@ END_VAR
 
 ]]></ST>
     </Implementation>
-    <Method Name="Init" Id="{7551ced5-856e-48aa-9e7a-760d973eb465}">
+    <Method Name="Init" Id="{5565a7e8-7fb5-4cd1-9490-179a32a4f063}">
       <Declaration><![CDATA[METHOD PUBLIC Init : BOOL
 VAR_INPUT  
   stDriver : POINTER TO ST_DriverAX8206_HWI;
@@ -24,14 +24,14 @@ IF stDriver <> 0 THEN
 END_IF]]></ST>
       </Implementation>
     </Method>
-    <Method Name="InitDefect" Id="{1becdde8-68ff-49f8-a75c-c8d1d6094ec3}">
+    <Method Name="InitDefect" Id="{cf956569-b5b8-442c-a9dd-2cd4c5f15fef}">
       <Declaration><![CDATA[METHOD PROTECTED InitDefect : BOOL
 VAR_INPUT
 END_VAR
 ]]></Declaration>
       <Implementation>
         <ST><![CDATA[InitDefect := SUPER^.InitDefect();
-ADSLOGSTR(ADSLOG_MSGTYPE_LOG, 'CL_AxisDriverL1LeftBack init defect','');]]></ST>
+ADSLOGSTR(ADSLOG_MSGTYPE_LOG, 'CL_AxisDriverL2RightBack init defect','');]]></ST>
       </Implementation>
     </Method>
   </POU>

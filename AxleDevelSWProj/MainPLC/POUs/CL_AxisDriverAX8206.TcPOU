@@ -15,23 +15,6 @@ END_IF
 
 ]]></ST>
     </Implementation>
-    <Method Name="Init" Id="{bb8bf61f-ae7c-41ad-9f90-fcbffd12ec34}">
-      <Declaration><![CDATA[METHOD PUBLIC Init : BOOL
-VAR_INPUT
-  stDriverCom_P     : POINTER TO ST_DriverAX8206_HWI;
-  stDriverCh_P      : POINTER TO ST_ChannelAX8206_HWI;
-END_VAR
-
-]]></Declaration>
-      <Implementation>
-        <ST><![CDATA[Init := false;
-IF stDriverCom_P <> 0 AND _stDriverCh_P <> 0 AND NOT bInit THEN
-  _stDriverCom_P := stDriverCom_P;
-  _stDriverCh_P := stDriverCh_P;
-  bInit := Init := InitCom(stCardStateIn_P := ADR(_stDriverCom_P^.comState)) AND  InitDefect() AND InitDefectCom();
-END_IF]]></ST>
-      </Implementation>
-    </Method>
     <Method Name="InitDefect" Id="{73fa3589-ebd6-4c1f-92bb-37f72a7474db}">
       <Declaration><![CDATA[METHOD PROTECTED InitDefect : BOOL
 VAR_INPUT
@@ -39,6 +22,23 @@ END_VAR
 ]]></Declaration>
       <Implementation>
         <ST><![CDATA[InitDefect := true;]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="InitDriver" Id="{bb8bf61f-ae7c-41ad-9f90-fcbffd12ec34}">
+      <Declaration><![CDATA[METHOD PUBLIC InitDriver : BOOL
+VAR_INPUT
+  stDriverCom_P     : POINTER TO ST_DriverAX8206_HWI;
+  stDriverCh_P      : POINTER TO ST_ChannelAX8206_HWI;
+END_VAR
+
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[InitDriver := FALSE;
+IF stDriverCom_P <> 0 AND stDriverCh_P <> 0 AND NOT bInit THEN
+  _stDriverCom_P := stDriverCom_P;
+  _stDriverCh_P := stDriverCh_P;
+  bInit := InitDriver := InitCom(stCardStateIn_P := ADR(_stDriverCom_P^.comState)) AND  InitDefect() AND InitDefectCom();
+END_IF]]></ST>
       </Implementation>
     </Method>
     <Method Name="Run" Id="{1277389a-916b-454f-ab5b-820e51c371c2}">
