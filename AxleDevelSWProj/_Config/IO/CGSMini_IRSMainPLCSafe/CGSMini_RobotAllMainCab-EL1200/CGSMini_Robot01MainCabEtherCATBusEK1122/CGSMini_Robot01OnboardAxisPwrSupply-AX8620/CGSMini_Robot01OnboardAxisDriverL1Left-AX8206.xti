@@ -2262,7 +2262,7 @@
 				<SlotData>0100010001000600010000002000000800000000000000000000000000000000</SlotData>
 				<ModuleIdent>6816744</ModuleIdent>
 				<Module Id="#x03090073" Type="AxisMain" Class="">
-					<Name>Ch A</Name>
+					<Name>Back</Name>
 					<ImageId>416</ImageId>
 					<ModuleData>02000000e8036800000004000000000000000000000000000000000000000000</ModuleData>
 					<PdoIndex>6688</PdoIndex>
@@ -2275,7 +2275,7 @@
 				<SlotData>0100010001000600000000000000000000000000000000000000000000000000</SlotData>
 				<ModuleIdent>0</ModuleIdent>
 				<Module Id="#x03090074" Type="Empty Module" Class="">
-					<Name>Ch A</Name>
+					<Name>Back</Name>
 					<ImageId>416</ImageId>
 					<ModuleData>0200000000000000000004000000000000000000000000000000000000000000</ModuleData>
 				</Module>
@@ -2284,7 +2284,7 @@
 				<SlotData>0100010001000600000000000000000000000000000000000000000000000000</SlotData>
 				<ModuleIdent>0</ModuleIdent>
 				<Module Id="#x03090075" Type="Empty Module" Class="">
-					<Name>Ch A</Name>
+					<Name>Back</Name>
 					<ImageId>416</ImageId>
 					<ModuleData>0200000000000000000004000000000000000000000000000000000000000000</ModuleData>
 				</Module>
@@ -2293,7 +2293,7 @@
 				<SlotData>0100000001000600010000002000000800000000000000000000000000000000</SlotData>
 				<ModuleIdent>6818744</ModuleIdent>
 				<Module Id="#x03090076" Type="Interpolator" Class="">
-					<Name>Ch A</Name>
+					<Name>Back</Name>
 					<ImageId>416</ImageId>
 					<ModuleData>02000000b80b6800000004000000000000000000000000000000000000000000</ModuleData>
 					<PdoIndex>6691</PdoIndex>
@@ -2306,7 +2306,7 @@
 				<SlotData>0100010001000600000000000000000000000000000000000000000000000000</SlotData>
 				<ModuleIdent>0</ModuleIdent>
 				<Module Id="#x03090077" Type="Empty Module" Class="">
-					<Name>Ch A</Name>
+					<Name>Back</Name>
 					<ImageId>416</ImageId>
 					<ModuleData>0200000000000000000004000000000000000000000000000000000000000000</ModuleData>
 				</Module>
@@ -2315,7 +2315,7 @@
 				<SlotData>0100010001000600000000000000000000000000000000000000000000000000</SlotData>
 				<ModuleIdent>0</ModuleIdent>
 				<Module Id="#x03090078" Type="Empty Module" Class="">
-					<Name>Ch A</Name>
+					<Name>Back</Name>
 					<ImageId>416</ImageId>
 					<ModuleData>0200000000000000000004000000000000000000000000000000000000000000</ModuleData>
 				</Module>
@@ -2324,7 +2324,7 @@
 				<SlotData>0100000001000600010000002000000800000000000000000000000000000000</SlotData>
 				<ModuleIdent>6821744</ModuleIdent>
 				<Module Id="#x03090079" Type="PositionControl" Class="">
-					<Name>Ch A</Name>
+					<Name>Back</Name>
 					<ImageId>416</ImageId>
 					<ModuleData>0200000070176800000004000000000000000000000000000000000000000000</ModuleData>
 					<PdoIndex>6694</PdoIndex>
@@ -2337,7 +2337,7 @@
 				<SlotData>0100010001000600000000000000000000000000000000000000000000000000</SlotData>
 				<ModuleIdent>0</ModuleIdent>
 				<Module Id="#x0309007a" Type="Empty Module" Class="">
-					<Name>Ch A</Name>
+					<Name>Back</Name>
 					<ImageId>416</ImageId>
 					<ModuleData>0200000000000000000004000000000000000000000000000000000000000000</ModuleData>
 				</Module>
@@ -2346,7 +2346,7 @@
 				<SlotData>0100010001000600000000000000000000000000000000000000000000000000</SlotData>
 				<ModuleIdent>0</ModuleIdent>
 				<Module Id="#x0309007b" Type="Empty Module" Class="">
-					<Name>Ch A</Name>
+					<Name>Back</Name>
 					<ImageId>416</ImageId>
 					<ModuleData>0200000000000000000004000000000000000000000000000000000000000000</ModuleData>
 				</Module>
@@ -2355,7 +2355,7 @@
 				<SlotData>0100010001000600000000000000000000000000000000000000000000000000</SlotData>
 				<ModuleIdent>0</ModuleIdent>
 				<Module Id="#x0309007c" Type="Empty Module" Class="">
-					<Name>Ch A</Name>
+					<Name>Back</Name>
 					<ImageId>416</ImageId>
 					<ModuleData>0200000000000000000004000000000000000000000000000000000000000000</ModuleData>
 				</Module>
@@ -2365,7 +2365,7 @@
 				<ModuleIdent>6825744</ModuleIdent>
 				<ModuleIdent>6825745</ModuleIdent>
 				<Module Id="#x0309007d" Type="VelocityControl" Class="">
-					<Name>Ch A</Name>
+					<Name>Back</Name>
 					<ImageId>416</ImageId>
 					<ModuleData>0200000010276800000004000000000000000000000000000000000000000000</ModuleData>
 					<PdoIndex>6698</PdoIndex>
@@ -2394,7 +2394,7 @@
 				<SlotData>0100010001000600000000000000000000000000000000000000000000000000</SlotData>
 				<ModuleIdent>0</ModuleIdent>
 				<Module Id="#x0309007e" Type="Empty Module" Class="">
-					<Name>Ch A</Name>
+					<Name>Back</Name>
 					<ImageId>416</ImageId>
 					<ModuleData>0200000000000000000004000000000000000000000000000000000000000000</ModuleData>
 				</Module>
@@ -2403,7 +2403,7 @@
 				<SlotData>0100010001000600000000000000000000000000000000000000000000000000</SlotData>
 				<ModuleIdent>0</ModuleIdent>
 				<Module Id="#x0309007f" Type="Empty Module" Class="">
-					<Name>Ch A</Name>
+					<Name>Back</Name>
 					<ImageId>416</ImageId>
 					<ModuleData>0200000000000000000004000000000000000000000000000000000000000000</ModuleData>
 				</Module>
@@ -2412,7 +2412,7 @@
 				<SlotData>0100010001000600000000000000000000000000000000000000000000000000</SlotData>
 				<ModuleIdent>0</ModuleIdent>
 				<Module Id="#x03090080" Type="Empty Module" Class="">
-					<Name>Ch A</Name>
+					<Name>Back</Name>
 					<ImageId>416</ImageId>
 					<ModuleData>0200000000000000000004000000000000000000000000000000000000000000</ModuleData>
 				</Module>
@@ -2421,7 +2421,7 @@
 				<SlotData>0100010001000600010000002000000800000000000000000000000000000000</SlotData>
 				<ModuleIdent>6833744</ModuleIdent>
 				<Module Id="#x03090081" Type="TorqueControl" Class="">
-					<Name>Ch A</Name>
+					<Name>Back</Name>
 					<ImageId>416</ImageId>
 					<ModuleData>0200000050466800000004000000000000000000000000000000000000000000</ModuleData>
 					<PdoIndex>6706</PdoIndex>
@@ -2434,7 +2434,7 @@
 				<SlotData>0100010001000600000000000000000000000000000000000000000000000000</SlotData>
 				<ModuleIdent>0</ModuleIdent>
 				<Module Id="#x03090082" Type="Empty Module" Class="">
-					<Name>Ch A</Name>
+					<Name>Back</Name>
 					<ImageId>416</ImageId>
 					<ModuleData>0200000000000000000004000000000000000000000000000000000000000000</ModuleData>
 				</Module>
@@ -2443,7 +2443,7 @@
 				<SlotData>0100010001000600000000000000000000000000000000000000000000000000</SlotData>
 				<ModuleIdent>0</ModuleIdent>
 				<Module Id="#x03090083" Type="Empty Module" Class="">
-					<Name>Ch A</Name>
+					<Name>Back</Name>
 					<ImageId>416</ImageId>
 					<ModuleData>0200000000000000000004000000000000000000000000000000000000000000</ModuleData>
 				</Module>
@@ -2452,7 +2452,7 @@
 				<SlotData>0100010001000600000000000000000000000000000000000000000000000000</SlotData>
 				<ModuleIdent>0</ModuleIdent>
 				<Module Id="#x03090084" Type="Empty Module" Class="">
-					<Name>Ch A</Name>
+					<Name>Back</Name>
 					<ImageId>416</ImageId>
 					<ModuleData>0200000000000000000004000000000000000000000000000000000000000000</ModuleData>
 				</Module>
@@ -2462,7 +2462,7 @@
 				<ModuleIdent>6837744</ModuleIdent>
 				<ModuleIdent>6837747</ModuleIdent>
 				<Module Id="#x03090085" Type="SyncServoMotor" Class="">
-					<Name>Ch A</Name>
+					<Name>Back</Name>
 					<ImageId>416</ImageId>
 					<ModuleData>02000000f0556800000004000000000000000000000000000000000000000000</ModuleData>
 					<PdoIndex>6710</PdoIndex>
@@ -2474,7 +2474,7 @@
 				<ModuleIdent>6838745</ModuleIdent>
 				<ModuleIdent>6838749</ModuleIdent>
 				<Module Id="#x030900a8" Type="OCT rotary (Hiperface DSL)" Class="">
-					<Name>Ch A</Name>
+					<Name>Back</Name>
 					<ImageId>416</ImageId>
 					<ModuleData>02000000d9596800000004000000000000000000000000000000000000000000</ModuleData>
 					<PdoIndex>6711</PdoIndex>
@@ -2485,7 +2485,7 @@
 				<SlotData>0100010001000600000000000000000000000000000000000000000000000000</SlotData>
 				<ModuleIdent>0</ModuleIdent>
 				<Module Id="#x03090086" Type="Empty Module" Class="">
-					<Name>Ch A</Name>
+					<Name>Back</Name>
 					<ImageId>416</ImageId>
 					<ModuleData>0200000000000000000004000000000000000000000000000000000000000000</ModuleData>
 				</Module>
@@ -2494,7 +2494,7 @@
 				<SlotData>0100010001000600000000000000000000000000000000000000000000000000</SlotData>
 				<ModuleIdent>0</ModuleIdent>
 				<Module Id="#x03090087" Type="Empty Module" Class="">
-					<Name>Ch A</Name>
+					<Name>Back</Name>
 					<ImageId>416</ImageId>
 					<ModuleData>0200000000000000000004000000000000000000000000000000000000000000</ModuleData>
 				</Module>
@@ -2503,7 +2503,7 @@
 				<SlotData>0100010001000600000000000000000000000000000000000000000000000000</SlotData>
 				<ModuleIdent>0</ModuleIdent>
 				<Module Id="#x03090088" Type="Empty Module" Class="">
-					<Name>Ch A</Name>
+					<Name>Back</Name>
 					<ImageId>416</ImageId>
 					<ModuleData>0200000000000000000004000000000000000000000000000000000000000000</ModuleData>
 				</Module>
@@ -2512,7 +2512,7 @@
 				<SlotData>0100010001000600000000000000000000000000000000000000000000000000</SlotData>
 				<ModuleIdent>0</ModuleIdent>
 				<Module Id="#x03090089" Type="Empty Module" Class="">
-					<Name>Ch A</Name>
+					<Name>Back</Name>
 					<ImageId>416</ImageId>
 					<ModuleData>0200000000000000000004000000000000000000000000000000000000000000</ModuleData>
 				</Module>
@@ -2521,7 +2521,7 @@
 				<SlotData>0100010001000600000000000000000000000000000000000000000000000000</SlotData>
 				<ModuleIdent>0</ModuleIdent>
 				<Module Id="#x0309008a" Type="Empty Module" Class="">
-					<Name>Ch A</Name>
+					<Name>Back</Name>
 					<ImageId>416</ImageId>
 					<ModuleData>0200000000000000000004000000000000000000000000000000000000000000</ModuleData>
 				</Module>
@@ -2530,7 +2530,7 @@
 				<SlotData>0100010001000600000000000000000000000000000000000000000000000000</SlotData>
 				<ModuleIdent>0</ModuleIdent>
 				<Module Id="#x0309008b" Type="Empty Module" Class="">
-					<Name>Ch A</Name>
+					<Name>Back</Name>
 					<ImageId>416</ImageId>
 					<ModuleData>0200000000000000000004000000000000000000000000000000000000000000</ModuleData>
 				</Module>
@@ -2539,7 +2539,7 @@
 				<SlotData>0100010001000600000000000000000000000000000000000000000000000000</SlotData>
 				<ModuleIdent>0</ModuleIdent>
 				<Module Id="#x0309008c" Type="Empty Module" Class="">
-					<Name>Ch A</Name>
+					<Name>Back</Name>
 					<ImageId>416</ImageId>
 					<ModuleData>0200000000000000000004000000000000000000000000000000000000000000</ModuleData>
 				</Module>
@@ -2552,7 +2552,7 @@
 				<SlotData>0200010001000600010000002000000800000000000000000000000000000000</SlotData>
 				<ModuleIdent>6816744</ModuleIdent>
 				<Module Id="#x0309008d" Type="AxisMain" Class="">
-					<Name>Ch B</Name>
+					<Name>Front</Name>
 					<ImageId>416</ImageId>
 					<ModuleData>02000000e8036800000004000000000000000000000000000000000000000000</ModuleData>
 					<PdoIndex>6720</PdoIndex>
@@ -2565,7 +2565,7 @@
 				<SlotData>0200010001000600000000000000000000000000000000000000000000000000</SlotData>
 				<ModuleIdent>0</ModuleIdent>
 				<Module Id="#x0309008e" Type="Empty Module" Class="">
-					<Name>Ch B</Name>
+					<Name>Front</Name>
 					<ImageId>416</ImageId>
 					<ModuleData>0200000000000000000004000000000000000000000000000000000000000000</ModuleData>
 				</Module>
@@ -2574,7 +2574,7 @@
 				<SlotData>0200010001000600000000000000000000000000000000000000000000000000</SlotData>
 				<ModuleIdent>0</ModuleIdent>
 				<Module Id="#x0309008f" Type="Empty Module" Class="">
-					<Name>Ch B</Name>
+					<Name>Front</Name>
 					<ImageId>416</ImageId>
 					<ModuleData>0200000000000000000004000000000000000000000000000000000000000000</ModuleData>
 				</Module>
@@ -2583,7 +2583,7 @@
 				<SlotData>0200000001000600010000002000000800000000000000000000000000000000</SlotData>
 				<ModuleIdent>6818744</ModuleIdent>
 				<Module Id="#x03090090" Type="Interpolator" Class="">
-					<Name>Ch B</Name>
+					<Name>Front</Name>
 					<ImageId>416</ImageId>
 					<ModuleData>02000000b80b6800000004000000000000000000000000000000000000000000</ModuleData>
 					<PdoIndex>6723</PdoIndex>
@@ -2596,7 +2596,7 @@
 				<SlotData>0200010001000600000000000000000000000000000000000000000000000000</SlotData>
 				<ModuleIdent>0</ModuleIdent>
 				<Module Id="#x03090091" Type="Empty Module" Class="">
-					<Name>Ch B</Name>
+					<Name>Front</Name>
 					<ImageId>416</ImageId>
 					<ModuleData>0200000000000000000004000000000000000000000000000000000000000000</ModuleData>
 				</Module>
@@ -2605,7 +2605,7 @@
 				<SlotData>0200010001000600000000000000000000000000000000000000000000000000</SlotData>
 				<ModuleIdent>0</ModuleIdent>
 				<Module Id="#x03090092" Type="Empty Module" Class="">
-					<Name>Ch B</Name>
+					<Name>Front</Name>
 					<ImageId>416</ImageId>
 					<ModuleData>0200000000000000000004000000000000000000000000000000000000000000</ModuleData>
 				</Module>
@@ -2614,7 +2614,7 @@
 				<SlotData>0200000001000600010000002000000800000000000000000000000000000000</SlotData>
 				<ModuleIdent>6821744</ModuleIdent>
 				<Module Id="#x03090093" Type="PositionControl" Class="">
-					<Name>Ch B</Name>
+					<Name>Front</Name>
 					<ImageId>416</ImageId>
 					<ModuleData>0200000070176800000004000000000000000000000000000000000000000000</ModuleData>
 					<PdoIndex>6726</PdoIndex>
@@ -2627,7 +2627,7 @@
 				<SlotData>0200010001000600000000000000000000000000000000000000000000000000</SlotData>
 				<ModuleIdent>0</ModuleIdent>
 				<Module Id="#x03090094" Type="Empty Module" Class="">
-					<Name>Ch B</Name>
+					<Name>Front</Name>
 					<ImageId>416</ImageId>
 					<ModuleData>0200000000000000000004000000000000000000000000000000000000000000</ModuleData>
 				</Module>
@@ -2636,7 +2636,7 @@
 				<SlotData>0200010001000600000000000000000000000000000000000000000000000000</SlotData>
 				<ModuleIdent>0</ModuleIdent>
 				<Module Id="#x03090095" Type="Empty Module" Class="">
-					<Name>Ch B</Name>
+					<Name>Front</Name>
 					<ImageId>416</ImageId>
 					<ModuleData>0200000000000000000004000000000000000000000000000000000000000000</ModuleData>
 				</Module>
@@ -2645,7 +2645,7 @@
 				<SlotData>0200010001000600000000000000000000000000000000000000000000000000</SlotData>
 				<ModuleIdent>0</ModuleIdent>
 				<Module Id="#x03090096" Type="Empty Module" Class="">
-					<Name>Ch B</Name>
+					<Name>Front</Name>
 					<ImageId>416</ImageId>
 					<ModuleData>0200000000000000000004000000000000000000000000000000000000000000</ModuleData>
 				</Module>
@@ -2655,7 +2655,7 @@
 				<ModuleIdent>6825744</ModuleIdent>
 				<ModuleIdent>6825745</ModuleIdent>
 				<Module Id="#x03090097" Type="VelocityControl" Class="">
-					<Name>Ch B</Name>
+					<Name>Front</Name>
 					<ImageId>416</ImageId>
 					<ModuleData>0200000010276800000004000000000000000000000000000000000000000000</ModuleData>
 					<PdoIndex>6730</PdoIndex>
@@ -2684,7 +2684,7 @@
 				<SlotData>0200010001000600000000000000000000000000000000000000000000000000</SlotData>
 				<ModuleIdent>0</ModuleIdent>
 				<Module Id="#x03090098" Type="Empty Module" Class="">
-					<Name>Ch B</Name>
+					<Name>Front</Name>
 					<ImageId>416</ImageId>
 					<ModuleData>0200000000000000000004000000000000000000000000000000000000000000</ModuleData>
 				</Module>
@@ -2693,7 +2693,7 @@
 				<SlotData>0200010001000600000000000000000000000000000000000000000000000000</SlotData>
 				<ModuleIdent>0</ModuleIdent>
 				<Module Id="#x03090099" Type="Empty Module" Class="">
-					<Name>Ch B</Name>
+					<Name>Front</Name>
 					<ImageId>416</ImageId>
 					<ModuleData>0200000000000000000004000000000000000000000000000000000000000000</ModuleData>
 				</Module>
@@ -2702,7 +2702,7 @@
 				<SlotData>0200010001000600000000000000000000000000000000000000000000000000</SlotData>
 				<ModuleIdent>0</ModuleIdent>
 				<Module Id="#x0309009a" Type="Empty Module" Class="">
-					<Name>Ch B</Name>
+					<Name>Front</Name>
 					<ImageId>416</ImageId>
 					<ModuleData>0200000000000000000004000000000000000000000000000000000000000000</ModuleData>
 				</Module>
@@ -2711,7 +2711,7 @@
 				<SlotData>0200010001000600010000002000000800000000000000000000000000000000</SlotData>
 				<ModuleIdent>6833744</ModuleIdent>
 				<Module Id="#x0309009b" Type="TorqueControl" Class="">
-					<Name>Ch B</Name>
+					<Name>Front</Name>
 					<ImageId>416</ImageId>
 					<ModuleData>0200000050466800000004000000000000000000000000000000000000000000</ModuleData>
 					<PdoIndex>6738</PdoIndex>
@@ -2724,7 +2724,7 @@
 				<SlotData>0200010001000600000000000000000000000000000000000000000000000000</SlotData>
 				<ModuleIdent>0</ModuleIdent>
 				<Module Id="#x0309009c" Type="Empty Module" Class="">
-					<Name>Ch B</Name>
+					<Name>Front</Name>
 					<ImageId>416</ImageId>
 					<ModuleData>0200000000000000000004000000000000000000000000000000000000000000</ModuleData>
 				</Module>
@@ -2733,7 +2733,7 @@
 				<SlotData>0200010001000600000000000000000000000000000000000000000000000000</SlotData>
 				<ModuleIdent>0</ModuleIdent>
 				<Module Id="#x0309009d" Type="Empty Module" Class="">
-					<Name>Ch B</Name>
+					<Name>Front</Name>
 					<ImageId>416</ImageId>
 					<ModuleData>0200000000000000000004000000000000000000000000000000000000000000</ModuleData>
 				</Module>
@@ -2742,7 +2742,7 @@
 				<SlotData>0200010001000600000000000000000000000000000000000000000000000000</SlotData>
 				<ModuleIdent>0</ModuleIdent>
 				<Module Id="#x0309009e" Type="Empty Module" Class="">
-					<Name>Ch B</Name>
+					<Name>Front</Name>
 					<ImageId>416</ImageId>
 					<ModuleData>0200000000000000000004000000000000000000000000000000000000000000</ModuleData>
 				</Module>
@@ -2752,7 +2752,7 @@
 				<ModuleIdent>6837744</ModuleIdent>
 				<ModuleIdent>6837747</ModuleIdent>
 				<Module Id="#x0309009f" Type="SyncServoMotor" Class="">
-					<Name>Ch B</Name>
+					<Name>Front</Name>
 					<ImageId>416</ImageId>
 					<ModuleData>02000000f0556800000004000000000000000000000000000000000000000000</ModuleData>
 					<PdoIndex>6742</PdoIndex>
@@ -2764,7 +2764,7 @@
 				<ModuleIdent>6838745</ModuleIdent>
 				<ModuleIdent>6838749</ModuleIdent>
 				<Module Id="#x030900aa" Type="OCT rotary (Hiperface DSL)" Class="">
-					<Name>Ch B</Name>
+					<Name>Front</Name>
 					<ImageId>416</ImageId>
 					<ModuleData>02000000d9596800000004000000000000000000000000000000000000000000</ModuleData>
 					<PdoIndex>6743</PdoIndex>
@@ -2775,7 +2775,7 @@
 				<SlotData>0200010001000600000000000000000000000000000000000000000000000000</SlotData>
 				<ModuleIdent>0</ModuleIdent>
 				<Module Id="#x030900a0" Type="Empty Module" Class="">
-					<Name>Ch B</Name>
+					<Name>Front</Name>
 					<ImageId>416</ImageId>
 					<ModuleData>0200000000000000000004000000000000000000000000000000000000000000</ModuleData>
 				</Module>
@@ -2784,7 +2784,7 @@
 				<SlotData>0200010001000600000000000000000000000000000000000000000000000000</SlotData>
 				<ModuleIdent>0</ModuleIdent>
 				<Module Id="#x030900a1" Type="Empty Module" Class="">
-					<Name>Ch B</Name>
+					<Name>Front</Name>
 					<ImageId>416</ImageId>
 					<ModuleData>0200000000000000000004000000000000000000000000000000000000000000</ModuleData>
 				</Module>
@@ -2793,7 +2793,7 @@
 				<SlotData>0200010001000600000000000000000000000000000000000000000000000000</SlotData>
 				<ModuleIdent>0</ModuleIdent>
 				<Module Id="#x030900a2" Type="Empty Module" Class="">
-					<Name>Ch B</Name>
+					<Name>Front</Name>
 					<ImageId>416</ImageId>
 					<ModuleData>0200000000000000000004000000000000000000000000000000000000000000</ModuleData>
 				</Module>
@@ -2802,7 +2802,7 @@
 				<SlotData>0200010001000600000000000000000000000000000000000000000000000000</SlotData>
 				<ModuleIdent>0</ModuleIdent>
 				<Module Id="#x030900a3" Type="Empty Module" Class="">
-					<Name>Ch B</Name>
+					<Name>Front</Name>
 					<ImageId>416</ImageId>
 					<ModuleData>0200000000000000000004000000000000000000000000000000000000000000</ModuleData>
 				</Module>
@@ -2811,7 +2811,7 @@
 				<SlotData>0200010001000600000000000000000000000000000000000000000000000000</SlotData>
 				<ModuleIdent>0</ModuleIdent>
 				<Module Id="#x030900a4" Type="Empty Module" Class="">
-					<Name>Ch B</Name>
+					<Name>Front</Name>
 					<ImageId>416</ImageId>
 					<ModuleData>0200000000000000000004000000000000000000000000000000000000000000</ModuleData>
 				</Module>
@@ -2820,7 +2820,7 @@
 				<SlotData>0200010001000600000000000000000000000000000000000000000000000000</SlotData>
 				<ModuleIdent>0</ModuleIdent>
 				<Module Id="#x030900a5" Type="Empty Module" Class="">
-					<Name>Ch B</Name>
+					<Name>Front</Name>
 					<ImageId>416</ImageId>
 					<ModuleData>0200000000000000000004000000000000000000000000000000000000000000</ModuleData>
 				</Module>
@@ -2829,7 +2829,7 @@
 				<SlotData>0200010001000600000000000000000000000000000000000000000000000000</SlotData>
 				<ModuleIdent>0</ModuleIdent>
 				<Module Id="#x030900a6" Type="Empty Module" Class="">
-					<Name>Ch B</Name>
+					<Name>Front</Name>
 					<ImageId>416</ImageId>
 					<ModuleData>0200000000000000000004000000000000000000000000000000000000000000</ModuleData>
 				</Module>
@@ -2841,10 +2841,10 @@
 			<SlotGroupData Name="Device">
 				<SlotGroup>0</SlotGroup>
 			</SlotGroupData>
-			<SlotGroupData Name="Ch A">
+			<SlotGroupData Name="Back">
 				<SlotGroup>1</SlotGroup>
 			</SlotGroupData>
-			<SlotGroupData Name="Ch B">
+			<SlotGroupData Name="Front">
 				<SlotGroup>2</SlotGroup>
 			</SlotGroupData>
 		</EtherCAT>

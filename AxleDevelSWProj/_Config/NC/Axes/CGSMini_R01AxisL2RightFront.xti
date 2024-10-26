@@ -1585,17 +1585,17 @@ External Setpoint Generation:
 	<Mappings>
 		<OwnerA>
 			<OwnerB Name="TIID^CGSMini_IRSMainPLCSafe^CGSMini_RobotAllMainCab-EL1200^CGSMini_Robot01MainCabEtherCATBusEK1122^CGSMini_Robot01OnboardAxisPwrSupply-AX8620^CGSMini_Robot01OnboardAxisDriverL2Right-AX8206">
-				<Link VarA="Drive^Inputs^In^nDataIn1" VarB="Ch B^Ch B PositionControl Inputs^Ch B Following error actual value"/>
+				<Link VarA="Drive^Inputs^In^nDataIn1" VarB="Front^Ch B PositionControl Inputs^Ch B Following error actual value"/>
 				<Link VarA="Drive^Inputs^In^nDcOutputTime" VarB="InfoData^DcOutputShift"/>
-				<Link VarA="Drive^Inputs^In^nState1" VarB="Ch B^Ch B AxisMain Inputs^Ch B Statusword" Size="8"/>
-				<Link VarA="Drive^Inputs^In^nState2" VarB="Ch B^Ch B AxisMain Inputs^Ch B Statusword" Size="8" OffsB="8"/>
-				<Link VarA="Drive^Outputs^Out^nCtrl1" VarB="Ch B^Ch B AxisMain Outputs^Ch B Controlword" Size="8"/>
-				<Link VarA="Drive^Outputs^Out^nCtrl2" VarB="Ch B^Ch B AxisMain Outputs^Ch B Controlword" Size="8" OffsB="8"/>
-				<Link VarA="Drive^Outputs^Out^nDataOut1" VarB="Ch B^Ch B Interpolator Outputs^Ch B Target position"/>
-				<Link VarA="Drive^Outputs^Out^nDataOut2" VarB="Ch B^Ch B Interpolator Outputs^Ch B Target velocity"/>
-				<Link VarA="Enc^Inputs^In^nDataIn1" VarB="Ch B^Ch B AxisMain Inputs^Ch B Position actual value"/>
+				<Link VarA="Drive^Inputs^In^nState1" VarB="Front^Ch B AxisMain Inputs^Ch B Statusword" Size="8"/>
+				<Link VarA="Drive^Inputs^In^nState2" VarB="Front^Ch B AxisMain Inputs^Ch B Statusword" Size="8" OffsB="8"/>
+				<Link VarA="Drive^Outputs^Out^nCtrl1" VarB="Front^Ch B AxisMain Outputs^Ch B Controlword" Size="8"/>
+				<Link VarA="Drive^Outputs^Out^nCtrl2" VarB="Front^Ch B AxisMain Outputs^Ch B Controlword" Size="8" OffsB="8"/>
+				<Link VarA="Drive^Outputs^Out^nDataOut1" VarB="Front^Ch B Interpolator Outputs^Ch B Target position"/>
+				<Link VarA="Drive^Outputs^Out^nDataOut2" VarB="Front^Ch B Interpolator Outputs^Ch B Target velocity"/>
+				<Link VarA="Enc^Inputs^In^nDataIn1" VarB="Front^Ch B AxisMain Inputs^Ch B Position actual value"/>
 				<Link VarA="Enc^Inputs^In^nDcInputTime" VarB="InfoData^DcInputShift"/>
-				<Link VarA="Enc^Inputs^In^nState2" VarB="Ch B^Ch B AxisMain Inputs^Position actual value invalid" Size="1" OffsA="5"/>
+				<Link VarA="Enc^Inputs^In^nState2" VarB="Front^Ch B AxisMain Inputs^Position actual value invalid" Size="1" OffsA="5"/>
 			</OwnerB>
 		</OwnerA>
 	</Mappings>

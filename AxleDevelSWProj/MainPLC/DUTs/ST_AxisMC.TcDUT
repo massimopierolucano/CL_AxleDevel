@@ -1,32 +1,33 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.12">
-  <DUT Name="ST_Axle" Id="{6ce97152-48bf-4780-922b-14cd347ce06a}">
+  <DUT Name="ST_AxisMC" Id="{6ce97152-48bf-4780-922b-14cd347ce06a}">
     <Declaration><![CDATA[//Add Library Tc2_MC2
-TYPE ST_Axle:
+TYPE ST_AxisMC:
 STRUCT
 	fbPower						        : MC_Power;//Axis function - Power
 	fbReset						        : MC_Reset;//Axis function - Reset
 	fbSetPosition					    : MC_SetPosition;//Axis function - Set Position
 	fbStop							      : MC_Stop;//stop
-	fbHalt							      : MC_Halt;//Halt
-	fbHome							      : MC_Home;//Home
+	//fbHalt							      : MC_Halt;//Halt
 	fbMoveJog							    : MC_Jog;//Jog
+	fbGearInDyn					      : MC_GearInDyn;//Axis coupling - GearInDyn
+	fbGearOut						      : MC_GearOut;//Axis coupling - GearOut
+
   fbReadStatus              : MC_ReadStatus;
+	fbReadAxisError				    : MC_ReadAxisError;//Status and parameter - Read Axis Error
+	fbReadActualPosition			: MC_ReadActualPosition;//Status and parameter - Read Actual Position
+	fbReadActualVelocity			: MC_ReadActualVelocity;//Status and parameter - Read Actual Velocity
+  
+	fbHome							      : MC_Home;//Home
 	fbMoveAbsolute1				    : MC_MoveAbsolute;//	MC_MoveAbsolute1
   fbMoveAbsoluteWheelCheck  : MC_MoveAbsolute;// Add CustomAutomation 07.03.2023: Check du diamètre des roues 
   fbMoveAbsoluteCorrection  : MC_MoveAbsolute;// Add CustomAutomation 07.03.2023: Correction fin de parcours
  	fbMoveRelative					  : MC_MoveRelative;//Move Relative
 	fbMoveVelocity					  : MC_MoveVelocity;//Move Velocity
-	fbReadAxisError				    : MC_ReadAxisError;//Status and parameter - Read Axis Error
-	fbReadActualPosition			: MC_ReadActualPosition;//Status and parameter - Read Actual Position
-	fbReadActualVelocity			: MC_ReadActualVelocity;//Status and parameter - Read Actual Velocity
-	fbGearInDyn					      : MC_GearInDyn;//Axis coupling - GearInDyn
-	fbGearOut						      : MC_GearOut;//Axis coupling - GearOut
 	fbPosCorrectionLimiter    : MC_PositionCorrectionLimiter;//Special extensions - Position Correction Limiter
-	
-	bGearOutDone					    : BOOL;
-	bGearInDynDone					  : BOOL;
-	bStopDone						      : BOOL;
+
+  //fbReadAxisComponents      : MC_ReadAxisComponents;
+  //fbRear : MC_ReadBoolPa//rameter;
 END_STRUCT
 END_TYPE]]></Declaration>
   </DUT>

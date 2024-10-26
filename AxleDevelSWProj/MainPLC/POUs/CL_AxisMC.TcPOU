@@ -7,7 +7,8 @@ VAR
   _AxisDriver_R         : REFERENCE TO CL_AxisDriverAX8206;
   _stMotorAxis_R			  : REFERENCE TO AXIS_REF;//axis reference linked to I/O
   _stMasterAxis_R       : REFERENCE TO AXIS_REF;//master axis
-  _stFBAxle             : ST_Axle;
+  _stMC                 
+: ST_AxisMC;
   
   _stAxisJog_R          : REFERENCE TO AXIS_REF;
   
@@ -117,8 +118,8 @@ IF stAxisMotor_P <> 0 AND stAxisMaster_P <> 0 AND NOT bInit THEN
     bInit := AxisDriver_P = 0; 
     //do not assign _AxisDriver_R, because master axis has no driver associated !
   ELSE
-    _AxisDriver_R REF= AxisDriver_P^;
     bInit := TRUE;
+    _AxisDriver_R REF= AxisDriver_P^;
 	END_IF
   
   bInit := binit AND SUPER^.InitSystemBase( IrrLine := stIrrLine, stSystemStatus_ARR := G.stSystemStatus_ARR);
@@ -139,7 +140,7 @@ END_VAR
 _lrJogVelocity := 0.3;//m/s
 _nJogMode := MC_JOGMODE_STANDARD_SLOW;//MC_JOGMODE_STANDARD_FAST;  MC_JOGMODE_CONTINUOUS
 _nJogMode := MC_JOGMODE_STANDARD_FAST; 
-_stFBAxle.fbMoveJog(Axis := _stMotorAxis_R, Position := 0.0, Velocity := _lrJogVelocity, Acceleration := 0.0, Deceleration := 0.0, Jerk := 0.0);
+_stMC.fbMoveJog(Axis := _stMotorAxis_R, Position := 0.0, Velocity := _lrJogVelocity, Acceleration := 0.0, Deceleration := 0.0, Jerk := 0.0);
 _lrInverse := 1.0;]]></ST>
       </Implementation>
     </Method>
@@ -207,8 +208,8 @@ else
   //_bExecJogFWIn := _bExecJogBWIn := FALSE;
   _bJogFW := _bJogBW := FALSE;
 END_IF
- _bAxisMovedbyJog := _stFBAxle.fbMoveJog.Active;
- _bJogCmdAborted := _stFBAxle.fbMoveJog.CommandAborted;
+ _bAxisMovedbyJog := _stMC.fbMoveJog.Active;
+ _bJogCmdAborted := _stMC.fbMoveJog.CommandAborted;
 //_bJogFW := _bExecJogFWIn;
 //_bJogBW := _bExecJogBWIn;
 ]]></ST>
@@ -464,7 +465,7 @@ Case01Hysto(_nStepMain);]]></ST>
       <Declaration><![CDATA[METHOD PRIVATE RunMC
 ]]></Declaration>
       <Implementation>
-        <ST><![CDATA[_stFBAxle.fbPower(
+        <ST><![CDATA[_stMC.fbPower(
     Axis:= _stMotorAxis_R, 
     Enable:= _bPowerOn, 
     Enable_Positive:= _bPowerOn, 
@@ -474,19 +475,19 @@ Case01Hysto(_nStepMain);]]></ST>
     Busy=>_bMCBusy , 
     Error=>_bMCError);
         
-_stFBAxle.fbReset(
+_stMC.fbReset(
     Axis:= _stMotorAxis_R, 
     Busy=>_bMCBusy , 
     Error=>_bMCError);
 
-_stFBAxle.fbMoveJog(
+_stMC.fbMoveJog(
     Axis := _stAxisJog_R,
     JogForward := _bJogFW,
     JogBackwards := _bJogBW,
     Mode := _nJogMode,
     Velocity := _lrJogVelocity);
       
-_stFBAxle.fbGearInDyn(
+_stMC.fbGearInDyn(
     Master := _stMasterAxis_R,
     Slave:= _stMotorAxis_R,
     Enable := _bGearInDyn,//continous signal true
@@ -496,11 +497,11 @@ _stFBAxle.fbGearInDyn(
     Error=>_bMCError);
 //ATTENTION MC_GearInDyn has Busy = Active = true until is active!
 
-_stFBAxle.fbGearOut(
+_stMC.fbGearOut(
     Slave:= _stMotorAxis_R,
     Execute := _bGearOut);//rising edge
 
-_stFBAxle.fbStop(
+_stMC.fbStop(
     Axis:= _stMotorAxis_R,
     Execute := _bStop);//rising edge
 
@@ -524,7 +525,7 @@ _bIsCoupled := _stMotorAxis_R.Status.Coupled;
 *)
  
 (*
-_stFBAxle.fbHome(Axis:=MotorAxle^, bCalibrationCam:=_udCalibrationSensor_P^.19,
+_stMC.fbHome(Axis:=MotorAxle^, bCalibrationCam:=_udCalibrationSensor_P^.19,
 		    Options := stHomingOption, Position := lrnOffsetExtractorHoming);    
 fbMoveAbso(Axis:= _AxisREF_P^);
 fbReadStatus(Axis:= _AxisREF_P^,Enable := TRUE);	// Ok, actually done in the first lines.
@@ -548,9 +549,9 @@ var
 END_VAR]]></Declaration>
       <Implementation>
         <ST><![CDATA[_nStepMain := E_RequAxle.Idle;
-//_stFBAxle.fbPower.Enable := FALSE;
-//_stFBAxle.fbPower.Enable_Positive	:= FALSE;
-//_stFBAxle.fbPower.Enable_Negative	:= FALSE;
+//_stMC.fbPower.Enable := FALSE;
+//_stMC.fbPower.Enable_Positive	:= FALSE;
+//_stMC.fbPower.Enable_Negative	:= FALSE;
 //fbHome.Execute := FALSE;
 //fbHomeInv.Execute	:= FALSE;
 
@@ -618,32 +619,32 @@ ADSLOGSTR(ADSLOG_MSGTYPE_LOG, 'CL_Axis error loop  %s',sOutMsg);
     _nStep := E_StepMC.Busy;
   
   E_StepMC.Busy :
-    IF _stFBAxle.fbGearInDyn.CommandAborted THEN
+    IF _stMC.fbGearInDyn.CommandAborted THEN
       _nStep := E_StepMC.CmdAborted;
     END_IF
     IF WaitNextState.End THEN
       _nStep := E_StepMC.Timeout;
-    ELSIF _stFBAxle.fbGearInDyn.Busy THEN //Active == Busy
+    ELSIF _stMC.fbGearInDyn.Busy THEN //Active == Busy
       //ATTENTION MC_GearInDyn has Busy = Active = true until is active!
       _nStep := E_StepMC.End;
     END_IF
     
   E_StepMC.End:
-    IF not _stFBAxle.fbGearInDyn.Error THEN  
+    IF NOT _stMC.fbGearInDyn.Error THEN  
       OnExitRequOk();
     ELSE
       _bRequTimeout := false;
-      OnExitRequError(_stFBAxle.fbGearInDyn.ErrorID, E_AxisErrorType.MCError);
+      OnExitRequError(_stMC.fbGearInDyn.ErrorID, E_AxisErrorType.MCError);
     END_IF
   
   E_StepMC.CmdAborted:
     _bGearInCmdAborted := true;
     OnExitRequOk();
-    //OnExitRequError(_stFBAxle.fbGearInDyn.ErrorID);
+    //OnExitRequError(_stMC.fbGearInDyn.ErrorID);
     
   E_StepMC.Timeout:
     _bRequTimeout := true;
-    OnExitRequError(_stFBAxle.fbGearInDyn.ErrorID, E_AxisErrorType.Timeout);   
+    OnExitRequError(_stMC.fbGearInDyn.ErrorID, E_AxisErrorType.Timeout);   
 end_case]]></ST>
       </Implementation>
     </Method>
@@ -663,7 +664,7 @@ E_StepMC.Init :
 E_StepMC.Busy :
   IF WaitNextState.End THEN
     _nStep := E_StepMC.Timeout;
-  ELSIF NOT _stFBAxle.fbGearOut.Busy THEN
+  ELSIF NOT _stMC.fbGearOut.Busy THEN
     WaitNextState.Start(C.tTimeOutAxisMC_C);
     _nStep := E_StepMC.Done;
   END_IF
@@ -671,24 +672,24 @@ E_StepMC.Busy :
 E_StepMC.Done :
   IF WaitNextState.End THEN
      _nStep := E_StepMC.Timeout;
-  ELSIF _stFBAxle.fbGearOut.Done THEN
+  ELSIF _stMC.fbGearOut.Done THEN
     _nStep := E_StepMC.End;
   END_IF
   
 E_StepMC.End:
-  IF not _stFBAxle.fbGearOut.Error THEN  
+  IF NOT _stMC.fbGearOut.Error THEN  
     _bGearOut := false;//executed with a rising edge
     OnExitRequOk();
   ELSE
     _bGearOut := false;//executed with a rising edge
     _bRequTimeout := false;
-    OnExitRequError(_stFBAxle.fbGearOut.ErrorID, E_AxisErrorType.MCError);
+    OnExitRequError(_stMC.fbGearOut.ErrorID, E_AxisErrorType.MCError);
   END_IF
 
 E_StepMC.Timeout:
-    _stFBAxle.fbGearOut.Execute := FALSE;
+    _stMC.fbGearOut.Execute := FALSE;
     _bRequTimeout := false;//executed with a rising edge
-    OnExitRequError(_stFBAxle.fbGearOut.ErrorID, E_AxisErrorType.Timeout);  
+    OnExitRequError(_stMC.fbGearOut.ErrorID, E_AxisErrorType.Timeout);  
 end_case]]></ST>
       </Implementation>
     </Method>
@@ -703,9 +704,9 @@ end_case]]></ST>
     _nStep := E_StepMC.Busy;
    
   E_StepMC.Busy :    
-    IF _stFBAxle.fbMoveJog.CommandAborted THEN
+    IF _stMC.fbMoveJog.CommandAborted THEN
       _nStep := E_StepMC.CmdAborted;
-    ELSIF not _stFBAxle.fbMoveJog.Busy THEN
+    ELSIF NOT _stMC.fbMoveJog.Busy THEN
       _nStep := E_StepMC.End;
     END_IF     
         
@@ -721,10 +722,10 @@ end_case]]></ST>
     _bAxisMovedbyJog := FALSE;
     _bJogCmdAborted := false;
     //_bExecJog := false; 
-    IF not _stFBAxle.fbMoveJog.Error THEN  
+    IF NOT _stMC.fbMoveJog.Error THEN  
       OnExitRequOk();
     ELSE
-      OnExitRequError(_stFBAxle.fbMoveJog.ErrorID, E_AxisErrorType.MCError);
+      OnExitRequError(_stMC.fbMoveJog.ErrorID, E_AxisErrorType.MCError);
     end_if                  
 end_case
 Case02Hysto(_nStep);
@@ -762,17 +763,17 @@ END_VAR
  		END_IF
   
   E_StepMC.Busy:
-    IF _stFBAxle.fbPower.Busy THEN
+    IF _stMC.fbPower.Busy THEN
       _nStep := E_StepMC.PowerOnCheckStatus;
 		END_IF
     
   E_StepMC.PowerOnCheckStatus:
-    b := _stFBAxle.fbPower.Status;
+    b := _stMC.fbPower.Status;
     {IF defined (MiniRobotSim)}
     b := TRUE;
     {END_IF}
     IF b THEN
-      b := _stFBAxle.fbPower.Error;
+      b := _stMC.fbPower.Error;
       IF b THEN 
         _nStep := E_StepMC.PowerOnRetryError;
       ELSE       
@@ -790,11 +791,11 @@ END_VAR
   E_StepMC.PowerOnRetryError:
     //_bPowerOn := FALSE;
     IF _uiRetryPowerOnCnt = 0 THEN
-      OnExitRequError(_stFBAxle.fbPower.ErrorID, E_AxisErrorType.Retry);//after _uiRetryPowerOnCnt still impossible to PowerOn
+      OnExitRequError(_stMC.fbPower.ErrorID, E_AxisErrorType.Retry);//after _uiRetryPowerOnCnt still impossible to PowerOn
       _uiRetryPowerOnCnt := _uiRetryPowerOnCnt_C;
       _bExecPreviousRequ := FALSE;
      ELSE
-      OnExitRequRetry(ErrorIDIn := _stFBAxle.fbPower.ErrorID, RequRetryIn := E_RequAxle.Reset);
+      OnExitRequRetry(ErrorIDIn := _stMC.fbPower.ErrorID, RequRetryIn := E_RequAxle.Reset);
       _uiRetryPowerOnCnt := _uiRetryPowerOnCnt - 1;
     END_IF    
 END_CASE
@@ -811,14 +812,14 @@ Case02Hysto(_nStep);]]></ST>
 
 CASE _nStep OF 
 E_StepMC.Init :
-  _stFBAxle.fbReset.Execute	:= TRUE;
+  _stMC.fbReset.Execute	:= TRUE;
   WaitNextState.Start(C.tTimeOutAxisMC_C);
   _nStep := E_StepMC.Busy;
 
 E_StepMC.Busy :
   IF WaitNextState.End THEN
     _nStep := E_StepMC.Timeout;
-  ELSIF _stFBAxle.fbReset.Busy THEN
+  ELSIF _stMC.fbReset.Busy THEN
     WaitNextState.Start(C.tTimeOutAxisMC_C);
     _nStep := E_StepMC.Done;
   END_IF
@@ -826,13 +827,13 @@ E_StepMC.Busy :
 E_StepMC.Done :
   IF WaitNextState.End THEN
      _nStep := E_StepMC.Timeout;
-  ELSIF _stFBAxle.fbReset.Done THEN
+  ELSIF _stMC.fbReset.Done THEN
     _nStep := E_StepMC.End;
   END_IF
   
 E_StepMC.End:
-  IF not _stFBAxle.fbReset.Error THEN  
-    _stFBAxle.fbReset.Execute := FALSE;
+  IF NOT _stMC.fbReset.Error THEN  
+    _stMC.fbReset.Execute := FALSE;
     IF _bExecPreviousRequ THEN
       _nRequAxle := _nPreviousRequ;
       _nStepMain := E_RequAxle.Idle;
@@ -840,15 +841,15 @@ E_StepMC.End:
       OnExitRequOk();
     END_IF
   ELSE
-    _stFBAxle.fbReset.Execute := FALSE;
+    _stMC.fbReset.Execute := FALSE;
     _bRequTimeout := false;
-    OnExitRequError(_stFBAxle.fbReset.ErrorID, E_AxisErrorType.MCError);
+    OnExitRequError(_stMC.fbReset.ErrorID, E_AxisErrorType.MCError);
   END_IF
 
 E_StepMC.Timeout:
-    _stFBAxle.fbReset.Execute := FALSE;
+    _stMC.fbReset.Execute := FALSE;
     _bRequTimeout := true;
-    OnExitRequError(_stFBAxle.fbReset.ErrorID, E_AxisErrorType.Timeout);  
+    OnExitRequError(_stMC.fbReset.ErrorID, E_AxisErrorType.Timeout);  
 end_case
 Case03Hysto(_nStep);]]></ST>
       </Implementation>
@@ -862,8 +863,8 @@ Case03Hysto(_nStep);]]></ST>
         <ST><![CDATA[CASE _nStep OF 
   E_StepMC.Init:
     _bGearInDyn	:= false;
-    _stFBAxle.fbStop.Deceleration	:= stStopProfile.Dec;
-    _stFBAxle.fbStop.Jerk	:= stStopProfile.Jerk;
+    _stMC.fbStop.Deceleration	:= stStopProfile.Dec;
+    _stMC.fbStop.Jerk	:= stStopProfile.Jerk;
     _bStop := true; //executed with a rising edge
     WaitNextState.Start(C.tTimeOutAxisMC_C);
     _nStep := E_StepMC.Busy;
@@ -871,7 +872,7 @@ Case03Hysto(_nStep);]]></ST>
   E_StepMC.Busy:
     IF WaitNextState.End THEN
       _nStep := E_StepMC.Timeout;
-    ELSIF _stFBAxle.fbStop.Busy THEN
+    ELSIF _stMC.fbStop.Busy THEN
       WaitNextState.Start(C.tTimeOutAxisMC_C);//this timing is function of the dynamic of the whole robot!
       _nStep := E_StepMC.Stopping;
     END_IF
@@ -887,24 +888,24 @@ Case03Hysto(_nStep);]]></ST>
   E_StepMC.Done:
     IF WaitNextState.End THEN
        _nStep := E_StepMC.Timeout;
-    ELSIF _stFBAxle.fbStop.Done THEN
+    ELSIF _stMC.fbStop.Done THEN
       _nStep := E_StepMC.End;
     END_IF  
     
   E_StepMC.End:
-    IF not _stFBAxle.fbStop.Error THEN  
+    IF NOT _stMC.fbStop.Error THEN  
       _bStop := false;//executed with a rising edge
       OnExitRequOk();
     ELSE
       _bStop := false;//executed with a rising edge
       _bRequTimeout := false;
-      OnExitRequError(_stFBAxle.fbGearOut.ErrorID, E_AxisErrorType.MCError);
+      OnExitRequError(_stMC.fbGearOut.ErrorID, E_AxisErrorType.MCError);
     END_IF
   
   E_StepMC.Timeout:
       _bStop := FALSE;
       _bRequTimeout := false;//executed with a rising edge
-      OnExitRequError(_stFBAxle.fbGearOut.ErrorID, E_AxisErrorType.Timeout);  
+      OnExitRequError(_stMC.fbGearOut.ErrorID, E_AxisErrorType.Timeout);  
 end_case]]></ST>
       </Implementation>
     </Method>
