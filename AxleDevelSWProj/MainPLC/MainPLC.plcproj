@@ -26,7 +26,28 @@
     <Compile Include="DUTs\E_AxisErrorType.TcDUT">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="DUTs\ST_Analog_HWI.TcDUT">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="DUTs\ST_AXIS_MOVE_PROFILE.TcDUT">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="DUTs\ST_CardState_HWI.TcDUT">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="DUTs\ST_ChannelAX8206_HWI.TcDUT">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="DUTs\ST_DriverAX8206_HWI.TcDUT">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="DUTs\ST_PositioningLaser_HWI.TcDUT">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="DUTs\ST_PwrSupplyAX8620_HWI.TcDUT">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="DUTs\ST_Robot_HWI.TcDUT">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="DUTs\ST_SystemStatus_ARP.TcDUT">
@@ -67,6 +88,12 @@
     <Compile Include="PlcTask.TcTTO">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="POUs\CL_AxisDriverAX8206.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="POUs\CL_AxisDriverL1LeftBack.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="POUs\CL_AxisMaster.TcPOU">
       <SubType>Code</SubType>
     </Compile>
@@ -86,6 +113,9 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="POUs\CL_AxisRobot.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="POUs\CL_CardCom.TcPOU">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="POUs\CL_CGSSystemBase.TcPOU">

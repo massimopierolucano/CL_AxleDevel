@@ -310,10 +310,10 @@
 			</Pdo>
 			<CoeProfile ProfileNo="62919561" DisplayName="AX8000 Power supply"/>
 		</EtherCAT>
-		<Box File="CGSMini_Robot01OnboardAxisDriverLine2-AX8206.xti" Id="38">
+		<Box File="CGSMini_Robot01OnboardAxisDriverL2Right-AX8206.xti" Id="38">
 			<EtherCAT PortABoxInfo="#x01000025"/>
 		</Box>
-		<Box File="CGSMini_Robot01OnboardAxisDriverLine1-AX8206.xti" Id="39">
+		<Box File="CGSMini_Robot01OnboardAxisDriverL1Left-AX8206.xti" Id="39">
 			<EtherCAT PortABoxInfo="#x01000026"/>
 		</Box>
 		<Box File="CGSMini_Robot01OnBoardBoxEndBus1-EL9011.xti" Id="41">

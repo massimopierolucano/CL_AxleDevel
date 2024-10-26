@@ -4,10 +4,12 @@
     <Declaration><![CDATA[FUNCTION_BLOCK CL_AxisRobot EXTENDS CL_CGSSystemBase
 VAR
   bInit                 : BOOL := FALSE;
+  _AxisDriver_R         : REFERENCE TO CL_AxisDriverAX8206;
   _stMotorAxis_R			  : REFERENCE TO AXIS_REF;//axis reference linked to I/O
   _stMasterAxis_R       : REFERENCE TO AXIS_REF;//master axis
   _stFBAxle             : ST_Axle;
-  _stAxisJog_R           : REFERENCE TO AXIS_REF;
+  
+  _stAxisJog_R          : REFERENCE TO AXIS_REF;
   
   //private properties 
   _nStep                : E_StepMC;
@@ -90,18 +92,28 @@ VAR_INPUT
   stIrrLine       : ST_LineReference;
   stAxisMotor_P	  : POINTER TO AXIS_REF;
   stAxisMaster_P  : POINTER TO AXIS_REF;
+  AxisDriver_P    : POINTER TO CL_AxisDriverAX8206;
 END_VAR
 ]]></Declaration>
       <Implementation>
-        <ST><![CDATA[Init := false;
-//IF __ISVALIDREF(stAxisMotor_P) AND __ISVALIDREF(stAxisMaster_P) AND NOT bInit THEN
+        <ST><![CDATA[Init := FALSE;
+//do not check AxisDriver_P, because master axis ha no driver associated
 IF stAxisMotor_P <> 0 AND stAxisMaster_P <> 0 AND NOT bInit THEN
   _bIsAxisMaster := stAxisMotor_P = stAxisMaster_P;
+  
   _stMotorAxis_R REF= stAxisMotor_P^;
   _stMasterAxis_R REF= stAxisMaster_P^;
   _stAxisJog_R REF= _stMotorAxis_R;
-    
-  bInit := SUPER^.InitSystemBase( IrrLine := stIrrLine, stSystemStatus_ARR := G.stSystemStatus_ARR);
+  
+  IF _bIsAxisMaster THEN
+    bInit := AxisDriver_P = 0; 
+    // do not assign _AxisDriver_R !
+  ELSE
+    _AxisDriver_R REF= AxisDriver_P^;
+    bInit := TRUE;
+	END_IF
+  
+  bInit := binit AND SUPER^.InitSystemBase( IrrLine := stIrrLine, stSystemStatus_ARR := G.stSystemStatus_ARR);
   bInit := bInit AND InitParams();
   bInit := bInit AND InitDefect();
   Init := bInit;

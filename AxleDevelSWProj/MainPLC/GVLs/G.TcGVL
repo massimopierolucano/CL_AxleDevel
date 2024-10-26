@@ -21,12 +21,69 @@ VAR_GLOBAL
                           .L2RightBack                        := Sim_Robot01AxisLine2Back;
                           .Master                           := Sim_Robot01AxisMaster'}
   stAxes : ST_Robot_Axes;*)
+ 
+{attribute 'TcLinkTo':='.stAnaInN04_3054State.uiDataState   := TIIB[CGSMini_Robot01OnBoardBoxAnaInN04-EL3054]^InfoData^State;
+                        .stAnaInN04_3054State.bWCState      := TIIB[CGSMini_Robot01OnBoardBoxAnaInN04-EL3054]^WcState^WcState;
+                        .stOnboardBox_1100State.uiDataState := TIIB[CGSMini_Robot01OnboardBox-EK1100]^InfoData^State;
+                        .stOutN01_2008State.uiDataState     := TIIB[CGSMini_Robot01OnBoardBoxOutN01-EL2008]^InfoData^State;
+                        .stOutN01_2008State.bWCState        := TIIB[CGSMini_Robot01OnBoardBoxOutN01-EL2008]^WcState^WcState;
+                        
+                        .stLaserPos_State.uiDataState       := TIIB[CGSMini_Robot01Laser-SickDL100]^InfoData^State;
+                        .stLaserPos_State.bWCState          := TIIB[CGSMini_Robot01Laser-SickDL100]^WcState^WcState;
+                        .stLaserPos.udiDistanceRaw          := TIIB[CGSMini_Robot01Laser-SickDL100]^Distance^Distance;
+                        
+                        .stAnaOnboardSpare1.bTUnderRange    := TIIB[CGSMini_Robot01OnBoardBoxAnaInN04-EL3054]^Spare1^Status^Underrange;
+                        .stAnaOnboardSpare1.bTOverRange     := TIIB[CGSMini_Robot01OnBoardBoxAnaInN04-EL3054]^Spare1^Status^Overrange;
+                        .stAnaOnboardSpare1.bTLimit1        := TIIB[CGSMini_Robot01OnBoardBoxAnaInN04-EL3054]^Spare1^Status^Limit 1;
+                        .stAnaOnboardSpare1.bTLimit2        := TIIB[CGSMini_Robot01OnBoardBoxAnaInN04-EL3054]^Spare1^Status^Limit 2;
+                        .stAnaOnboardSpare1.bTError         := TIIB[CGSMini_Robot01OnBoardBoxAnaInN04-EL3054]^Spare1^Status^Error;
+                        .stAnaOnboardSpare1.siAnaRaw        := TIIB[CGSMini_Robot01OnBoardBoxAnaInN04-EL3054]^Spare1^Value;
   
+                        .stPwrSupplyAX8620.comState.uiDataState:= TIIB[CGSMini_Robot01OnboardAxisPwrSupply-AX8620]^InfoData^State;
+                        .stPwrSupplyAX8620.comState.bWcState   := TIIB[CGSMini_Robot01OnboardAxisPwrSupply-AX8620]^WcState^WcState;
+                        .stPwrSupplyAX8620.sdiDcOutputShift := TIIB[CGSMini_Robot01OnboardAxisPwrSupply-AX8620]^InfoData^DcOutputShift;
+                        .stPwrSupplyAX8620.sdiDcInputShift  := TIIB[CGSMini_Robot01OnboardAxisPwrSupply-AX8620]^InfoData^DcInputShift;
+                        .stPwrSupplyAX8620.bOverTemp        := TIIB[CGSMini_Robot01OnboardAxisPwrSupply-AX8620]^PSM Warning register^Warning^A2 Device overtemperature;  
+                        .stPwrSupplyAX8620.bFanMalfunc      := TIIB[CGSMini_Robot01OnboardAxisPwrSupply-AX8620]^PSM Warning register^Warning^A4 Fan malfunction;
+                        .stPwrSupplyAX8620.bUnderVoltage    := TIIB[CGSMini_Robot01OnboardAxisPwrSupply-AX8620]^PSM Warning register^Warning^A6 Mains undervoltage;
+                        .stPwrSupplyAX8620.bOverVoltage     := TIIB[CGSMini_Robot01OnboardAxisPwrSupply-AX8620]^PSM Warning register^Warning^A5 Mains overvoltage;
+                        
+                        .stDriverL1Left.comState             := TIIB[CGSMini_Robot01OnboardAxisPwrSupply-AX8620]^CGSMini_Robot01OnboardAxisDriverL1Left-AX8206^InfoData^State;
+                        .stDriverL1Left.sdiDcOutputShift     := TIIB[CGSMini_Robot01OnboardAxisPwrSupply-AX8620]^CGSMini_Robot01OnboardAxisDriverL1Left-AX8206^InfoData^DcOutputShift;
+                        .stDriverL1Left.sdiDcInputShift      := TIIB[CGSMini_Robot01OnboardAxisPwrSupply-AX8620]^CGSMini_Robot01OnboardAxisDriverL1Left-AX8206^InfoData^DcInputShift;           
+            
+                        .stDriverL1Left.stFront.siIGBTTemp      := TIIB[CGSMini_Robot01OnboardAxisPwrSupply-AX8620]^CGSMini_Robot01OnboardAxisDriverL1Left-AX8206^Front^Ch B AxisMain Inputs^IGBT temperature;
+                        .stDriverL1Left.stFront.udMotorDIGIns   := TIIB[CGSMini_Robot01OnboardAxisPwrSupply-AX8620]^CGSMini_Robot01OnboardAxisDriverL1Left-AX8206^Front^Ch B AxisMain Inputs^Ch B Digital inputs;   
+                        .stDriverL1Left.stFront.rMotorTemp      := TIIB[CGSMini_Robot01OnboardAxisPwrSupply-AX8620]^CGSMini_Robot01OnboardAxisDriverL1Left-AX8206^Front^Ch B SyncServoMotor Inputs^Actual motor temperature;
+                        .stDriverL1Left.stFront.rMotorTorque    := TIIB[CGSMini_Robot01OnboardAxisPwrSupply-AX8620]^CGSMini_Robot01OnboardAxisDriverL1Left-AX8206^Front^Ch B TorqueControl Inputs^Ch B Torque/force actual value;
+                   
+                        .stDriverL1Left.stBack.siIGBTTemp       := TIIB[CGSMini_Robot01OnboardAxisPwrSupply-AX8620]^CGSMini_Robot01OnboardAxisDriverL1Left-AX8206^Back^Ch A AxisMain Inputs^IGBT temperature;                                                
+                        .stDriverL1Left.stBack.udMotorDIGIns    := TIIB[CGSMini_Robot01OnboardAxisPwrSupply-AX8620]^CGSMini_Robot01OnboardAxisDriverL1Left-AX8206^Back^Ch A AxisMain Inputs^Ch A Digital inputs;
+                        .stDriverL1Left.stBack.rMotorTemp       := TIIB[CGSMini_Robot01OnboardAxisPwrSupply-AX8620]^CGSMini_Robot01OnboardAxisDriverL1Left-AX8206^Back^Ch A SyncServoMotor Inputs^Actual motor temperature; 
+                        .stDriverL1Left.stBack.rMotorTorque     := TIIB[CGSMini_Robot01OnboardAxisPwrSupply-AX8620]^CGSMini_Robot01OnboardAxisDriverL1Left-AX8206^Back^Ch A TorqueControl Inputs^Ch A Torque/force actual value;
+
+                        .stDriverL2Right.comState             := TIIB[CGSMini_Robot01OnboardAxisPwrSupply-AX8620]^CGSMini_Robot01OnboardAxisDriverL2Right-AX8206^InfoData^State;
+                        .stDriverL2Right.sdiDcOutputShift     := TIIB[CGSMini_Robot01OnboardAxisPwrSupply-AX8620]^CGSMini_Robot01OnboardAxisDriverL2Right-AX8206^InfoData^DcOutputShift;
+                        .stDriverL2Right.sdiDcInputShift      := TIIB[CGSMini_Robot01OnboardAxisPwrSupply-AX8620]^CGSMini_Robot01OnboardAxisDriverL2Right-AX8206^InfoData^DcInputShift;      
+                 
+                        .stDriverL2Right.stFront.siIGBTTemp      := TIIB[CGSMini_Robot01OnboardAxisPwrSupply-AX8620]^CGSMini_Robot01OnboardAxisDriverL2Right-AX8206^Front^Ch B AxisMain Inputs^IGBT temperature;
+                        .stDriverL2Right.stFront.udMotorDIGIns   := TIIB[CGSMini_Robot01OnboardAxisPwrSupply-AX8620]^CGSMini_Robot01OnboardAxisDriverL2Right-AX8206^Front^Ch B AxisMain Inputs^Ch B Digital inputs;  
+                        .stDriverL2Right.stFront.rMotorTemp      := TIIB[CGSMini_Robot01OnboardAxisPwrSupply-AX8620]^CGSMini_Robot01OnboardAxisDriverL2Right-AX8206^Front^Ch B SyncServoMotor Inputs^Actual motor temperature;
+                        .stDriverL2Right.stFront.rMotorTorque    := TIIB[CGSMini_Robot01OnboardAxisPwrSupply-AX8620]^CGSMini_Robot01OnboardAxisDriverL2Right-AX8206^Front^Ch B TorqueControl Inputs^Ch B Torque/force actual value;
+                    
+                        .stDriverL2Right.stBack.siIGBTTemp       := TIIB[CGSMini_Robot01OnboardAxisPwrSupply-AX8620]^CGSMini_Robot01OnboardAxisDriverL2Right-AX8206^Back^Ch A AxisMain Inputs^IGBT temperature;
+                        .stDriverL2Right.stBack.udMotorDIGIns    := TIIB[CGSMini_Robot01OnboardAxisPwrSupply-AX8620]^CGSMini_Robot01OnboardAxisDriverL2Right-AX8206^Back^Ch A AxisMain Inputs^Ch A Digital inputs;                        
+                        .stDriverL2Right.stBack.rMotorTemp       := TIIB[CGSMini_Robot01OnboardAxisPwrSupply-AX8620]^CGSMini_Robot01OnboardAxisDriverL2Right-AX8206^Back^Ch A SyncServoMotor Inputs^Actual motor temperature;                       
+                        .stDriverL2Right.stBack.rMotorTorque     := TIIB[CGSMini_Robot01OnboardAxisPwrSupply-AX8620]^CGSMini_Robot01OnboardAxisDriverL2Right-AX8206^Back^Ch A TorqueControl Inputs^Ch A Torque/force actual value;'}
+  stIN AT %I*:ST_Robot_HWI;
+ 
   AxisL1LeftFront   : CL_AxisL1LeftFront;
   AxisL2RightFront  : CL_AxisL2RighFront;
   AxisL1LeftBack    : CL_AxisL1LeftBack;
   AxisL2RightBack   : CL_AxisL2RightBack;
   AxisMaster        : CL_AxisMaster;
+  
+  AxDrvrL1LeftBack  : CL_AxisDriverL1LeftBack;
 END_VAR
 ]]></Declaration>
   </GVL>

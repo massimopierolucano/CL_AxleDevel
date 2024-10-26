@@ -1,0 +1,51 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.12">
+  <POU Name="CL_CardCom" Id="{b34a7690-b9a4-4b52-9d49-bc4d03a2a3f1}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION_BLOCK CL_CardCom EXTENDS CL_MasterRootClass
+VAR
+  //private internal methods
+  bComInit       : BOOL := FALSE;
+  _stCardState_P : POINTER TO ST_CardState_HWI;
+END_VAR
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[IF bComInit THEN
+  THIS^.RunCom();
+END_IF
+
+]]></ST>
+    </Implementation>
+    <Method Name="InitCom" Id="{676f847c-dc14-4be2-9aee-701fde478720}">
+      <Declaration><![CDATA[METHOD InitCom : BOOL
+VAR_INPUT
+  stCardStateIn_P : POINTER TO ST_CardState_HWI;
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[InitCom := false;
+_stCardState_P  := stCardStateIn_P;
+IF _stCardState_P <> 0 AND NOT bComInit THEN
+  bComInit := InitCom := InitDefectCom();
+END_IF]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="InitDefectCom" Id="{136eb99c-79aa-4a5e-8ff5-24101f70345f}">
+      <Declaration><![CDATA[METHOD PROTECTED InitDefectCom : BOOL
+VAR_INPUT
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[InitDefectCom := true;]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="RunCom" Id="{283a85d4-cf26-4be0-afc9-b81468d2ed47}">
+      <Declaration><![CDATA[METHOD PRIVATE RunCom
+VAR_INPUT
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[]]></ST>
+      </Implementation>
+    </Method>
+  </POU>
+</TcPlcObject>

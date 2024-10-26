@@ -1,0 +1,23 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.12">
+  <POU Name="CL_AxisDriverL1LeftBack" Id="{fa1ea31c-ec11-4e67-b56f-8859648caf74}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION_BLOCK CL_AxisDriverL1LeftBack EXTENDS CL_AxisDriverAX8206
+VAR
+END_VAR
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[SUPER^();
+
+]]></ST>
+    </Implementation>
+    <Method Name="InitDefect" Id="{1becdde8-68ff-49f8-a75c-c8d1d6094ec3}">
+      <Declaration><![CDATA[METHOD PROTECTED InitDefect : BOOL
+VAR_INPUT
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[InitDefect := true;]]></ST>
+      </Implementation>
+    </Method>
+  </POU>
+</TcPlcObject>

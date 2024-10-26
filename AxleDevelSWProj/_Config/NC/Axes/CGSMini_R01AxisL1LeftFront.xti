@@ -1584,7 +1584,7 @@ External Setpoint Generation:
 	</Axis>
 	<Mappings>
 		<OwnerA>
-			<OwnerB Name="TIID^CGSMini_IRSMainPLCSafe^CGSMini_RobotAllMainCab-EL1200^CGSMini_Robot01MainCabEtherCATBusEK1122^CGSMini_Robot01OnboardAxisPwrSupply-AX8620^CGSMini_Robot01OnboardAxisDriverLine1-AX8206">
+			<OwnerB Name="TIID^CGSMini_IRSMainPLCSafe^CGSMini_RobotAllMainCab-EL1200^CGSMini_Robot01MainCabEtherCATBusEK1122^CGSMini_Robot01OnboardAxisPwrSupply-AX8620^CGSMini_Robot01OnboardAxisDriverL1Left-AX8206">
 				<Link VarA="Drive^Inputs^In^nDataIn1" VarB="Ch B^Ch B PositionControl Inputs^Ch B Following error actual value"/>
 				<Link VarA="Drive^Inputs^In^nDcOutputTime" VarB="InfoData^DcOutputShift"/>
 				<Link VarA="Drive^Inputs^In^nState1" VarB="Ch B^Ch B AxisMain Inputs^Ch B Statusword" Size="8"/>
