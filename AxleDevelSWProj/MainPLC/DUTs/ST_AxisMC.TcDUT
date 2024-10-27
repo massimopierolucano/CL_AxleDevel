@@ -14,9 +14,9 @@ STRUCT
 	fbGearOut						      : MC_GearOut;//Axis coupling - GearOut
 
   fbReadStatus              : MC_ReadStatus;
-	fbReadAxisError				    : MC_ReadAxisError;//Status and parameter - Read Axis Error
-	fbReadActualPosition			: MC_ReadActualPosition;//Status and parameter - Read Actual Position
-	fbReadActualVelocity			: MC_ReadActualVelocity;//Status and parameter - Read Actual Velocity
+	fbReadAxisError				    : MC_ReadAxisError;//Read Axis Error
+	fbReadActualPosition			: MC_ReadActualPosition;//Read Actual Position
+	fbReadActualVelocity			: MC_ReadActualVelocity;//Read Actual Velocity
   
 	fbHome							      : MC_Home;//Home
 	fbMoveAbsolute1				    : MC_MoveAbsolute;//	MC_MoveAbsolute1
@@ -26,8 +26,8 @@ STRUCT
 	fbMoveVelocity					  : MC_MoveVelocity;//Move Velocity
 	fbPosCorrectionLimiter    : MC_PositionCorrectionLimiter;//Special extensions - Position Correction Limiter
 
-  //fbReadAxisComponents      : MC_ReadAxisComponents;
-  //fbRear : MC_ReadBoolPa//rameter;
+  //fbReadAxisComponents     : MC_ReadAxisComponents;
+  //fbRearReadBoolParameter  : MC_ReadBoolParameter;
 END_STRUCT
 END_TYPE]]></Declaration>
   </DUT>

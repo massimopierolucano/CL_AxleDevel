@@ -29,6 +29,7 @@ CASE stm OF
 		END_IF   
  
   //for the moment it doesn't work...waiting for an answer _stMotorAxis_R.Status.Coupled doesn't return true even if the axis is coupled
+  //suAxisRef.NcToPlc.CoupleState.1
   900:
     IF NOT G.AxisL1LeftFront.IsBusy AND NOT G.AxisL2RightFront.IsBusy AND NOT G.AxisL1LeftBack.IsBusy AND NOT G.AxisL2RightBack.IsBusy THEN
       G.AxisL1LeftFront.RequGearOut();
