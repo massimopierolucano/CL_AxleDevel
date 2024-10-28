@@ -3,11 +3,11 @@
   <PropertyGroup>
     <Name>Drive Manager 2</Name>
     <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>{fe209ab3-2a90-4657-af2f-74e34f6735dd}</ProjectGuid>
+    <ProjectGuid>{b54d7e92-c754-4a5c-8c48-81a41e887396}</ProjectGuid>
     <TcPath>
     </TcPath>
-    <AssemblyName>CGSMiniRobot_DriveManager2_ProjectDesktopCGS</AssemblyName>
-    <RootNamespace>CGSMiniRobot_DriveManager2_ProjectDesktopCGS</RootNamespace>
+    <AssemblyName>CGSMini_Robot_DriveManager2Prj</AssemblyName>
+    <RootNamespace>CGSMini_Robot_DriveManager2Prj</RootNamespace>
   </PropertyGroup>
   <ItemGroup>
     <Content Include="CGSMini_Robot01OnboardAxisPwrSupply-AX8620.tcdmdrv">

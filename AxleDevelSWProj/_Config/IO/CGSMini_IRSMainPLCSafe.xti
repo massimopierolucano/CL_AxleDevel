@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <TcSmItem xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://www.beckhoff.com/schemas/2012/07/TcSmProject" TcSmVersion="1.0" TcVersion="3.1.4024.47" ClassName="CDevEtherCATDef" SubType="111" TcProjectVariant="MiniRobot">
-	<Device Id="1" DevType="111" DevFlags="#x0003" AmsPort="28673" AmsNetId="5.93.147.0.2.1" RemoteName="CGSMini_IRSMainPLCSafe" InfoImageId="2">
+	<Device Id="1" DevType="111" DevFlags="#x0003" AmsPort="28673" AmsNetId="5.93.147.0.2.1" RemoteName="CGSMini_IRSMainPLCSafe" InfoImageId="4">
 		<Name>__FILENAME__</Name>
 		<ProjectVariant PvUseDisable="true">
 			<Variant>
@@ -43,18 +43,21 @@
 		<Image Id="1" AddrType="9" ImageType="3">
 			<Name>Image</Name>
 		</Image>
+		<Image Id="2" AddrType="10" ImageType="3">
+			<Name>Image-2</Name>
+		</Image>
 		<Box File="CGSMini_RobotAllMainCab-EL1200.xti" Id="2">
 			<EtherCAT PortABoxInfo="#x00ffffff"/>
 		</Box>
-		<EtherCAT EnableVirtualSwitch="true" MaxSwitchPorts="2" MaxSwitchFrames="120"/>
+		<EtherCAT DcSyncMode="3" EnableVirtualSwitch="true" MaxSwitchPorts="2" MaxSwitchFrames="120"/>
 	</Device>
 	<Mappings>
 		<OwnerA>
 			<OwnerB Name="TIID^CGSMini_IRSMainPLCSafe">
-				<Link VarA="CGSMini_RobotAllMainCab-EL1200^CGSMini_Robot01MainCabEtherCATBusEK1122^CGSMini_Robot01OnboardAxisPwrSupply-AX8620^CGSMini_Robot01OnboardAxisDriverLine1-AX8206^Device^DeviceMain Outputs^Power supply controlword" VarB="CGSMini_RobotAllMainCab-EL1200^CGSMini_Robot01MainCabEtherCATBusEK1122^CGSMini_Robot01OnboardAxisPwrSupply-AX8620^PSM Controlword for axis^Controlword for axis"/>
-				<Link VarA="CGSMini_RobotAllMainCab-EL1200^CGSMini_Robot01MainCabEtherCATBusEK1122^CGSMini_Robot01OnboardAxisPwrSupply-AX8620^CGSMini_Robot01OnboardAxisDriverLine2-AX8206^Device^DeviceMain Outputs^Power supply controlword" VarB="CGSMini_RobotAllMainCab-EL1200^CGSMini_Robot01MainCabEtherCATBusEK1122^CGSMini_Robot01OnboardAxisPwrSupply-AX8620^PSM Controlword for axis^Controlword for axis"/>
-				<Link VarA="CGSMini_RobotAllMainCab-EL1200^CGSMini_Robot01MainCabEtherCATBusEK1122^CGSMini_Robot01OnboardAxisPwrSupply-AX8620^PSM Controlword for axis^Controlword for axis" VarB="CGSMini_RobotAllMainCab-EL1200^CGSMini_Robot01MainCabEtherCATBusEK1122^CGSMini_Robot01OnboardAxisPwrSupply-AX8620^CGSMini_Robot01OnboardAxisDriverLine1-AX8206^Device^DeviceMain Outputs^Power supply controlword"/>
-				<Link VarA="CGSMini_RobotAllMainCab-EL1200^CGSMini_Robot01MainCabEtherCATBusEK1122^CGSMini_Robot01OnboardAxisPwrSupply-AX8620^PSM Controlword for axis^Controlword for axis" VarB="CGSMini_RobotAllMainCab-EL1200^CGSMini_Robot01MainCabEtherCATBusEK1122^CGSMini_Robot01OnboardAxisPwrSupply-AX8620^CGSMini_Robot01OnboardAxisDriverLine2-AX8206^Device^DeviceMain Outputs^Power supply controlword"/>
+				<Link VarA="CGSMini_RobotAllMainCab-EL1200^CGSMini_Robot01MainCabEtherCATBusEK1122^CGSMini_Robot01OnboardAxisPwrSupply-AX8620^CGSMini_Robot01OnboardAxisDriverL1Left-AX8206^Device^DeviceMain Outputs^Power supply controlword" VarB="CGSMini_RobotAllMainCab-EL1200^CGSMini_Robot01MainCabEtherCATBusEK1122^CGSMini_Robot01OnboardAxisPwrSupply-AX8620^PSM Controlword for axis^Controlword for axis"/>
+				<Link VarA="CGSMini_RobotAllMainCab-EL1200^CGSMini_Robot01MainCabEtherCATBusEK1122^CGSMini_Robot01OnboardAxisPwrSupply-AX8620^CGSMini_Robot01OnboardAxisDriverL2Right-AX8206^Device^DeviceMain Outputs^Power supply controlword" VarB="CGSMini_RobotAllMainCab-EL1200^CGSMini_Robot01MainCabEtherCATBusEK1122^CGSMini_Robot01OnboardAxisPwrSupply-AX8620^PSM Controlword for axis^Controlword for axis"/>
+				<Link VarA="CGSMini_RobotAllMainCab-EL1200^CGSMini_Robot01MainCabEtherCATBusEK1122^CGSMini_Robot01OnboardAxisPwrSupply-AX8620^PSM Controlword for axis^Controlword for axis" VarB="CGSMini_RobotAllMainCab-EL1200^CGSMini_Robot01MainCabEtherCATBusEK1122^CGSMini_Robot01OnboardAxisPwrSupply-AX8620^CGSMini_Robot01OnboardAxisDriverL1Left-AX8206^Device^DeviceMain Outputs^Power supply controlword"/>
+				<Link VarA="CGSMini_RobotAllMainCab-EL1200^CGSMini_Robot01MainCabEtherCATBusEK1122^CGSMini_Robot01OnboardAxisPwrSupply-AX8620^PSM Controlword for axis^Controlword for axis" VarB="CGSMini_RobotAllMainCab-EL1200^CGSMini_Robot01MainCabEtherCATBusEK1122^CGSMini_Robot01OnboardAxisPwrSupply-AX8620^CGSMini_Robot01OnboardAxisDriverL2Right-AX8206^Device^DeviceMain Outputs^Power supply controlword"/>
 			</OwnerB>
 		</OwnerA>
 	</Mappings>

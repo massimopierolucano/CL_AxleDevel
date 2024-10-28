@@ -7,8 +7,7 @@ VAR
   _AxisDriver_R         : REFERENCE TO CL_AxisDriverAX8206;
   _stMotorAxis_R			  : REFERENCE TO AXIS_REF;//axis reference linked to I/O
   _stMasterAxis_R       : REFERENCE TO AXIS_REF;//master axis
-  _stMC                 
-: ST_AxisMC;
+  _stMC                 : ST_AxisMC;
   
   _stAxisJog_R          : REFERENCE TO AXIS_REF;
   
@@ -40,11 +39,19 @@ VAR
   _bJogFW               : BOOL := FALSE;
   _bJogBW               : BOOL := FALSE;
   _bIsCoupled           : BOOL := FALSE;
+  _bEnableEntryMC       : BOOL := FALSE;
+  
+  _bReadStatusOK        : BOOL := FALSE;
+  _bReadVelOK           : BOOL := FALSE;
+  _bReadPosOK           : BOOL := FALSE;
   
   _bExecPreviousRequ    : BOOL := FALSE;
     
-	_bEnableMove          : BOOL := TRUE;   // Enable the moving of axis
+	//_bEnableMove          : BOOL := TRUE;   // Enable the moving of axis
 	_lrAxisOverride	      : LREAL:= 100.0;  // Override of the axis velocity
+  
+  _lrActPos             : LREAL;
+  _lrActVel             : LREAL;
   
   //_bExecJog             : BOOL := FALSE;
   //_bExecJogFWIn         : BOOL := FALSE;
@@ -79,9 +86,10 @@ END_VAR
 ]]></Declaration>
     <Implementation>
       <ST><![CDATA[IF bInit THEN
-   This^.RunMC();//run M.otion C.ontrol (MC) FB function on entry
-   THIS^.Run();
-   This^.RunMC();//run M.otion C.ontrol (MC) FB function on exit, to speed-up 1 PLC cycle the refresh of the MC command
+  THIS^.RunEntryMC();
+  THIS^.RunMC();//run M.otion C.ontrol (MC) FB function on entry
+  THIS^.Run();
+  THIS^.RunMC();//run M.otion C.ontrol (MC) FB function on exit, to speed-up 1 PLC cycle the refresh of the MC command
 END_IF
 
     ]]></ST>
@@ -126,6 +134,8 @@ IF stAxisMotor_P <> 0 AND stAxisMaster_P <> 0 AND NOT bInit THEN
   bInit := bInit AND InitParams();
   bInit := bInit AND InitDefect();
   InitMC := bInit;
+  
+  _bEnableEntryMC := TRUE;//read entry MC continuosly
 END_IF]]></ST>
       </Implementation>
     </Method>
@@ -152,6 +162,17 @@ END_VAR
 ]]></Declaration>
         <Implementation>
           <ST><![CDATA[IsBusy := _bIsBusy;]]></ST>
+        </Implementation>
+      </Get>
+    </Property>
+    <Property Name="IsCoupled" Id="{84fb2069-1dec-4993-ba21-163850d41244}">
+      <Declaration><![CDATA[PROPERTY PUBLIC IsCoupled : BOOL]]></Declaration>
+      <Get Name="Get" Id="{e4dc4452-2624-4759-ac68-f49feb398556}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[IsCoupled := _stMotorAxis_R.Status.Coupled and not _bIsAxisMaster;//_bIsAxisMaster1 must be never coupled!]]></ST>
         </Implementation>
       </Get>
     </Property>
@@ -185,6 +206,28 @@ END_VAR
 ]]></Declaration>
         <Implementation>
           <ST><![CDATA[IsError := _bError;]]></ST>
+        </Implementation>
+      </Get>
+    </Property>
+    <Property Name="IsStandStill" Id="{66018c50-9ce3-49d4-b4e8-1fcc6c7f2a24}">
+      <Declaration><![CDATA[PROPERTY PUBLIC IsStandStill : BOOL]]></Declaration>
+      <Get Name="Get" Id="{de2ef144-fb08-44bf-b180-2c116d547aac}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[IsStandStill := _stMotorAxis_R.Status.StandStill;]]></ST>
+        </Implementation>
+      </Get>
+    </Property>
+    <Property Name="IsVelocity0" Id="{93d8293a-2bbc-4728-8f95-74fba7e743fe}">
+      <Declaration><![CDATA[PROPERTY PUBLIC IsVelocity0 : BOOL]]></Declaration>
+      <Get Name="Get" Id="{d3c3bbe7-418a-4d46-82bc-d30109b8a034}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[IsVelocity0 := _lrActVel < C.lrAroundZero_C and _lrActVel > -C.lrAroundZero_C;]]></ST>
         </Implementation>
       </Get>
     </Property>
@@ -310,11 +353,17 @@ METHOD RequGearInDyn : bool
         <ST><![CDATA[RequGearInDyn := bInit AND _bIsPowered AND NOT _bError AND NOT _bIsBusy AND NOT _bIsAxisMaster;
 //_stMotorAxis_R <> _stMasterAxis_R GearInDyn only on real axis not master axis
 //_stMotorAxis_R = _stMasterAxis_R GearInDyn on virtual axis in this case make no sense
-IF RequGearInDyn THEN
+IF RequGearInDyn AND NOT _bIsCoupled THEN
 	_nRequAxle := E_RequAxle.GearInDyn;
+  //request GearInDyn only if the axis is decoupled
 else
+  //RequGearInDyn can be only false, _bIsCoupled can be true or false
+  _bIsDone := _bIsCoupled OR _bIsAxisMaster;
+  //the axis was already coupled; only in this case set _bIsDone to true as the request to couple is "virtually" executed
+  //otherwise set it to false
   _nRequAxle := E_RequAxle.NoRequ;
-END_IF]]></ST>
+END_IF
+]]></ST>
       </Implementation>
     </Method>
     <Method Name="RequGearOut" Id="{60abab3f-91df-4b45-93f2-9e732c64f765}">
@@ -332,8 +381,8 @@ IF RequGearOut and _bIsCoupled THEN
   //request GearOut only if the axis is coupled
 else
   //RequGearOut can be only false, _bIsCoupled can be true or false
-  _bIsDone := not _bIsCoupled;
-  //the axis was already Decoupled; only in this case set _bIsDone as the request to decouple is "virtually" executed
+  _bIsDone := NOT _bIsCoupled OR _bIsAxisMaster;
+  //the axis was already Decoupled; only in this case set _bIsDone to true as the request to decouple is "virtually" executed
   //otherwise set it to false
   _nRequAxle := E_RequAxle.NoRequ;
 END_IF
@@ -434,6 +483,7 @@ END_IF]]></ST>
     <Method Name="Run" Id="{5ea0ba84-4411-4ae2-b784-f4b1dd20fb56}">
       <Declaration><![CDATA[METHOD PRIVATE Run
 
+
 ]]></Declaration>
       <Implementation>
         <ST><![CDATA[WaitNextState();
@@ -448,17 +498,45 @@ CASE _nStepMain OF
       _nRequAxle := E_RequAxle.NoRequ;
       OnEntryRequ();
     end_if
-  E_RequAxle.PowerOn : StmPowerOn_Off(bPowerOnIn := TRUE);
-  E_RequAxle.PowerOff : StmPowerOn_Off(bPowerOnIn := FALSE);
-  E_RequAxle.Jog : StmJog();
-  E_RequAxle.GearInDyn : StmGearInDyn();
-  E_RequAxle.GearOut : StmGearOut();
-  E_RequAxle.Reset : StmReset();
-  E_RequAxle.Error : StmError();
-  E_RequAxle.Stop : StmStop();
+  E_RequAxle.PowerOn :    StmPowerOn_Off(bPowerOnIn := TRUE);
+  E_RequAxle.PowerOff :   StmPowerOn_Off(bPowerOnIn := FALSE);
+  E_RequAxle.Jog :        StmJog();
+  E_RequAxle.GearInDyn :  StmGearInDyn();
+  E_RequAxle.GearOut :    StmGearOut();
+  E_RequAxle.Reset :      StmReset();
+  E_RequAxle.Error :      StmError();
+  E_RequAxle.Stop :       StmStop();
   else;     
 END_CASE
 Case01Hysto(_nStepMain);]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="RunEntryMC" Id="{f3ff4770-d872-4f65-b28e-cc5f6f16dd81}">
+      <Declaration><![CDATA[METHOD PRIVATE RunEntryMC
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[//fbReadStatus run only once before to execute all
+_stMC.fbReadStatus(Axis:= _stMotorAxis_R,Enable := _bEnableEntryMC,Valid => _bReadStatusOK); //return TRUE, if the states was determined successfully.
+//_stMotorAxis_R.Status (struct type ST_AxisStatus) contains extensive status information about an axis. 
+//This data structure must be updated in each PLC cycle by calling MC_ReadStatus or by calling the action 
+//_stMotorAxis_R.ReadStatus().
+//_stMotorAxis_R.Status.MotionState (struct type  MC_AxisStates) contains motion state in the PLCopen state diagram 
+//_stMotorAxis_R.NcToPlc.CoupleState.1 for the moment it doesn't work...waiting for an answer _stMotorAxis_R.Status.Coupled doesn't return true even if the axis is coupled
+_stMC.fbReadActualVelocity(Axis:= _stMotorAxis_R,Enable := _bEnableEntryMC,Valid => _bReadVelOK, ActualVelocity => _lrActVel);//return TRUE, if the velocity was determined successfully.
+_stMC.fbReadActualPosition(Axis:= _stMotorAxis_R,Enable := _bEnableEntryMC,Valid => _bReadPosOK, Position => _lrActPos);//return TRUE, if the position was determined successfully.
+
+_bIsCoupled := _stMotorAxis_R.Status.Coupled;
+
+IF NOT _bReadStatusOK THEN
+  ;//add a defect in case the MC_ReadStatus fails
+END_IF
+IF NOT _bReadVelOK THEN
+  ;//add a defect in case it fails    
+END_IF
+IF NOT _bReadPosOK THEN
+  ;//add a defect in case it fails    
+END_IF
+]]></ST>
       </Implementation>
     </Method>
     <Method Name="RunMC" Id="{effdf679-c8e9-4b8a-be02-83c601485a94}">
@@ -504,15 +582,10 @@ _stMC.fbGearOut(
 _stMC.fbStop(
     Axis:= _stMotorAxis_R,
     Execute := _bStop);//rising edge
-
-_bIsCoupled := _stMotorAxis_R.Status.Coupled;
    
 ///////////////////////////////////////////////OLD
 	(*
-  fbReadStatus              : MC_ReadStatus;
 	fbReadAxisError				    : MC_ReadAxisError;//Status and parameter - Read Axis Error
-	fbReadActualPosition			: MC_ReadActualPosition;//Status and parameter - Read Actual Position
-	fbReadActualVelocity			: MC_ReadActualVelocity;//Status and parameter - Read Actual Velocity
   
  	fbSetPosition					    : MC_SetPosition;//Axis function - Set Position
 	fbHome							      : MC_Home;//Home
@@ -522,15 +595,10 @@ _bIsCoupled := _stMotorAxis_R.Status.Coupled;
  	fbMoveRelative					  : MC_MoveRelative;//Move Relative
 	fbMoveVelocity					  : MC_MoveVelocity;//Move Velocity
 	fbPosCorrectionLimiter    : MC_PositionCorrectionLimiter;//Special extensions - Position Correction Limiter
-*)
- 
-(*
+
 _stMC.fbHome(Axis:=MotorAxle^, bCalibrationCam:=_udCalibrationSensor_P^.19,
 		    Options := stHomingOption, Position := lrnOffsetExtractorHoming);    
 fbMoveAbso(Axis:= _AxisREF_P^);
-fbReadStatus(Axis:= _AxisREF_P^,Enable := TRUE);	// Ok, actually done in the first lines.
-fbMoveJog(Axis := _AxisREF_P^,JogForward := stJogControl.bMoveFW, JogBackwards := stJogControl.bMoveBW);
-
 fbTimeRetryHomming(IN := nStep = E_StepAxis.AbortHoming);
 fbTimeAbortHoming(IN := nStep = E_StepAxis.RetryHoming);
 fbTrigErrorMotor(CLK := _AxisREF_P^.NcToPlc.ErrorCode <> 0);
@@ -631,6 +699,7 @@ ADSLOGSTR(ADSLOG_MSGTYPE_LOG, 'CL_Axis error loop  %s',sOutMsg);
     
   E_StepMC.End:
     IF NOT _stMC.fbGearInDyn.Error THEN  
+      _bIsCoupled := TRUE;
       OnExitRequOk();
     ELSE
       _bRequTimeout := false;
@@ -656,7 +725,7 @@ end_case]]></ST>
       <Implementation>
         <ST><![CDATA[CASE _nStep OF 
 E_StepMC.Init :
-  _bGearInDyn	:= false;
+  _bGearInDyn	:= FALSE;//disable immediately GearInDyn
   _bGearOut := TRUE; //executed with a rising edge
   WaitNextState.Start(C.tTimeOutAxisMC_C);
   _nStep := E_StepMC.Busy;
@@ -678,7 +747,8 @@ E_StepMC.Done :
   
 E_StepMC.End:
   IF NOT _stMC.fbGearOut.Error THEN  
-    _bGearOut := false;//executed with a rising edge
+    _bGearOut := FALSE;//executed with a rising edge
+    _bIsCoupled := false;
     OnExitRequOk();
   ELSE
     _bGearOut := false;//executed with a rising edge
@@ -882,7 +952,7 @@ Case03Hysto(_nStep);]]></ST>
       _nStep := E_StepMC.Timeout;
      ELSIF _stMotorAxis_R.Status.NotMoving THEN
        WaitNextState.Start(C.tTimeOutAxisMC_C);
-      _nStep := E_StepMC.Stopping;
+      _nStep := E_StepMC.Done;
 		 END_IF
      
   E_StepMC.Done:

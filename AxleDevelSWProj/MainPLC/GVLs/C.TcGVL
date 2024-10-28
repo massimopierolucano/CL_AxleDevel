@@ -9,6 +9,8 @@ VAR_GLOBAL CONSTANT
   tTimeOutAxisMC_C              : TIME := T#3S;
   tTimeOutAxisMasterMC_C        : TIME := T#3S;
   uiRetryPowerOnCnt_C           : UINT := 6;
+  
+  lrAroundZero_C                : LREAL := 0.18; // m/s //used to check if velocity is around 0 m/s
 END_VAR
 ]]></Declaration>
   </GVL>

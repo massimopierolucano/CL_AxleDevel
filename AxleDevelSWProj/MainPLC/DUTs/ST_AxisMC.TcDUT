@@ -12,8 +12,8 @@ STRUCT
 	fbMoveJog							    : MC_Jog;//Jog
 	fbGearInDyn					      : MC_GearInDyn;//Axis coupling - GearInDyn
 	fbGearOut						      : MC_GearOut;//Axis coupling - GearOut
-
   fbReadStatus              : MC_ReadStatus;
+  
 	fbReadAxisError				    : MC_ReadAxisError;//Read Axis Error
 	fbReadActualPosition			: MC_ReadActualPosition;//Read Actual Position
 	fbReadActualVelocity			: MC_ReadActualVelocity;//Read Actual Velocity

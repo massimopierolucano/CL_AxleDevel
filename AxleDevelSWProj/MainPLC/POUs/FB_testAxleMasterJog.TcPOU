@@ -5,7 +5,7 @@
 VAR
  	stm	: UINT := 10;
   stIRL : ST_LineReference;
-  bFW, bBW, b, bGearOut : BOOL := FALSE;
+  bFW, bBW, b, bContinue, bContinue2 : BOOL := FALSE;
 END_VAR]]></Declaration>
     <Implementation>
       <ST><![CDATA[G.AxisL1LeftFront(); 
@@ -19,20 +19,14 @@ CASE stm OF
   10:
     stIRL.nThis := 0;
     stIRL.nFixedID := 1;    
-    b := b AND G.AxisL1LeftFront.Init(stIrrLine := stIRL, stAxisMotor_P := ADR(G.stAX.L1LeftFront), stAxisMaster_P := ADR(G.stAX.Master), stDriver := ADR(G.stIN.stDriverL1Left));
+    b := G.AxisL1LeftFront.Init(stIrrLine := stIRL, stAxisMotor_P := ADR(G.stAX.L1LeftFront), stAxisMaster_P := ADR(G.stAX.Master), stDriver := ADR(G.stIN.stDriverL1Left));
     b := b AND G.AxisL1LeftBack.Init(stIrrLine := stIRL, stAxisMotor_P := ADR(G.stAX.L1LeftBack), stAxisMaster_P := ADR(G.stAX.Master), stDriver := ADR(G.stIN.stDriverL1Left));
     b := b AND G.AxisL2RightFront.Init(stIrrLine := stIRL, stAxisMotor_P := ADR(G.stAX.L2RightFront), stAxisMaster_P := ADR(G.stAX.Master), stDriver := ADR(G.stIN.stDriverL2Right));
     b := b AND G.AxisL2RightBack.Init(stIrrLine := stIRL, stAxisMotor_P := ADR(G.stAX.L2RightBack), stAxisMaster_P := ADR(G.stAX.Master), stDriver := ADR(G.stIN.stDriverL2Right));
     b := b AND G.AxisMaster.Init(stIrrLine := stIRL, stAxisMaster_P := ADR(G.stAX.Master));
     if b then
-      stm := 1000;
+      stm := 900;
 		END_IF   
- 
-  //for the moment it doesn't work...waiting for an answer _stMotorAxis_R.Status.Coupled doesn't return true even if the axis is coupled
-  //suAxisRef.NcToPlc.CoupleState.1
-  // ST_AxisStatus.MationState (MC_AxisStates)
-  //ST_AxisStatus: This data type contains extensive status information about an axis. 
-  //The data structure must be updated in each PLC cycle by calling MC_ReadStatus or by calling the action Axis.ReadStatus() (AXIS_REF).
   
 900:
     IF NOT G.AxisL1LeftFront.IsBusy AND NOT G.AxisL2RightFront.IsBusy AND NOT G.AxisL1LeftBack.IsBusy AND NOT G.AxisL2RightBack.IsBusy THEN
@@ -134,7 +128,7 @@ CASE stm OF
     bFW := true;
     bBW := FALSE;
     G.AxisMaster.JogExec(bExecJogFWIn := bFW, bExecJogBWIn := bBW);
-    if not bGearOut then
+    IF NOT bContinue THEN
       stm := 1300;
     else
       stm := 1310;
@@ -142,8 +136,23 @@ CASE stm OF
   
   1310:
     G.AxisMaster.JogExec(bExecJogFWIn := false, bExecJogBWIn := false);
-    stm := 1320;
-  
+    stm := 1311;
+    
+  1311:
+    IF G.AxisL1LeftFront.IsVelocity0 AND G.AxisL2RightFront.IsVelocity0 AND G.AxisL1LeftBack.IsVelocity0 AND  G.AxisL2RightBack.IsVelocity0 THEN
+      stm := 1312;//physically stopped
+    END_IF
+ 
+  1312:
+    bFW := FALSE;
+    bBW := TRUE;
+    G.AxisMaster.JogExec(bExecJogFWIn := bFW, bExecJogBWIn := bBW);
+    IF NOT bContinue2 THEN
+      stm := 1312;
+    else
+      stm := 1320;
+    end_if
+
   1320:
     IF NOT G.AxisL1LeftFront.IsBusy AND NOT G.AxisL2RightFront.IsBusy AND NOT G.AxisL1LeftBack.IsBusy AND NOT G.AxisL2RightBack.IsBusy and NOT G.AxisMaster.IsBusy THEN
       G.AxisMaster.RequStop();
@@ -161,11 +170,16 @@ CASE stm OF
 
   1340:
     IF NOT G.AxisL1LeftFront.IsError AND NOT G.AxisL2RightFront.IsError AND NOT G.AxisL1LeftBack.IsError AND NOT G.AxisL2RightBack.IsError and not G.AxisMaster.IsError THEN
-      stm := 1400;
+      stm := 1350;
     ELSE
       stm := 0;
     END_IF 
 
+  1350:
+    IF G.AxisL1LeftFront.IsStandStill AND G.AxisL2RightFront.IsStandStill AND G.AxisL1LeftBack.IsStandStill AND  G.AxisL2RightBack.IsStandStill AND G.AxisMaster.IsStandStill THEN
+      stm := 1400;//physically stopped
+    END_IF
+  
   1400:
     IF NOT G.AxisL1LeftFront.IsBusy AND NOT G.AxisL2RightFront.IsBusy AND NOT G.AxisL1LeftBack.IsBusy AND NOT G.AxisL2RightBack.IsBusy THEN
       G.AxisL1LeftFront.RequGearOut();
