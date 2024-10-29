@@ -77,6 +77,10 @@
     <Compile Include="GVLs\C.TcGVL">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="GVLs\CBot.TcGVL">
+      <SubType>Code</SubType>
+      <LinkAlways>true</LinkAlways>
+    </Compile>
     <Compile Include="GVLs\G.TcGVL">
       <SubType>Code</SubType>
       <LinkAlways>true</LinkAlways>

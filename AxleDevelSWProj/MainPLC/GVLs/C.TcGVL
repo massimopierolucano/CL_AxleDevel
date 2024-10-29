@@ -5,12 +5,6 @@
 VAR_GLOBAL CONSTANT 
   uiNumIrrLinesForHMI_C         : UINT := 1;//how many robots are handled by a single PLC/HMI
   uiNumIrrLinesInGreenhouse_C   : UINT := 2;//2 Telegram BOT, one for each line or bay or span of the greenhouse, selected based on line number
-
-  tTimeOutAxisMC_C              : TIME := T#3S;
-  tTimeOutAxisMasterMC_C        : TIME := T#3S;
-  uiRetryPowerOnCnt_C           : UINT := 6;
-  
-  lrAroundZero_C                : LREAL := 0.18; // m/s //used to check if velocity is around 0 m/s
 END_VAR
 ]]></Declaration>
   </GVL>

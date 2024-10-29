@@ -139,7 +139,7 @@ CASE stm OF
     stm := 1311;
     
   1311:
-    IF G.AxisL1LeftFront.IsVelocity0 AND G.AxisL2RightFront.IsVelocity0 AND G.AxisL1LeftBack.IsVelocity0 AND  G.AxisL2RightBack.IsVelocity0 THEN
+    IF G.AxisL1LeftFront.IsVelocityZero AND G.AxisL2RightFront.IsVelocityZero AND G.AxisL1LeftBack.IsVelocityZero AND  G.AxisL2RightBack.IsVelocityZero THEN
       stm := 1312;//physically stopped
     END_IF
  
