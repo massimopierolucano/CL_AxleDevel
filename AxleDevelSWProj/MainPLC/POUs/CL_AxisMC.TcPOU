@@ -240,21 +240,14 @@ VAR_INPUT
 END_VAR
 ]]></Declaration>
       <Implementation>
-        <ST><![CDATA[//_bExecJog := bExecIn; 
-//bExecJogFWIn and bExecJogBWIn cannot be both true but they can be both false
-if bExecJogFWIn <> bExecJogBWIn then
-  //_bExecJogFWIn := bExecJogFWIn;
-  //_bExecJogBWIn := bExecJogBWIn;
+        <ST><![CDATA[if bExecJogFWIn <> bExecJogBWIn then
   _bJogFW := bExecJogFWIn;
   _bJogBW := bExecJogBWIn;
 else
-  //_bExecJogFWIn := _bExecJogBWIn := FALSE;
   _bJogFW := _bJogBW := FALSE;
 END_IF
  _bAxisMovedbyJog := _stMC.fbMoveJog.Active;
  _bJogCmdAborted := _stMC.fbMoveJog.CommandAborted;
-//_bJogFW := _bExecJogFWIn;
-//_bJogBW := _bExecJogBWIn;
 ]]></ST>
       </Implementation>
     </Method>
@@ -783,7 +776,6 @@ end_case]]></ST>
   E_StepMC.CmdAborted:
     _bAxisMovedbyJog := false;
     _bJogCmdAborted := true;
-    //_bExecJog := false; 
     OnExitRequOk();
                           
   E_StepMC.End:
@@ -791,7 +783,6 @@ end_case]]></ST>
     _bJogBW := FALSE;
     _bAxisMovedbyJog := FALSE;
     _bJogCmdAborted := false;
-    //_bExecJog := false; 
     IF NOT _stMC.fbMoveJog.Error THEN  
       OnExitRequOk();
     ELSE
@@ -821,7 +812,7 @@ END_VAR
     b := _stMotorAxis_R.Status.Error;
     //b := TRUE;
     IF NOT b THEN //really at the level of NC Status Error flag
-     _nStep := E_StepMC.Busy;
+     _nStep := E_StepMC.PowerOnCheckStatus;
      IF _bIsAxisMaster THEN 
        WaitNextState.Start(CBot.tTimeOutAxisMasterMC_C);
      ELSE
@@ -831,14 +822,15 @@ END_VAR
     ELSE
       _nStep := E_StepMC.PowerOnRetryError;
  		END_IF
-  
-  E_StepMC.Busy:
-    IF _stMC.fbPower.Busy THEN
-      _nStep := E_StepMC.PowerOnCheckStatus;
-		END_IF
     
   E_StepMC.PowerOnCheckStatus:
-    b := _stMC.fbPower.Status;
+    IF bPowerOnIn THEN
+      //powering-on
+      b := _stMC.fbPower.Status;
+    ELSE
+      //powering-off
+      b := not _stMC.fbPower.Status;
+    END_IF
     {IF defined (MiniRobotSim)}
     b := TRUE;
     {END_IF}
