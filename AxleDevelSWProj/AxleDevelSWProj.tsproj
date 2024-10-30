@@ -795,7 +795,7 @@ External Setpoint Generation:
 			</Relations>
 		</DataType>
 		<DataType>
-			<Name GUID="{08010C3E-A549-E8D3-F791-FED67DA76274}" AutoDeleteType="true">ST_CardState_HWI</Name>
+			<Name GUID="{71C0BDB9-ABB4-3703-E9C6-66C9B99F010E}" AutoDeleteType="true">ST_CardState_HWI</Name>
 			<BitSize>32</BitSize>
 			<SubItem>
 				<Name>uiDataState</Name>
@@ -804,13 +804,92 @@ External Setpoint Generation:
 				<BitOffs>0</BitOffs>
 			</SubItem>
 			<SubItem>
-				<Name>bWcState</Name>
+				<Name>bNotValid</Name>
 				<Type GUID="{18071995-0000-0000-0000-000000000030}">BOOL</Type>
+				<Comment><![CDATA[true if data not valid]]></Comment>
 				<BitSize>8</BitSize>
 				<BitOffs>16</BitOffs>
-				<Default>
-					<Bool>false</Bool>
-				</Default>
+			</SubItem>
+		</DataType>
+		<DataType>
+			<Name GUID="{C25B0F44-7597-DB16-FDCD-5C3C6B5484FB}" AutoDeleteType="true">ST_RobotLineBoxTest_HWI</Name>
+			<BitSize>352</BitSize>
+			<SubItem>
+				<Name>stInN01_1008State</Name>
+				<Type GUID="{71C0BDB9-ABB4-3703-E9C6-66C9B99F010E}">ST_CardState_HWI</Type>
+				<Comment><![CDATA[CGSMini_Robot01LineBoxInN01-EL1008]]></Comment>
+				<BitSize>32</BitSize>
+				<BitOffs>0</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>stInN02_1004State</Name>
+				<Type GUID="{71C0BDB9-ABB4-3703-E9C6-66C9B99F010E}">ST_CardState_HWI</Type>
+				<Comment><![CDATA[CGSMini_Robot01LineBoxInN02-EL1004tmp]]></Comment>
+				<BitSize>32</BitSize>
+				<BitOffs>32</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>stInN03_1004State</Name>
+				<Type GUID="{71C0BDB9-ABB4-3703-E9C6-66C9B99F010E}">ST_CardState_HWI</Type>
+				<Comment><![CDATA[CGSMini_Robot01LineBoxInN03-EL1004tmp]]></Comment>
+				<BitSize>32</BitSize>
+				<BitOffs>64</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>stOutN01_2008State</Name>
+				<Type GUID="{71C0BDB9-ABB4-3703-E9C6-66C9B99F010E}">ST_CardState_HWI</Type>
+				<Comment><![CDATA[CGSMini_Robot01LineBoxOutN01-EL2008]]></Comment>
+				<BitSize>32</BitSize>
+				<BitOffs>96</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>stAnaInN01_3202State</Name>
+				<Type GUID="{71C0BDB9-ABB4-3703-E9C6-66C9B99F010E}">ST_CardState_HWI</Type>
+				<Comment><![CDATA[CGSMini_Robot01LineBoxAnaInN01-EL3202]]></Comment>
+				<BitSize>32</BitSize>
+				<BitOffs>128</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>stAnaInN02_3054State</Name>
+				<Type GUID="{71C0BDB9-ABB4-3703-E9C6-66C9B99F010E}">ST_CardState_HWI</Type>
+				<Comment><![CDATA[CGSMini_Robot01LineBoxAnaInN02-EL3054]]></Comment>
+				<BitSize>32</BitSize>
+				<BitOffs>160</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>stAnaInN03_3202State</Name>
+				<Type GUID="{71C0BDB9-ABB4-3703-E9C6-66C9B99F010E}">ST_CardState_HWI</Type>
+				<Comment><![CDATA[CGSMini_Robot01LineBoxAnaInN03-EL3202]]></Comment>
+				<BitSize>32</BitSize>
+				<BitOffs>192</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>stOverCProt1_9222State</Name>
+				<Type GUID="{71C0BDB9-ABB4-3703-E9C6-66C9B99F010E}">ST_CardState_HWI</Type>
+				<Comment><![CDATA[CGSMini_Robot01LineBoxOverCurrProt1-EL9222]]></Comment>
+				<BitSize>32</BitSize>
+				<BitOffs>224</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>stLineBox_1100State</Name>
+				<Type GUID="{71C0BDB9-ABB4-3703-E9C6-66C9B99F010E}">ST_CardState_HWI</Type>
+				<Comment><![CDATA[CGSMini_Robot01LineBoxBox-EK1100 not yet available useful in case of only one PLC for all robots line]]></Comment>
+				<BitSize>32</BitSize>
+				<BitOffs>256</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>stSafety_1918State</Name>
+				<Type GUID="{71C0BDB9-ABB4-3703-E9C6-66C9B99F010E}">ST_CardState_HWI</Type>
+				<Comment><![CDATA[CGSMini_Robot01LineBoxSafeInN01-EL1918]]></Comment>
+				<BitSize>32</BitSize>
+				<BitOffs>288</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>stLaserPos_State</Name>
+				<Type GUID="{71C0BDB9-ABB4-3703-E9C6-66C9B99F010E}">ST_CardState_HWI</Type>
+				<Comment><![CDATA[CGSMini_Robot01Laser-SickDL100]]></Comment>
+				<BitSize>32</BitSize>
+				<BitOffs>320</BitOffs>
 			</SubItem>
 		</DataType>
 		<DataType>
@@ -864,11 +943,11 @@ External Setpoint Generation:
 			</SubItem>
 		</DataType>
 		<DataType>
-			<Name GUID="{219155E1-9057-9DB8-762E-174637F46574}" AutoDeleteType="true">ST_PwrSupplyAX8620_HWI</Name>
+			<Name GUID="{76C14322-FC0A-309E-E8C3-24FAF3B54FDF}" AutoDeleteType="true">ST_PwrSupplyAX8620_HWI</Name>
 			<BitSize>128</BitSize>
 			<SubItem>
 				<Name>comState</Name>
-				<Type GUID="{08010C3E-A549-E8D3-F791-FED67DA76274}">ST_CardState_HWI</Type>
+				<Type GUID="{71C0BDB9-ABB4-3703-E9C6-66C9B99F010E}">ST_CardState_HWI</Type>
 				<BitSize>32</BitSize>
 				<BitOffs>0</BitOffs>
 			</SubItem>
@@ -940,11 +1019,11 @@ External Setpoint Generation:
 			</SubItem>
 		</DataType>
 		<DataType>
-			<Name GUID="{7F610799-63FE-2DDA-40B3-47ED1E8CF17F}" AutoDeleteType="true">ST_DriverAX8206_HWI</Name>
+			<Name GUID="{78FF6308-B0F6-4C6B-2077-695CCFB3AA6C}" AutoDeleteType="true">ST_DriverAX8206_HWI</Name>
 			<BitSize>352</BitSize>
 			<SubItem>
 				<Name>comState</Name>
-				<Type GUID="{08010C3E-A549-E8D3-F791-FED67DA76274}">ST_CardState_HWI</Type>
+				<Type GUID="{71C0BDB9-ABB4-3703-E9C6-66C9B99F010E}">ST_CardState_HWI</Type>
 				<BitSize>32</BitSize>
 				<BitOffs>0</BitOffs>
 			</SubItem>
@@ -976,32 +1055,32 @@ External Setpoint Generation:
 			</SubItem>
 		</DataType>
 		<DataType>
-			<Name GUID="{76155904-028D-1D83-6E52-AE2C557CA4FA}" AutoDeleteType="true">ST_Robot_HWI</Name>
+			<Name GUID="{D1C3041C-FC0A-B693-D05D-BF236146C085}" AutoDeleteType="true">ST_Robot_HWI</Name>
 			<BitSize>1056</BitSize>
 			<SubItem>
 				<Name>stAnaInN04_3054State</Name>
-				<Type GUID="{08010C3E-A549-E8D3-F791-FED67DA76274}">ST_CardState_HWI</Type>
+				<Type GUID="{71C0BDB9-ABB4-3703-E9C6-66C9B99F010E}">ST_CardState_HWI</Type>
 				<Comment><![CDATA[CGSMini_Robot01OnBoardBoxAnaInN04-EL3054]]></Comment>
 				<BitSize>32</BitSize>
 				<BitOffs>0</BitOffs>
 			</SubItem>
 			<SubItem>
 				<Name>stOnboardBox_1100State</Name>
-				<Type GUID="{08010C3E-A549-E8D3-F791-FED67DA76274}">ST_CardState_HWI</Type>
+				<Type GUID="{71C0BDB9-ABB4-3703-E9C6-66C9B99F010E}">ST_CardState_HWI</Type>
 				<Comment><![CDATA[CGSMini_Robot01OnboardBox-EK1100]]></Comment>
 				<BitSize>32</BitSize>
 				<BitOffs>32</BitOffs>
 			</SubItem>
 			<SubItem>
 				<Name>stLaserPos_State</Name>
-				<Type GUID="{08010C3E-A549-E8D3-F791-FED67DA76274}">ST_CardState_HWI</Type>
+				<Type GUID="{71C0BDB9-ABB4-3703-E9C6-66C9B99F010E}">ST_CardState_HWI</Type>
 				<Comment><![CDATA[CGSMini_Robot01Laser-SickDL100]]></Comment>
 				<BitSize>32</BitSize>
 				<BitOffs>64</BitOffs>
 			</SubItem>
 			<SubItem>
 				<Name>stOutN01_2008State</Name>
-				<Type GUID="{08010C3E-A549-E8D3-F791-FED67DA76274}">ST_CardState_HWI</Type>
+				<Type GUID="{71C0BDB9-ABB4-3703-E9C6-66C9B99F010E}">ST_CardState_HWI</Type>
 				<Comment><![CDATA[CGSMini_Robot01OnBoardBoxOutN01-EL2008]]></Comment>
 				<BitSize>32</BitSize>
 				<BitOffs>96</BitOffs>
@@ -1022,20 +1101,20 @@ External Setpoint Generation:
 			</SubItem>
 			<SubItem>
 				<Name>stPwrSupplyAX8620</Name>
-				<Type GUID="{219155E1-9057-9DB8-762E-174637F46574}">ST_PwrSupplyAX8620_HWI</Type>
+				<Type GUID="{76C14322-FC0A-309E-E8C3-24FAF3B54FDF}">ST_PwrSupplyAX8620_HWI</Type>
 				<Comment><![CDATA[CGSMini_Robot01OnboardAxisAlim-AX8620]]></Comment>
 				<BitSize>128</BitSize>
 				<BitOffs>224</BitOffs>
 			</SubItem>
 			<SubItem>
 				<Name>stDriverL1Left</Name>
-				<Type GUID="{7F610799-63FE-2DDA-40B3-47ED1E8CF17F}">ST_DriverAX8206_HWI</Type>
+				<Type GUID="{78FF6308-B0F6-4C6B-2077-695CCFB3AA6C}">ST_DriverAX8206_HWI</Type>
 				<BitSize>352</BitSize>
 				<BitOffs>352</BitOffs>
 			</SubItem>
 			<SubItem>
 				<Name>stDriverL2Right</Name>
-				<Type GUID="{7F610799-63FE-2DDA-40B3-47ED1E8CF17F}">ST_DriverAX8206_HWI</Type>
+				<Type GUID="{78FF6308-B0F6-4C6B-2077-695CCFB3AA6C}">ST_DriverAX8206_HWI</Type>
 				<BitSize>352</BitSize>
 				<BitOffs>704</BitOffs>
 			</SubItem>
@@ -1286,6 +1365,9 @@ External Setpoint Generation:
 				<ProjectVariant PvUseDefine="true">
 					<Variant>
 						<Name>MiniRobot</Name>
+						<Defines></Defines>
+					</Variant>
+					<Variant>
 						<Name>MiniRobotSim</Name>
 						<Name>MiniRobotSimNoHWIO</Name>
 						<Name>debugNoHWIO</Name>
@@ -1293,7 +1375,7 @@ External Setpoint Generation:
 						<Defines/>
 					</Variant>
 				</ProjectVariant>
-				<Instance Id="#x08502000" TcSmClass="TComPlcObjDef" KeepUnrestoredLinks="2" TmcPath="MainPLC\MainPLC.tmc" TmcHash="{EE29D049-BB6D-2906-7FDB-4985EC030DE2}">
+				<Instance Id="#x08502000" TcSmClass="TComPlcObjDef" KeepUnrestoredLinks="2" TmcPath="MainPLC\MainPLC.tmc" TmcHash="{39EC2BB6-7903-6945-DE4D-27A064A203E9}">
 					<Name>MainPLC Instance</Name>
 					<CLSID ClassFactory="TcPlc30">{08500001-0000-0000-F000-000000000064}</CLSID>
 					<Vars VarGrpType="1">
@@ -1319,15 +1401,21 @@ External Setpoint Generation:
 							<Type GUID="{25521FAA-EA5F-4C7F-8864-BBCCDACD2E98}" Namespace="MC">NCTOPLC_AXIS_REF</Type>
 						</Var>
 						<Var>
-							<Name>G.stIN</Name>
+							<Name>G.stBoxIN</Name>
 							<Comment><![CDATA[
   {attribute 'TcNcAxis' := '.L1LeftFront                     := Sim_Robot01AxisLine1Front;
                           .L1LeftBack                        := Sim_Robot01AxisLine1Back;
                           .L2RightFront                       := Sim_Robot01AxisLine2Front;
                           .L2RightBack                        := Sim_Robot01AxisLine2Back;
                           .Master                           := Sim_Robot01AxisMaster'}
-  stAxes : ST_Robot_Axes;]]></Comment>
-							<Type GUID="{76155904-028D-1D83-6E52-AE2C557CA4FA}">ST_Robot_HWI</Type>
+  stAxes : ST_Robot_Axes;
+{attribute 'TcLinkTo':='TIIB[CGSMini_Robot01Laser-SickDL100]^WcState^WcState'}
+bLaserWcState AT %I*:BOOL;]]></Comment>
+							<Type GUID="{C25B0F44-7597-DB16-FDCD-5C3C6B5484FB}">ST_RobotLineBoxTest_HWI</Type>
+						</Var>
+						<Var>
+							<Name>G.stIN</Name>
+							<Type GUID="{D1C3041C-FC0A-B693-D05D-BF236146C085}">ST_Robot_HWI</Type>
 						</Var>
 						<Var>
 							<Name>GVL.Axis_servoA.NcToPlc</Name>
@@ -1437,12 +1525,51 @@ External Setpoint Generation:
 		<MappingInfo Identifier="{05000010-2001-0850-3000-040300205008}" Id="#x02030020" Watchdog="14000000040000000400000004000000"/>
 		<MappingInfo Identifier="{03040010-0010-0304-1000-040310000403}" Id="#x02030010" Watchdog="04000000040000000400000004000000"/>
 		<OwnerA Name="TIPC^MainPLC^MainPLC Instance">
+			<OwnerB Name="TIID^CGSMini_IRSMainPLCSafe^CGSMini_RobotAllMainCab-EL1200^CGSMini_Robot01LineBoxAnaInN01-EL3202">
+				<Link VarA="PlcTask Inputs^G.stBoxIN^stAnaInN01_3202State^bNotValid" VarB="WcState^WcState" AutoLink="true"/>
+				<Link VarA="PlcTask Inputs^G.stBoxIN^stAnaInN01_3202State^uiDataState" VarB="InfoData^State" AutoLink="true"/>
+			</OwnerB>
+			<OwnerB Name="TIID^CGSMini_IRSMainPLCSafe^CGSMini_RobotAllMainCab-EL1200^CGSMini_Robot01LineBoxAnaInN02-EL3054">
+				<Link VarA="PlcTask Inputs^G.stBoxIN^stAnaInN02_3054State^bNotValid" VarB="WcState^WcState" AutoLink="true"/>
+				<Link VarA="PlcTask Inputs^G.stBoxIN^stAnaInN02_3054State^uiDataState" VarB="InfoData^State" AutoLink="true"/>
+			</OwnerB>
+			<OwnerB Name="TIID^CGSMini_IRSMainPLCSafe^CGSMini_RobotAllMainCab-EL1200^CGSMini_Robot01LineBoxAnaInN03-EL3202">
+				<Link VarA="PlcTask Inputs^G.stBoxIN^stAnaInN03_3202State^bNotValid" VarB="WcState^WcState" AutoLink="true"/>
+				<Link VarA="PlcTask Inputs^G.stBoxIN^stAnaInN03_3202State^uiDataState" VarB="InfoData^State" AutoLink="true"/>
+			</OwnerB>
+			<OwnerB Name="TIID^CGSMini_IRSMainPLCSafe^CGSMini_RobotAllMainCab-EL1200^CGSMini_Robot01LineBoxInN01-EL1008">
+				<Link VarA="PlcTask Inputs^G.stBoxIN^stInN01_1008State^bNotValid" VarB="WcState^WcState" AutoLink="true"/>
+				<Link VarA="PlcTask Inputs^G.stBoxIN^stInN01_1008State^uiDataState" VarB="InfoData^State" AutoLink="true"/>
+			</OwnerB>
+			<OwnerB Name="TIID^CGSMini_IRSMainPLCSafe^CGSMini_RobotAllMainCab-EL1200^CGSMini_Robot01LineBoxInN02-EL1004tmp">
+				<Link VarA="PlcTask Inputs^G.stBoxIN^stInN02_1004State^bNotValid" VarB="WcState^WcState" AutoLink="true"/>
+				<Link VarA="PlcTask Inputs^G.stBoxIN^stInN02_1004State^uiDataState" VarB="InfoData^State" AutoLink="true"/>
+			</OwnerB>
+			<OwnerB Name="TIID^CGSMini_IRSMainPLCSafe^CGSMini_RobotAllMainCab-EL1200^CGSMini_Robot01LineBoxInN03-EL1004tmp">
+				<Link VarA="PlcTask Inputs^G.stBoxIN^stInN03_1004State^bNotValid" VarB="WcState^WcState" AutoLink="true"/>
+				<Link VarA="PlcTask Inputs^G.stBoxIN^stInN03_1004State^uiDataState" VarB="InfoData^State" AutoLink="true"/>
+			</OwnerB>
+			<OwnerB Name="TIID^CGSMini_IRSMainPLCSafe^CGSMini_RobotAllMainCab-EL1200^CGSMini_Robot01LineBoxOutN01-EL2008">
+				<Link VarA="PlcTask Inputs^G.stBoxIN^stOutN01_2008State^bNotValid" VarB="WcState^WcState" AutoLink="true"/>
+				<Link VarA="PlcTask Inputs^G.stBoxIN^stOutN01_2008State^uiDataState" VarB="InfoData^State" AutoLink="true"/>
+			</OwnerB>
+			<OwnerB Name="TIID^CGSMini_IRSMainPLCSafe^CGSMini_RobotAllMainCab-EL1200^CGSMini_Robot01LineBoxOverCurrProt1-EL9222">
+				<Link VarA="PlcTask Inputs^G.stBoxIN^stOverCProt1_9222State^bNotValid" VarB="WcState^WcState" AutoLink="true"/>
+				<Link VarA="PlcTask Inputs^G.stBoxIN^stOverCProt1_9222State^uiDataState" VarB="InfoData^State" AutoLink="true"/>
+			</OwnerB>
+			<OwnerB Name="TIID^CGSMini_IRSMainPLCSafe^CGSMini_RobotAllMainCab-EL1200^CGSMini_Robot01LineBoxSafeInN01-EL1918">
+				<Link VarA="PlcTask Inputs^G.stBoxIN^stSafety_1918State^bNotValid" VarB="WcState^WcState" AutoLink="true"/>
+				<Link VarA="PlcTask Inputs^G.stBoxIN^stSafety_1918State^uiDataState" VarB="InfoData^State" AutoLink="true"/>
+			</OwnerB>
 			<OwnerB Name="TIID^CGSMini_IRSMainPLCSafe^CGSMini_RobotAllMainCab-EL1200^CGSMini_Robot01MainCabEtherCATBusEK1122^CGSMini_Robot01Laser-SickDL100">
+				<Link VarA="PlcTask Inputs^G.stBoxIN^stLaserPos_State^bNotValid" VarB="WcState^WcState" AutoLink="true"/>
+				<Link VarA="PlcTask Inputs^G.stBoxIN^stLaserPos_State^uiDataState" VarB="InfoData^State" AutoLink="true"/>
 				<Link VarA="PlcTask Inputs^G.stIN^stLaserPos" VarB="Distance^Distance" AutoLink="true"/>
+				<Link VarA="PlcTask Inputs^G.stIN^stLaserPos_State^bNotValid" VarB="WcState^WcState" AutoLink="true"/>
 				<Link VarA="PlcTask Inputs^G.stIN^stLaserPos_State^uiDataState" VarB="InfoData^State" AutoLink="true"/>
 			</OwnerB>
 			<OwnerB Name="TIID^CGSMini_IRSMainPLCSafe^CGSMini_RobotAllMainCab-EL1200^CGSMini_Robot01MainCabEtherCATBusEK1122^CGSMini_Robot01OnboardAxisPwrSupply-AX8620">
-				<Link VarA="PlcTask Inputs^G.stIN^stPwrSupplyAX8620^comState^bWcState" VarB="WcState^WcState" AutoLink="true"/>
+				<Link VarA="PlcTask Inputs^G.stIN^stPwrSupplyAX8620^comState^bNotValid" VarB="WcState^WcState" AutoLink="true"/>
 				<Link VarA="PlcTask Inputs^G.stIN^stPwrSupplyAX8620^comState^uiDataState" VarB="InfoData^State" AutoLink="true"/>
 				<Link VarA="PlcTask Inputs^G.stIN^stPwrSupplyAX8620^sdiDcInputShift" VarB="InfoData^DcInputShift" AutoLink="true"/>
 				<Link VarA="PlcTask Inputs^G.stIN^stPwrSupplyAX8620^sdiDcOutputShift" VarB="InfoData^DcOutputShift" AutoLink="true"/>
@@ -1461,6 +1588,7 @@ External Setpoint Generation:
 				<Link VarA="PlcTask Inputs^G.stIN^stOnboardBox_1100State^uiDataState" VarB="InfoData^State" AutoLink="true"/>
 			</OwnerB>
 			<OwnerB Name="TIID^CGSMini_IRSMainPLCSafe^CGSMini_RobotAllMainCab-EL1200^CGSMini_Robot01MainCabEtherCATBusEK1122^CGSMini_Robot01OnboardBox-EK1100^CGSMini_Robot01OnBoardBoxAnaInN04-EL3054">
+				<Link VarA="PlcTask Inputs^G.stIN^stAnaInN04_3054State^bNotValid" VarB="WcState^WcState" AutoLink="true"/>
 				<Link VarA="PlcTask Inputs^G.stIN^stAnaInN04_3054State^uiDataState" VarB="InfoData^State" AutoLink="true"/>
 				<Link VarA="PlcTask Inputs^G.stIN^stAnaOnboardSpare1^bTError" VarB="Spare1^Status^Error" AutoLink="true"/>
 				<Link VarA="PlcTask Inputs^G.stIN^stAnaOnboardSpare1^bTLimit1" VarB="Spare1^Status^Limit 1" AutoLink="true"/>
@@ -1470,6 +1598,7 @@ External Setpoint Generation:
 				<Link VarA="PlcTask Inputs^G.stIN^stAnaOnboardSpare1^siAnaRaw" VarB="Spare1^Value" AutoLink="true"/>
 			</OwnerB>
 			<OwnerB Name="TIID^CGSMini_IRSMainPLCSafe^CGSMini_RobotAllMainCab-EL1200^CGSMini_Robot01MainCabEtherCATBusEK1122^CGSMini_Robot01OnboardBox-EK1100^CGSMini_Robot01OnBoardBoxOutN01-EL2008">
+				<Link VarA="PlcTask Inputs^G.stIN^stOutN01_2008State^bNotValid" VarB="WcState^WcState" AutoLink="true"/>
 				<Link VarA="PlcTask Inputs^G.stIN^stOutN01_2008State^uiDataState" VarB="InfoData^State" AutoLink="true"/>
 			</OwnerB>
 			<OwnerB Name="TINC^NC-Task 1 SAF^Axes^CGSMini_R01AxisL1LeftBack">

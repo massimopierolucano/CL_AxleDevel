@@ -1,0 +1,21 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.12">
+  <DUT Name="ST_RobotLineBoxTest_HWI" Id="{0919acf6-4c6c-4180-a98b-89bf315404db}">
+    <Declaration><![CDATA[TYPE ST_RobotLineBoxTest_HWI :
+STRUCT
+  stInN01_1008State       : ST_CardState_HWI;//CGSMini_Robot01LineBoxInN01-EL1008
+  stInN02_1004State       : ST_CardState_HWI;//CGSMini_Robot01LineBoxInN02-EL1004tmp
+  stInN03_1004State       : ST_CardState_HWI;//CGSMini_Robot01LineBoxInN03-EL1004tmp
+  stOutN01_2008State      : ST_CardState_HWI;//CGSMini_Robot01LineBoxOutN01-EL2008
+  stAnaInN01_3202State    : ST_CardState_HWI;//CGSMini_Robot01LineBoxAnaInN01-EL3202
+  stAnaInN02_3054State    : ST_CardState_HWI;//CGSMini_Robot01LineBoxAnaInN02-EL3054
+  stAnaInN03_3202State    : ST_CardState_HWI;//CGSMini_Robot01LineBoxAnaInN03-EL3202
+  stOverCProt1_9222State  : ST_CardState_HWI;//CGSMini_Robot01LineBoxOverCurrProt1-EL9222
+  stLineBox_1100State     : ST_CardState_HWI;//CGSMini_Robot01LineBoxBox-EK1100 not yet available useful in case of only one PLC for all robots line
+  stSafety_1918State      : ST_CardState_HWI;//CGSMini_Robot01LineBoxSafeInN01-EL1918
+  stLaserPos_State        : ST_CardState_HWI;//CGSMini_Robot01Laser-SickDL100
+END_STRUCT
+END_TYPE
+]]></Declaration>
+  </DUT>
+</TcPlcObject>

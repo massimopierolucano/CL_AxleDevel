@@ -47,6 +47,9 @@
     <Compile Include="DUTs\ST_PwrSupplyAX8620_HWI.TcDUT">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="DUTs\ST_RobotLineBoxTest_HWI.TcDUT">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="DUTs\ST_Robot_HWI.TcDUT">
       <SubType>Code</SubType>
     </Compile>

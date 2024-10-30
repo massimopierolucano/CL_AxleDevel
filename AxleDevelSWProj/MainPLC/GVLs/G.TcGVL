@@ -22,14 +22,46 @@ VAR_GLOBAL
                           .Master                           := Sim_Robot01AxisMaster'}
   stAxes : ST_Robot_Axes;*)
  
+  
+//{attribute 'TcLinkTo':='TIIB[CGSMini_Robot01Laser-SickDL100]^WcState^WcState'}
+//bLaserWcState AT %I*:BOOL;
+
+{attribute 'TcLinkTo':='.stInN01_1008State.uiDataState      := TIIB[CGSMini_Robot01LineBoxInN01-EL1008]^InfoData^State;
+                        .stInN01_1008State.bNotValid         := TIIB[CGSMini_Robot01LineBoxInN01-EL1008]^WcState^WcState; 
+ 
+                        .stInN02_1004State.uiDataState      := TIIB[CGSMini_Robot01LineBoxInN02-EL1004tmp]^InfoData^State;
+                        .stInN02_1004State.bNotValid         := TIIB[CGSMini_Robot01LineBoxInN02-EL1004tmp]^WcState^WcState; 
+                        
+                        .stInN03_1004State.uiDataState      := TIIB[CGSMini_Robot01LineBoxInN03-EL1004tmp]^InfoData^State;
+                        .stInN03_1004State.bNotValid         := TIIB[CGSMini_Robot01LineBoxInN03-EL1004tmp]^WcState^WcState; 
+                        
+                        .stOutN01_2008State.uiDataState     := TIIB[CGSMini_Robot01LineBoxOutN01-EL2008]^InfoData^State;
+                        .stOutN01_2008State.bNotValid        := TIIB[CGSMini_Robot01LineBoxOutN01-EL2008]^WcState^WcState;
+                        .stAnaInN01_3202State.uiDataState   := TIIB[CGSMini_Robot01LineBoxAnaInN01-EL3202]^InfoData^State;
+                        .stAnaInN01_3202State.bNotValid      := TIIB[CGSMini_Robot01LineBoxAnaInN01-EL3202]^WcState^WcState; 
+                        .stAnaInN02_3054State.uiDataState   := TIIB[CGSMini_Robot01LineBoxAnaInN02-EL3054]^InfoData^State;
+                        .stAnaInN02_3054State.bNotValid      := TIIB[CGSMini_Robot01LineBoxAnaInN02-EL3054]^WcState^WcState; 
+                        .stAnaInN03_3202State.uiDataState   := TIIB[CGSMini_Robot01LineBoxAnaInN03-EL3202]^InfoData^State;
+                        .stAnaInN03_3202State.bNotValid      := TIIB[CGSMini_Robot01LineBoxAnaInN03-EL3202]^WcState^WcState; 
+                        .stOverCProt1_9222State.uiDataState := TIIB[CGSMini_Robot01LineBoxOverCurrProt1-EL9222]^InfoData^State;
+                        .stOverCProt1_9222State.bNotValid    := TIIB[CGSMini_Robot01LineBoxOverCurrProt1-EL9222]^WcState^WcState;                     
+ 
+                        .stSafety_1918State.uiDataState     := TIIB[CGSMini_Robot01LineBoxSafeInN01-EL1918]^InfoData^State;
+                        .stSafety_1918State.bNotValid        := TIIB[CGSMini_Robot01LineBoxSafeInN01-EL1918]^WcState^WcState;
+
+                        .stLaserPos_State.uiDataState       := TIIB[CGSMini_Robot01Laser-SickDL100]^InfoData^State;
+                        .stLaserPos_State.bNotValid          := TIIB[CGSMini_Robot01Laser-SickDL100]^WcState^WcState;
+                        .stLaserPos.udiDistanceRaw          := TIIB[CGSMini_Robot01Laser-SickDL100]^Distance^Distance'}
+stBoxIN AT %I*:ST_RobotLineBoxTest_HWI;
+  
 {attribute 'TcLinkTo':='.stAnaInN04_3054State.uiDataState   := TIIB[CGSMini_Robot01OnBoardBoxAnaInN04-EL3054]^InfoData^State;
-                        .stAnaInN04_3054State.bWCState      := TIIB[CGSMini_Robot01OnBoardBoxAnaInN04-EL3054]^WcState^WcState;
+                        .stAnaInN04_3054State.bNotValid      := TIIB[CGSMini_Robot01OnBoardBoxAnaInN04-EL3054]^WcState^WcState;
                         .stOnboardBox_1100State.uiDataState := TIIB[CGSMini_Robot01OnboardBox-EK1100]^InfoData^State;
                         .stOutN01_2008State.uiDataState     := TIIB[CGSMini_Robot01OnBoardBoxOutN01-EL2008]^InfoData^State;
-                        .stOutN01_2008State.bWCState        := TIIB[CGSMini_Robot01OnBoardBoxOutN01-EL2008]^WcState^WcState;
+                        .stOutN01_2008State.bNotValid        := TIIB[CGSMini_Robot01OnBoardBoxOutN01-EL2008]^WcState^WcState;
                         
                         .stLaserPos_State.uiDataState       := TIIB[CGSMini_Robot01Laser-SickDL100]^InfoData^State;
-                        .stLaserPos_State.bWCState          := TIIB[CGSMini_Robot01Laser-SickDL100]^WcState^WcState;
+                        .stLaserPos_State.bNotValid          := TIIB[CGSMini_Robot01Laser-SickDL100]^WcState^WcState;
                         .stLaserPos.udiDistanceRaw          := TIIB[CGSMini_Robot01Laser-SickDL100]^Distance^Distance;
                         
                         .stAnaOnboardSpare1.bTUnderRange    := TIIB[CGSMini_Robot01OnBoardBoxAnaInN04-EL3054]^Spare1^Status^Underrange;
@@ -40,7 +72,7 @@ VAR_GLOBAL
                         .stAnaOnboardSpare1.siAnaRaw        := TIIB[CGSMini_Robot01OnBoardBoxAnaInN04-EL3054]^Spare1^Value;
   
                         .stPwrSupplyAX8620.comState.uiDataState:= TIIB[CGSMini_Robot01OnboardAxisPwrSupply-AX8620]^InfoData^State;
-                        .stPwrSupplyAX8620.comState.bWcState   := TIIB[CGSMini_Robot01OnboardAxisPwrSupply-AX8620]^WcState^WcState;
+                        .stPwrSupplyAX8620.comState.bNotValid   := TIIB[CGSMini_Robot01OnboardAxisPwrSupply-AX8620]^WcState^WcState;
                         .stPwrSupplyAX8620.sdiDcOutputShift := TIIB[CGSMini_Robot01OnboardAxisPwrSupply-AX8620]^InfoData^DcOutputShift;
                         .stPwrSupplyAX8620.sdiDcInputShift  := TIIB[CGSMini_Robot01OnboardAxisPwrSupply-AX8620]^InfoData^DcInputShift;
                         .stPwrSupplyAX8620.bOverTemp        := TIIB[CGSMini_Robot01OnboardAxisPwrSupply-AX8620]^PSM Warning register^Warning^A2 Device overtemperature;  
